@@ -3,6 +3,7 @@ from nlp import stanford_nlp
 def get_roots(dependencies, word):
     """gather all the nodes that meet the requirement"""
     subroots = set()
+    visited = set()
     try:
         possible = [dependency['dependent_index'] for dependency in dependencies if dependency['governor'].startswith(word)]
         subroots.update(possible)
@@ -11,6 +12,8 @@ def get_roots(dependencies, word):
     def _roots(dependencies, word):
         """recursive helper function for gathering the nodes"""
         for dependency in dependencies:
+            if dependency['dependent_index'] in visited: continue
+            visited.add(dependency['dependent_index'])
             if dependency['governor'].startswith(word):
                 if not dependency['dependent_index'] in subroots:
                     subroots.add(dependency['dependent_index'])
@@ -57,6 +60,8 @@ if __name__ == '__main__':
     sentence = 'I agree with Bob about how ugly Steve is.'
     print sentence
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
+
+    print dependency
     nodes = get_nodes(dependency[0], tag)
     print label(nodes[1], tag)
 
