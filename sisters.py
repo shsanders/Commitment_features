@@ -73,4 +73,18 @@ if __name__ == '__main__':
         nodes = get_nodes(sent, tag)
         print label(nodes[1], tag)
 
+    tag = "admit"
+    sentence = 'I admit that I like cookies.'
+    print sentence
+    pos,meta,dependency = stanford_nlp.get_parses(sentence)
+    nodes = get_nodes(dependency[0], tag)
+    print label(nodes[1], tag)
+    
+    sentence = 'I admit that I like cookies'
+    print sentence
+    pos,meta,dependency = stanford_nlp.get_parses(sentence)
+    nodes = get_nodes(dependency[0], tag)
+    print label(nodes[1], tag)
+    
+
     #additionally you can pass the dep tree from the jsons into the get_children_dependency(dep_tree, 'search_word')
