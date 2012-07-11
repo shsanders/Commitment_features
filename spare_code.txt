@@ -1,0 +1,12 @@
+//code for going through files
+
+for num in to_open:
+    curr_file = "/home/random/workspace/sarcasm/instances/" + str(num) + ".json"
+    j = json.load(open(curr_file))
+    deps = j['response_dep']
+    text = j['response_text']
+    for dep in deps:
+        for commit in commits:
+            commit_nodes = sisters.get_nodes(dep, commit)
+            if len(commit_nodes[1]) > 0:
+                print sisters.label(commit_nodes[1], commit)

@@ -60,16 +60,16 @@ if __name__ == '__main__':
     sentence = 'I agree with Bob about how ugly Steve is.'
     print sentence
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
-
-    print dependency
     nodes = get_nodes(dependency[0], tag)
     print label(nodes[1], tag)
+    print nodes[0]
 
     sentence = 'I am not sure if Steve agrees with Bob.'
     print sentence
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
     nodes = get_nodes(dependency[0], tag)
     print label(nodes[1], tag)
+    print nodes[0]
 
     sentence = 'I agree that people are stupid. You agree they are nice.'
     print sentence
@@ -77,6 +77,7 @@ if __name__ == '__main__':
     for sent in dependency:
         nodes = get_nodes(sent, tag)
         print label(nodes[1], tag)
+        print nodes[0]
 
     tag = "admit"
     sentence = 'I admit that I like cookies.'
@@ -84,12 +85,14 @@ if __name__ == '__main__':
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
     nodes = get_nodes(dependency[0], tag)
     print label(nodes[1], tag)
+    print nodes[0]
     
     sentence = 'I admit that I like cookies'
     print sentence
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
     nodes = get_nodes(dependency[0], tag)
     print label(nodes[1], tag)
+    print nodes[0]
     
 
     #additionally you can pass the dep tree from the jsons into the get_children_dependency(dep_tree, 'search_word')

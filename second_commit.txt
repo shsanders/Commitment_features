@@ -1,0 +1,6 @@
+attack
+deny
+disagree
+doubt
+refuse
+question
