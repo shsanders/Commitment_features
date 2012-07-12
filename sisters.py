@@ -50,7 +50,7 @@ def get_nodes(sentence, word, strip=False):
         for node in nodes:
             if node['relation'] == "mark" or node['relation'] == "complm":
                 nodes.remove(node)
-    return(subj, nodes)    
+    return(subj, nodes)
     
 def label(deps, tag):
     return ["{}_{}".format(tag, dep['dependent']) for dep in deps]
