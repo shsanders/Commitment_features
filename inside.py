@@ -35,13 +35,17 @@ def quote_nodes(sents, dep):
         nodes.extend(curr)
     return nodes
 
-def get_question(sent):
+def get_question(sent): 
+    ##just looks to see if there's a question mark, and returns the whole
+    ##sentence's dependency parse if there is
     for node in sent:
         if node['governor'] == "?":
             return sent
     return None
 
 def question_nodes(sents):
+    ##goes through a set of dependencies and builds a full set of nodes
+    ##from question sentences. might be pointless.
     nodes = []
     for sent in sents:
         question = get_question(sent)
@@ -50,6 +54,8 @@ def question_nodes(sents):
     return nodes
 
 def get_negs(sent):
+    ##looks for a negation node, then gets all nodes governed by its governor
+    ##which is, presumably, the main verb or the negated verb
     verb = None
     for node in sent:
         if node['relation'] == "neg":
@@ -58,6 +64,8 @@ def get_negs(sent):
     return (verb, nodes)
 
 def negation_nodes(sents):
+    ##builds a list of negated verbs and nodes by iterating
+    ##over a list of dependencies
     nodes = []
     verbs = []
     for sent in sents:

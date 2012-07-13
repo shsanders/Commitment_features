@@ -2,6 +2,8 @@ import sisters
 from nlp import stanford_nlp
 
 def get_adv(sent, adv):
+    ##takes in an adverb, finds it in the dependency, pulls out everything
+    ##it governs
     verb = None
     for node in sent:
         if node['dependent'] == adv:
@@ -10,6 +12,7 @@ def get_adv(sent, adv):
     return (verb, nodes)
 
 def get_adv_nodes(sents, adv):
+    ##does get_adv for a set of dependencies, builds a verb and node list
     nodes = []
     verbs = []
     for sent in sents:
@@ -21,14 +24,20 @@ def get_adv_nodes(sents, adv):
     return (verbs, nodes)
 
 def get_idiom(sent, gov_dep):
+    ##takes a tuple/list consisting of a two-part idiom, the first one should
+    ##be the word that governs the other. this could maybe be changed so it
+    ##could be a list of any size
     nodes = None
     for node in sent:
+        ##finds two nodes with the appropriate relation, pulls everything they
+        ##govern, and returns that list
         if node['dependent'].lower() == gov_dep[1] and node['governor'].lower() == gov_dep[0]:
             nodes = sisters.get_nodes(sent, node['governor'])[1]
     return [node for node in nodes if node['dependent'].lower() not in gov_dep]
     
 
 def idiom_nodes(sents, gov_dep):
+    ##does get_idioms for all dependencies in a listS
     nodes = []
     for sent in sents:
         idioms = get_idiom(sent, gov_dep)

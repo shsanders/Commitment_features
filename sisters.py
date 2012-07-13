@@ -27,26 +27,22 @@ def match(dependencies, word):
     for dependency in dependencies:
         if dependency['dependent_index'] in roots:
             deps.append(dependency)
-            #you can play around with what you want to store here, currently it just stores the dependent word
-            #alternatively you could store the entire dependency so that you could look at different elements at
-            #a later time
+            #currently stores the whole node so that it's more robust
     return deps
 
-def get_children_dependency(sentence, word):
-    results = []
-    result = match(sentence, word)
-    results.extend(result)
-    return results
-
 def get_nodes(sentence, word, strip=False):
-    nodes = get_children_dependency(sentence, word)
+    ##get a list of nodes governed by word
+    nodes = match(sentence, word)
     subj = None
     for node in nodes:
+        ##look for the first subj, then move it out of the list
         if node['relation'] == "nsubj":
             subj = node
             nodes.remove(node)
             break
     if strip:
+        ##strip possibility because i think there might be issues with spurious
+        ##words getting saved
         for node in nodes:
             if node['relation'] == "mark" or node['relation'] == "complm":
                 nodes.remove(node)
@@ -54,8 +50,10 @@ def get_nodes(sentence, word, strip=False):
     
 def label(deps, tag):
     return ["{}_{}".format(tag, dep['dependent']) for dep in deps]
+    ##this function might be pointless now, but we should keep it just in case
 
 if __name__ == '__main__':
+    ##testing shit, can be deleted
     tag = "agree"
     sentence = 'I agree with Bob about how ugly Steve is.'
     print sentence
