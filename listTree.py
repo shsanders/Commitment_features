@@ -1,10 +1,33 @@
 '''
 Created on Jul 19, 2012
 
-ListTree currently functional. I don't have a way of picking the
-root node for the tree version, but it seems solid besides that. No issues
-with infinite loops at the moment, but that could change as the tree
-functions are build and tinkered.
+ListTree class fully functional (for the time being). Build a new list of 
+ListTrees by calling the function build_ListTrees on a list of semantic
+dependnecies. Each dependency graph will be turned into its own tree.
+    
+Two ways to parse it (I'm using LT to be a generic ListTree): 
+starting at the front using LT.start or by starting
+at the root by using LT.root. If you're trying to find a specific word, you
+would probably want something like this:
+
+curr = LT.start
+while (curr != None):
+    if curr.word == word:
+        break
+    curr = curr.nxt
+
+curr will end up being the right node, or it will be None
+
+The dependents of a node are node.deps, and they are a list. So, you would want
+to create a function that takes in lists if you were trying to figure out what the
+descendents of a node are. Something like
+
+def find_descend(deps):
+    descendents = deps
+    for dep in deps:
+        descendents.extend(find_descend(dep.deps))
+    return descendents
+    
 
 @author: random
 '''
@@ -15,6 +38,8 @@ class Node:
     Nodes are connected in governor-relation manner and in
     linear first-last sentence order
     each node contains info about that word
+    nxt = next, prev = previous, gov = governor, deps = list of dependents
+    everything else is information about the word
     '''
 
     def __init__(self, word, index, pos):
@@ -46,12 +71,14 @@ class Node:
         
 class ListTree:
     '''
-    classdocs
+    start = first node in sentence order
+    root = root node, top of the dependency tree
+    end = last node in sentence order, useful for some things
     '''
 
     def __init__(self):
         '''
-        Constructor
+        Constructor, does nothing other than instantiate
         '''
         self.start = None
         self.root = None
