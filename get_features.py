@@ -84,7 +84,7 @@ def update_feat_vect(dep, pos):
     oppose = get_oppose(first_commit, second_commit, regardless_oppose, dep, pos)
     ##Get commit words and nodes
     commit = get_commit(regardless_commit, first_commit, second_commit, dep, pos)
-    ##Return tuple conssisting of (commit tuples, oppose tuples)
+    ##Return tuple consisting of (commit tuples, oppose tuples)
     return (commit, oppose)
 ##The final data structure goes ( [ (commit word, [commit nodes]) ...], [ (oppose word, [oppose nodes]) ] )
 
@@ -113,6 +113,7 @@ for num in to_open:
         ##tup[0] = commit tuples, tup[1] = oppose tuples
         for tup in tups[0]:
             if len(tup) > 0:
+                print text
                 print "Commit CURR_WORD: ", tup[0]
                 for node in tup[1]:
                     print node['dependent']
@@ -120,6 +121,7 @@ for num in to_open:
         
         for tup in tups[1]:
             if len(tup) > 0:
+                print text
                 print "Oppose CURR_WORD: ", tup[0]
                 for node in tup[1]:
                     print node['dependent']
