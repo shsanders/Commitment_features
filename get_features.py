@@ -5,6 +5,8 @@ Created on Jul 6, 2012
 '''
 
 from nlp import boundary
+import listTree
+import sys
 
 def load_words():
     ##Function that loads four sets of verbs to check the sisters of
@@ -31,59 +33,59 @@ def load_words():
 
 ##First, second, oppose, commit are all lists of words
 ##Dep is a single dependency graph, pos is a single pos list for a sentence
-def get_oppose(first, second, oppose, dep, pos):
+def get_oppose(first, second, oppose, tree):
     to_return = []
     ##Go through each set of verbs and pull out its dependents
     ##Keep those lists that are opposed
     for word in first:
         ##Finds nodes that are complements of first-person commit
-        nodes = sisters.get_nodes(dep, word)
+        nodes = sisters.get_nodes(word, tree)
         if (nodes[0] != None):
-            if nodes[0]['dependent'].lower() == 'you':
+            if nodes[0].word.lower() == 'you':
                 to_return.append((word, nodes[1]))
     for word in second:
         ##Of second person commmit
-        nodes = sisters.get_nodes(dep, word)
+        nodes = sisters.get_nodes(word, tree)
         if (nodes[0] != None):
-            if nodes[0]['dependent'].lower() == 'i':
+            if nodes[0].word.lower() == 'i':
                 to_return.append((word, nodes[1]))
     for word in oppose:
         ##Of either oppose
-        nodes = sisters.get_nodes(dep, word)
+        nodes = sisters.get_nodes(word, tree)
         if (nodes[0] != None):
-            if nodes[0]['dependent'].lower() == 'you' or nodes[0]['dependent'].lower() == 'i':
+            if nodes[0].word.lower() == 'you' or nodes[0].word.lower() == 'i':
                 to_return.append((word, nodes[1])) 
     return to_return  
     
-def get_commit(commit, first, second, dep, pos):
+def get_commit(commit, first, second, tree):
     ##Go through each set of verbs and pull out its dependents
     ##Keep those lists that are committed
     ##Exactly like get_oppose, just swapped you and i and changed to commit regardless
     to_return = []
     for word in first:
-        nodes = sisters.get_nodes(dep, word)
+        nodes = sisters.get_nodes(word, tree)
         if (nodes[0] != None):
-            if nodes[0]['dependent'].lower() == 'i':
+            if nodes[0].word.lower() == 'i':
                 to_return.append((word, nodes[1]))
     for word in second:
-        nodes = sisters.get_nodes(dep, word)
+        nodes = sisters.get_nodes(word, tree)
         if (nodes[0] != None):
-            if nodes[0]['dependent'].lower() == 'you':
+            if nodes[0].word.lower() == 'you':
                 to_return.append((word, nodes[1]))
     for word in commit:
-        nodes = sisters.get_nodes(dep, word)
+        nodes = sisters.get_nodes(word, tree)
         if (nodes[0] != None):
-            if nodes[0]['dependent'].lower() == 'you' or nodes[0]['dependent'].lower() == 'i':
+            if nodes[0].word.lower() == 'you' or nodes[0].word.lower() == 'i':
                 to_return.append((word, nodes[1]))            
     return to_return
 
-def update_feat_vect(dep, pos):
+def update_feat_vect(tree, word_lists):
     ##Load word lists
-    regardless_commit, first_commit, second_commit, regardless_oppose = load_words()
+    regardless_commit, first_commit, second_commit, regardless_oppose = word_lists
     ##Get oppose words and nodes
-    oppose = get_oppose(first_commit, second_commit, regardless_oppose, dep, pos)
+    oppose = get_oppose(first_commit, second_commit, regardless_oppose, tree)
     ##Get commit words and nodes
-    commit = get_commit(regardless_commit, first_commit, second_commit, dep, pos)
+    commit = get_commit(regardless_commit, first_commit, second_commit, tree)
     ##Return tuple consisting of (commit tuples, oppose tuples)
     return (commit, oppose)
 ##The final data structure goes ( [ (commit word, [commit nodes]) ...], [ (oppose word, [oppose nodes]) ] )
@@ -100,7 +102,7 @@ to_open = range(50)
 commits = []
 opposes = []
 
-
+word_lists = load_words()
 ##This is all just a test load and parse
 for num in to_open:
     curr_file = "/home/random/workspace/sarcasm/instances/" + str(num) + ".json"
@@ -108,15 +110,16 @@ for num in to_open:
     text = j['response_text']
     pos = j['response_pos']
     deps = j['response_dep']
-    for num in range(len(deps)):
-        tups = update_feat_vect(deps[num], pos[num])
+    trees = listTree.build_ListTrees(deps)
+    for tree in trees:
+        tups = update_feat_vect(tree, word_lists)
         ##tup[0] = commit tuples, tup[1] = oppose tuples
         for tup in tups[0]:
             if len(tup) > 0:
                 print text
                 print "Commit CURR_WORD: ", tup[0]
                 for node in tup[1]:
-                    print node['dependent']
+                    print node.word
                 print
         
         for tup in tups[1]:
@@ -124,5 +127,5 @@ for num in to_open:
                 print text
                 print "Oppose CURR_WORD: ", tup[0]
                 for node in tup[1]:
-                    print node['dependent']
+                    print node.word
                 print

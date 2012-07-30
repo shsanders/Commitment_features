@@ -30,13 +30,13 @@ def match(dependencies, word):
             #currently stores the whole node so that it's more robust
     return deps
 
-def get_nodes(sentence, word, strip=False):
+def get_nodes(word, tree, strip=False):
     ##get a list of nodes governed by word
-    nodes = match(sentence, word)
+    nodes = tree.search_and_descend(word)
     subj = None
     for node in nodes:
         ##look for the first subj, then move it out of the list
-        if node['relation'] == "nsubj":
+        if node.rel == "nsubj" and node.gov.word == word:
             subj = node
             nodes.remove(node)
             break
@@ -44,7 +44,7 @@ def get_nodes(sentence, word, strip=False):
         ##strip possibility because i think there might be issues with spurious
         ##words getting saved
         for node in nodes:
-            if node['relation'] == "mark" or node['relation'] == "complm":
+            if node.rel == "mark" or node.rel == "complm":
                 nodes.remove(node)
     return(subj, nodes)
     

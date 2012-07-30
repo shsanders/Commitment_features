@@ -42,7 +42,7 @@ class Node:
     everything else is information about the word
     '''
 
-    def __init__(self, word, index, pos):
+    def __init__(self, word, index, pos, rel):
         '''
         constructor
         '''
@@ -50,16 +50,20 @@ class Node:
         self.deps = None
         self.prev = None
         self.nxt = None
+        self.dist = None
         self.pos = pos
         self.word = word
         self.index = index
+        self.rel = rel
         
     def __repr__(self):
         ##Prints in the format 
-        ##index: word: pos: 
+        ##index: word, pos, rel,
         ##gov:
         ##deps:
-        to_return = str(self.index) + ": " + self.word + ", " + self.pos + "\ngov: "
+        ##prev:
+        ##nxt:
+        to_return = str(self.index) + ": " + self.word + ", " + self.pos + ", " + str(self.rel) + "\ngov: "
         if self.gov != None:
             to_return += self.gov.word
         to_return += "\ndeps: "
@@ -67,7 +71,37 @@ class Node:
             for node in self.deps:
                 to_return += node.word + " "
         to_return += "\n"
+        to_return += "prev: "
+        if self.prev != None:
+            to_return += self.prev.word
+        to_return += "\n"
+        to_return += "nxt: "
+        if self.nxt != None:
+            to_return += self.nxt.word
         return to_return
+    
+    def get_descendents(self, dist, notStart=True):
+        if self.dist <= dist and notStart:
+            return
+        deps = []
+        if self.deps != None:
+            deps.extend(self.deps)
+            for dep in self.deps:
+                des = dep.get_descendents(self.dist)
+                if des != None:
+                    deps.extend(des)
+        return deps
+    
+    def build_dist(self, dist):
+        ##Only call this on the root node, otherwise you will fuck
+        ##everything up. Seriously. I'm not joking. Don't do it.
+        if self.dist != None:
+            return
+        self.dist = dist
+        dist += 1
+        if self.deps != None:
+            for dep in self.deps:
+                dep.build_dist(dist)
         
 class ListTree:
     '''
@@ -90,6 +124,7 @@ class ListTree:
         to_return = ""
         curr = self.start
         while (curr != None):
+            to_return += "\n"
             to_return += str(curr)
             curr = curr.nxt
         return to_return
@@ -97,17 +132,16 @@ class ListTree:
 
     def add_node(self, edge):
         ##Creates two nodes out of the edge
-        nodeA = Node(edge['governor'], edge['governor_index'], edge['governor_pos'])
-        nodeB = Node(edge['dependent'], edge['dependent_index'], edge['dependent_pos'])
-        
-        ##Fills the gov and deps fields as needed
-        nodeA.deps = [nodeB]
-        nodeB.gov = nodeA
+        nodeA = Node(edge['governor'], edge['governor_index'], edge['governor_pos'], None)
+        nodeB = Node(edge['dependent'], edge['dependent_index'], edge['dependent_pos'], edge['relation'])
         
         curr = self.start
         
         if curr == None:
             ##If no nodes already in the ListTree, start at start
+            nodeA.deps = [nodeB]
+            nodeB.gov = nodeA
+            nodeB.rel = edge['relation']
             if nodeA.index <= nodeB.index:
                 self.start = nodeA
                 self.end = nodeB
@@ -169,12 +203,17 @@ class ListTree:
             ##Change the appropriate fields if either was already there
             if correctA != None:
                 if correctB != None:
-                    correctB.gov = correctA
                     if correctA.deps == None:
                         correctA.deps = [correctB]
                     else:
-                        correctA.deps.append(correctB)
+                        if correctB not in correctA.deps:
+                            correctA.deps.append(correctB)
+                    correctB.gov = correctA
+                    correctB.rel = edge['relation']
+                    
                 else:
+                    nodeB.gov = correctA
+                    nodeB.rel = edge['relation']
                     if correctA.deps == None:
                         correctA.deps = [nodeB]
                     else:
@@ -182,6 +221,12 @@ class ListTree:
             else:
                 if correctB != None:
                     correctB.gov = nodeA
+                    correctB.rel = edge['relation']
+                    nodeA.deps = [correctB]
+                else:
+                    nodeB.gov = nodeA
+                    nodeB.rel = edge['relation']
+                    nodeA.deps = [nodeB]
 
     def fixRoot(self):
         ##ListTree must already have a start or this won't work
@@ -191,9 +236,15 @@ class ListTree:
             ##If the root/zero node isn't punctuation, remove it
             ##and replace it with a dummy node so traversal functions
             ##will be simpler
-            temp = Node('SentEndDummy', 0, "DMY")
+            temp = Node('SentEndDummy', 0, 'DMY', 'DMY')
             temp.deps = self.start.deps
+            for dep in self.start.deps:
+                dep.gov = temp
+            self.start.deps = None
+            self.start.gov = None
             self.start = self.start.nxt
+            self.start.prev.prev = None
+            self.start.prev.nxt = None
             self.start.prev = None
             self.root = temp
         else:
@@ -208,6 +259,22 @@ class ListTree:
             self.end = temp
             self.root = temp
             
+    def search_and_descend(self, word):
+        curr = self.start
+        to_return = []
+        while curr != None:
+            if curr.word == word:
+                deps = curr.get_descendents(curr.dist, False)
+                if deps != None:
+                    for dep in deps:
+                        if dep not in to_return:
+                            to_return.append(dep)
+            curr = curr.nxt
+        return to_return
+    
+    def dists(self):
+        self.root.build_dist(0)
+        
 
 def build_ListTrees(deps):
     ##Build a list of ListTrees from a list of deps
@@ -216,16 +283,21 @@ def build_ListTrees(deps):
     for num in range(len(deps)):
         ##For each dep(and pos in the future), build a ListTree
         ##and append it to the list
-        tree = ListTree()
         dep = deps[num]
+        if len(dep) < 1:
+            continue
+        tree = ListTree()
         for edge in dep:
             tree.add_node(edge)
+        if tree.start == None:
+            print "Shitty dep:"
+            print dep
+        tree.fixRoot()
+        tree.dists()
         listTree_list.append(tree)
-    for listTree in listTree_list:
-        listTree.fixRoot()
     return listTree_list
 
-
+'''
 from nlp.stanford_nlp import get_parses
 
 sent = "I admit that I like cookies"
@@ -239,4 +311,11 @@ print parse[2]
 trees = build_ListTrees(parse[2])
 
 for tree in trees:
+    print "Final tree: "
     print tree
+    print "\n"
+    
+    deps = tree.search_and_descend("admit")
+    for dep in deps:
+        print dep
+'''
