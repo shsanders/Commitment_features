@@ -42,7 +42,7 @@ class Node:
     everything else is information about the word
     '''
 
-    def __init__(self, word, index, pos, rel):
+    def __init__(self, word, index, pos, rel=None, lemma=None):
         '''
         constructor
         '''
@@ -55,15 +55,19 @@ class Node:
         self.word = word
         self.index = index
         self.rel = rel
+        self.lemma = lemma
         
     def __repr__(self):
         ##Prints in the format 
-        ##index: word, pos, rel,
+        ##index: word, pos, rel, lemma,
         ##gov:
         ##deps:
         ##prev:
         ##nxt:
-        to_return = str(self.index) + ": " + self.word + ", " + self.pos + ", " + str(self.rel) + "\ngov: "
+        to_return = str(self.index) + ": " + self.word + ", " + self.pos + ", " + str(self.rel) + ", " 
+        if self.lemma != None:
+            to_return += str(self.lemma)
+        to_return += "\ngov: "
         if self.gov != None:
             to_return += self.gov.word
         to_return += "\ndeps: "
@@ -124,15 +128,18 @@ class ListTree:
         to_return = ""
         curr = self.start
         while (curr != None):
-            to_return += "\n"
-            to_return += str(curr)
+            to_return += str(curr.word) + " "
+            curr = curr.nxt
+        curr = self.start
+        while (curr != None):
+            to_return += "\n" + str(curr)
             curr = curr.nxt
         return to_return
             
 
     def add_node(self, edge):
         ##Creates two nodes out of the edge
-        nodeA = Node(edge['governor'], edge['governor_index'], edge['governor_pos'], None)
+        nodeA = Node(edge['governor'], edge['governor_index'], edge['governor_pos'])
         nodeB = Node(edge['dependent'], edge['dependent_index'], edge['dependent_pos'], edge['relation'])
         
         curr = self.start
@@ -228,6 +235,39 @@ class ListTree:
                     nodeB.rel = edge['relation']
                     nodeA.deps = [nodeB]
 
+    def add_node_pos(self, pos):
+        ##Creates two nodes out of the edge
+        nodeA = Node(pos['OriginalText'], int(pos['EndIndex']), pos['PartOfSpeech'], lemma = pos['Lemma'])
+
+        curr = self.start
+        
+        if curr == None:
+            ##If no nodes already in the ListTree, start at start
+            self.start = nodeA
+        else:
+            ##Otherwise, go through each node starting at start and find the
+            ##right place to insert the node
+            prev = None 
+            correctA = None
+            while(curr != None and curr.index <= nodeA.index):
+                if curr.index == nodeA.index:
+                    curr.lemma = pos['Lemma']
+                    break
+                prev = curr
+                curr = curr.nxt
+            ##Insert the node
+            if correctA == None:
+                nodeA.nxt = curr
+                nodeA.prev = prev
+                if prev != None:
+                    prev.nxt = nodeA
+                if curr != None:
+                    curr.prev = nodeA
+                if self.start == nodeA.nxt:
+                    self.start = nodeA
+                if self.end == nodeA.prev:
+                    self.end = nodeA
+
     def fixRoot(self):
         ##ListTree must already have a start or this won't work
         if self.start.index != 0:
@@ -275,8 +315,59 @@ class ListTree:
     def dists(self):
         self.root.build_dist(0)
         
+    def get_quotes(self):
+        quotes = ["'", "''", '"']
+        to_return = []
+        curr = self.start
+        while ( curr != None):
+            if curr.word in quotes:
+                quote = curr.word
+                curr = curr.nxt
+                while (curr.word != quote):
+                    to_return.append(curr)
+                    curr = curr.nxt
+            curr = curr.nxt
+        return to_return
+    
+    def get_question(self):
+        to_return = []
+        if self.root.word == "?":
+            to_return.extend(self.root.get_descendents(self.root.dist, False))
+        return to_return
+    
+    def get_nodes(self, word, strip=False):
+        ##get a list of nodes governed by word
+        nodes = self.search_and_descend(word)
+        subj = None
+        for node in nodes:
+            ##look for the first subj, then move it out of the list
+            if node.rel == "nsubj" and node.gov.word == word:
+                subj = node
+                nodes.remove(node)
+                break
+        if strip:
+            ##strip possibility because i think there might be issues with spurious
+            ##words getting saved
+            for node in nodes:
+                if node.rel == "mark" or node.rel == "complm":
+                    nodes.remove(node)
+        return(subj, nodes)
+    
+    def get_adv(self, adv):
+        ##takes in an adverb, finds it in the dependency, pulls out everything
+        ##the verb governing it governs
+        verb = None
+        curr = self.start
+        to_return = []
+        while (curr != None):
+            if curr.word.lower() == adv:
+                nodes = curr.gov.get_descendents(curr.gov.dist, False)
+                verb = curr.gov
+                to_return.append((verb, nodes))
+            curr = curr.nxt
+        return to_return
 
-def build_ListTrees(deps):
+def build_ListTrees(deps, poses):
     ##Build a list of ListTrees from a list of deps
     ##Each dependency graph becomes its own tree
     listTree_list = []
@@ -284,38 +375,62 @@ def build_ListTrees(deps):
         ##For each dep(and pos in the future), build a ListTree
         ##and append it to the list
         dep = deps[num]
+        pos = poses[num]
         if len(dep) < 1:
             continue
+        if len(pos) < 1:
+            continue
         tree = ListTree()
+        for node in pos:
+            tree.add_node_pos(node)
         for edge in dep:
             tree.add_node(edge)
-        if tree.start == None:
-            print "Shitty dep:"
-            print dep
         tree.fixRoot()
         tree.dists()
         listTree_list.append(tree)
     return listTree_list
 
-'''
+
 from nlp.stanford_nlp import get_parses
 
-sent = "I admit that I like cookies"
+sent = "How can you say 'I really don't know'?"
 
 print sent
 
 parse = get_parses(sent)
 
-print parse[2]
-
-trees = build_ListTrees(parse[2])
+trees = build_ListTrees(parse[2], parse[0])
 
 for tree in trees:
     print "Final tree: "
     print tree
-    print "\n"
+    print
+    
+    print "descendants:"
     
     deps = tree.search_and_descend("admit")
     for dep in deps:
         print dep
-'''
+        
+    print
+        
+    print "quotes:"
+    deps = tree.get_quotes()
+    for dep in deps:
+        print dep
+        
+    print
+
+    print "question:"
+    deps = tree.get_question()
+    for dep in deps:
+        print dep
+        
+    print
+    
+    print "really:"
+    tups = tree.get_adv("really")
+    for tup in tups:
+        print tup[0]
+        for node in tup[1]:
+            print node

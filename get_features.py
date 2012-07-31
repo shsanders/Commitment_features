@@ -110,12 +110,13 @@ for num in to_open:
     text = j['response_text']
     pos = j['response_pos']
     deps = j['response_dep']
-    trees = listTree.build_ListTrees(deps)
+    trees = listTree.build_ListTrees(deps, pos)
     for tree in trees:
         tups = update_feat_vect(tree, word_lists)
         ##tup[0] = commit tuples, tup[1] = oppose tuples
         for tup in tups[0]:
             if len(tup) > 0:
+                print tree
                 print text
                 print "Commit CURR_WORD: ", tup[0]
                 for node in tup[1]:
@@ -124,6 +125,7 @@ for num in to_open:
         
         for tup in tups[1]:
             if len(tup) > 0:
+                print tree
                 print text
                 print "Oppose CURR_WORD: ", tup[0]
                 for node in tup[1]:

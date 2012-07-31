@@ -20,19 +20,22 @@ def get_quotes(sent):
     
     return (open_quotes, close_quotes)
 
-def quote_nodes(sents, dep):
+def quote_nodes(sents, deps):
     nodes = []
-    for sent in sents:
+    for i in range(len(deps)):
+        dep = deps[i]
+        sent = sents[i]
         indices = []
-        quotes = get_quotes(sent)
-        
+        quotes = get_quotes(sent)        
         #assumes that the number of closing quotes is less than the number of opening
         #loops for length of opening and closing quotes, appending each node between them
         for num in range(len(quotes[1])):
             for curr in range(quotes[0][num]+1, quotes[1][num]):
-                indices.append(sent[curr]['TokenBegin'])
-        curr = [node for node in dep if node['dependent_index'] in indices]
-        nodes.extend(curr)
+                indices.append(int(sent[curr]['TokenBegin']))
+        print indices
+        for edge in dep:
+            if edge['dependent_index'] in indices:
+                nodes.append(edge)
     return nodes
 
 def get_question(sent): 
@@ -83,25 +86,18 @@ if __name__ == '__main__':
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
     nodes = question_nodes(dependency)
     print sisters.label(nodes, tag)
-    
-    tag = "neg"
-    sentence = "John didn't realize there were cookies on the table."
-    print sentence
-    pos,meta,dependency = stanford_nlp.get_parses(sentence)
-    nodes = negation_nodes(dependency)
-    labels =  sisters.label(nodes[1], tag)
-    for verb in nodes[0]:
-        labels.append("neg_" + verb)
-    print labels
+
     
     tag = "quote"
     sentence = '"Life threatening condition that is always physically harmful"? What a giant load of steamy BS.'
     print sentence
     pos,meta,dependency = stanford_nlp.get_parses(sentence)
-    words = quote_nodes(pos)
-    words = [int(word['TokenBegin']) for word in words]
-    nodes = []
-    for node in dependency[0]:
-        if node['dependent_index'] in words:
-            nodes.append(node)
-    print sisters.label(nodes, tag)
+    words = quote_nodes(pos, dependency)
+    print sisters.label(words, tag)
+    
+    tag = "quote"
+    sentence = "John said 'I like cookies.'"
+    print sentence
+    pos,meta,dependency = stanford_nlp.get_parses(sentence)
+    words = quote_nodes(pos, dependency)
+    print sisters.label(words, tag)
