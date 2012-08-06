@@ -96,7 +96,7 @@ import inside
 import sisters
 import json
 
-to_open = range(50)
+to_open = range(200)
 
 
 commits = []
@@ -112,22 +112,16 @@ for num in to_open:
     deps = j['response_dep']
     trees = listTree.build_ListTrees(deps, pos)
     for tree in trees:
-        tups = update_feat_vect(tree, word_lists)
-        ##tup[0] = commit tuples, tup[1] = oppose tuples
-        for tup in tups[0]:
-            if len(tup) > 0:
-                print tree
+            
+        if tree != None:
+            ant, cond = tree.get_cond()
+            if ant != None and cond != None:
                 print text
-                print "Commit CURR_WORD: ", tup[0]
-                for node in tup[1]:
+                print "Antecedent: "
+                for node in ant:
                     print node.word
                 print
-        
-        for tup in tups[1]:
-            if len(tup) > 0:
-                print tree
-                print text
-                print "Oppose CURR_WORD: ", tup[0]
-                for node in tup[1]:
+                print "Conditional: "
+                for node in cond:
                     print node.word
                 print

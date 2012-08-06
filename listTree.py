@@ -32,6 +32,11 @@ def find_descend(deps):
 @author: random
 '''
 
+import mpqa.mpqa as mpqa
+
+from nlp.word_category_counter import score_word
+
+
 class Node:
     '''
     Node class for ListTree
@@ -42,15 +47,20 @@ class Node:
     everything else is information about the word
     '''
 
-    def __init__(self, word, index, pos, rel=None, lemma=None):
+    def __init__(self, word, index, pos, rel=None, lemma=None, start=None, end=None):
         '''
         constructor
         '''
+        self.next_tree = None
         self.gov = None
         self.deps = None
         self.prev = None
         self.nxt = None
         self.dist = None
+        self.start = start
+        self.end = end
+        self.mpqa = mpqa.lookup(word, pos)
+        self.liwc = score_word(word)
         self.pos = pos
         self.word = word
         self.index = index
@@ -62,6 +72,7 @@ class Node:
         ##index: word, pos, rel, lemma,
         ##gov:
         ##deps:
+        ##mpqa:
         ##prev:
         ##nxt:
         to_return = str(self.index) + ": " + self.word + ", " + self.pos + ", " + str(self.rel) + ", " 
@@ -74,8 +85,14 @@ class Node:
         if self.deps != None:
             for node in self.deps:
                 to_return += node.word + " "
-        to_return += "\n"
-        to_return += "prev: "
+        to_return += "\nmpqa: " + str(self.mpqa)
+        to_return += "\nstart: "
+        if self.start != None:
+            to_return += str(self.start)
+        to_return += "\nend: "
+        if self.end != None:
+            to_return += str(self.end)
+        to_return += "\nprev: "
         if self.prev != None:
             to_return += self.prev.word
         to_return += "\n"
@@ -93,7 +110,9 @@ class Node:
             for dep in self.deps:
                 des = dep.get_descendents(self.dist)
                 if des != None:
-                    deps.extend(des)
+                    for node in des:
+                        if node not in deps:
+                            deps.append(node)
         return deps
     
     def build_dist(self, dist):
@@ -235,15 +254,17 @@ class ListTree:
                     nodeB.rel = edge['relation']
                     nodeA.deps = [nodeB]
 
-    def add_node_pos(self, pos):
+    def add_node_pos(self, pos, index):
         ##Creates two nodes out of the edge
-        nodeA = Node(pos['OriginalText'], int(pos['EndIndex']), pos['PartOfSpeech'], lemma = pos['Lemma'])
+        nodeA = Node(pos['OriginalText'], index, pos['PartOfSpeech'], lemma = pos['Lemma'], 
+                     start = pos['CharacterOffsetBegin'], end = pos['CharacterOffsetEnd'])
 
         curr = self.start
         
         if curr == None:
             ##If no nodes already in the ListTree, start at start
             self.start = nodeA
+            self.end = nodeA
         else:
             ##Otherwise, go through each node starting at start and find the
             ##right place to insert the node
@@ -290,14 +311,25 @@ class ListTree:
         else:
             ##If the root/zer0 node is punctuation, keep it, move it
             ##to the back of the sentence list and set it as the root
-            temp = self.start
-            self.start = self.start.nxt
-            self.start.prev = None
-            self.end.nxt = temp
-            temp.prev = self.end
-            temp.nxt = None
-            self.end = temp
-            self.root = temp
+            if self.start.word == self.end.word:
+                temp = self.start
+                self.start = self.start.nxt
+                self.start.prev = None
+                self.end.prev.nxt = temp
+                temp.prev = self.end.prev
+                temp.nxt = None
+                self.end = temp
+                self.root = temp
+                
+            else:
+                temp = self.start
+                self.start = self.start.nxt
+                self.start.prev = None
+                self.end.nxt = temp
+                temp.prev = self.end
+                temp.nxt = None
+                self.end = temp
+                self.root = temp
             
     def search_and_descend(self, word):
         curr = self.start
@@ -317,22 +349,34 @@ class ListTree:
         
     def get_quotes(self):
         quotes = ["'", "''", '"']
-        to_return = []
+        to_return = None
         curr = self.start
         while ( curr != None):
             if curr.word in quotes:
                 quote = curr.word
                 curr = curr.nxt
-                while (curr.word != quote):
-                    to_return.append(curr)
+                while (curr != None):
+                    if curr.word == quote:
+                        break
+                    if to_return == None:
+                        to_return = [curr]
+                    else:
+                        to_return.append(curr)
+                    if curr.nxt == None:
+                        curr = curr.next_tree
+                    else:
+                        curr = curr.nxt
+            if curr != None:
+                if curr.nxt == None:
+                    curr = curr.next_tree
+                else:
                     curr = curr.nxt
-            curr = curr.nxt
         return to_return
     
     def get_question(self):
-        to_return = []
+        to_return = None
         if self.root.word == "?":
-            to_return.extend(self.root.get_descendents(self.root.dist, False))
+            to_return = self.root.get_descendents(self.root.dist, False)
         return to_return
     
     def get_nodes(self, word, strip=False):
@@ -367,6 +411,23 @@ class ListTree:
             curr = curr.nxt
         return to_return
 
+    def get_cond(self):
+        antecedent = None
+        conditional = None
+        if self.root != None:
+            if self.root.deps != None:
+                for dep in self.root.deps:
+                    if dep.deps != None:
+                        for node in dep.deps:
+                            if node.deps != None:
+                                for curr in node.deps:
+                                    if curr.word.lower() == "if":
+                                        antecedent = node.get_descendents(node.dist, False)
+                                        antecedent.append(node)
+                                        conditional = [x for x in dep.get_descendents(dep.dist, False) if x not in antecedent]
+                                        conditional.append(dep)
+        return (antecedent, conditional)
+        
 def build_ListTrees(deps, poses):
     ##Build a list of ListTrees from a list of deps
     ##Each dependency graph becomes its own tree
@@ -381,30 +442,54 @@ def build_ListTrees(deps, poses):
         if len(pos) < 1:
             continue
         tree = ListTree()
-        for node in pos:
-            tree.add_node_pos(node)
+        for curr in range(len(pos)):
+            tree.add_node_pos(pos[curr], curr+1)
         for edge in dep:
             tree.add_node(edge)
         tree.fixRoot()
-        tree.dists()
+        if tree.root != None:
+            tree.dists()
         listTree_list.append(tree)
+    num = 0
+    while (num+1 < len(listTree_list)):
+        listTree_list[num].end.next_tree = listTree_list[num+1].start
+        num += 1
     return listTree_list
+
 
 
 from nlp.stanford_nlp import get_parses
 
-sent = "How can you say 'I really don't know'?"
+sent = "If you eat cookies, you will have fun."
 
 print sent
-
 parse = get_parses(sent)
+
+print parse[0]
 
 trees = build_ListTrees(parse[2], parse[0])
 
 for tree in trees:
+    print
+    print "root: "
+    print tree.root
+    print
     print "Final tree: "
     print tree
+    ant, cond = tree.get_cond()
     print
+    print "Antecedent: "
+    if ant != None:
+        for node in ant:
+            print node
+    print
+    print "Conditional: "
+    if cond != None:
+        for node in cond:
+            print node
+    print
+
+'''
     
     print "descendants:"
     
@@ -434,3 +519,5 @@ for tree in trees:
         print tup[0]
         for node in tup[1]:
             print node
+            
+'''
