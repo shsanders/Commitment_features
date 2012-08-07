@@ -69,7 +69,7 @@ class Node:
         
     def __repr__(self):
         ##Prints in the format 
-        ##index: word, pos, rel, lemma,
+        ##index: word, pos, rel, lemma
         ##gov:
         ##deps:
         ##mpqa:
@@ -117,6 +117,14 @@ class Node:
                             deps.append(node)
         return deps
     
+    def top_ends(self):
+        curr = self.gov
+        while (curr != None):
+            if curr == self:
+                return False
+            curr = curr.gov
+        return True
+    
     def build_dist(self, dist):
         ##Only call this on the root node, otherwise you will fuck
         ##everything up. Seriously. I'm not joking. Don't do it.
@@ -151,10 +159,7 @@ class ListTree:
         while (curr != None):
             to_return += str(curr.word) + " "
             curr = curr.nxt
-        curr = self.start
-        while (curr != None):
-            to_return += "\n" + str(curr)
-            curr = curr.nxt
+
         return to_return
             
 
@@ -299,8 +304,31 @@ class ListTree:
     def fixRoot(self):
         ##ListTree must already have a start or this won't work
         if self.start.index != 0:
-            return
-        if self.start.pos != '.':
+            curr = self.start
+            prev = None
+            if curr.top_ends():
+                while curr != None:
+                    prev = curr
+                    curr = curr.gov
+            else:
+                while curr != None:
+                    if curr.gov != None:
+                        if "VB" in curr.pos and "VB" not in curr.gov.pos:
+                            break
+                    prev = curr
+                    curr = curr.gov
+            if curr == None:
+                curr = prev
+            if self.end.pos == '.':
+                self.root = self.end
+                self.end.deps = [curr]
+                curr.gov = self.end
+            else:
+                temp = Node('SentEndDummy', 0, 'DMY', 'DMY')
+                temp.deps = [curr]
+                curr.gov = temp
+                self.root = temp
+        elif self.start.pos != '.':
             ##If the root/zero node isn't punctuation, remove it
             ##and replace it with a dummy node so traversal functions
             ##will be simpler
@@ -359,6 +387,19 @@ class ListTree:
         to_return = None
         curr = self.start
         while ( curr != None):
+            if curr.lemma == "``":
+                curr = curr.nxt
+                while curr != None:
+                    if curr.lemma == "''" or curr.word in quotes:
+                        break
+                    if to_return == None:
+                        to_return = [curr]
+                    else:
+                        to_return.append(curr)
+                    if curr.nxt == None:
+                        curr = curr.next_tree
+                    else:
+                        curr = curr.nxt
             if curr.word in quotes:
                 quote = curr.word
                 curr = curr.nxt
@@ -452,7 +493,7 @@ def build_ListTrees(deps, poses):
         tree = ListTree()
         for curr in range(len(pos)):
             tree.add_node_pos(pos[curr], curr+1)
-        for edge in dep:
+        for edge in dep:            
             tree.add_node(edge)
         tree.fixRoot()
         if tree.root != None:

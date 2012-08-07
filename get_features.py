@@ -92,6 +92,24 @@ def update_feat_vect(tree, word_lists):
 
 def update(name, node, vect):
     vect[name+node.word.lower()] = True
+    if node.liwc != None:
+        for key in dict(node.liwc):
+            if name+"LIWC: "+key in vect:
+                vect[name+"LIWC: "+key] += 1
+            else:
+                vect[name+"LIWC: "+key] = 1
+                
+    if node.deps != None:
+        for curr in node.deps:
+            dep_string = "%s(%s,%s)" % (curr.rel, node.lemma, curr.lemma)
+            dep_string = name + dep_string
+            if dep_string in vect:
+                vect[dep_string] += 1
+            else:
+                vect[dep_string] = 1
+    if node.mpqa != None:
+        pass
+        ##this needs to be filled with the appropriate mpqa feature stuff
     
 def feat_vect(deps, pos, vect):
     trees = listTree.build_ListTrees(deps, pos)
@@ -102,21 +120,17 @@ def feat_vect(deps, pos, vect):
     conditionals = []
     
     for tree in trees:
+        print tree
         quote = tree.get_quotes()
         if quote != None:
             quotes.extend(quote)
             environs += 1
         question = tree.get_question()
         if question != None:
-            print "question: "
-            print question
             questions.extend(question)
             environs += 1
         condit = tree.get_cond()
         if condit[0] != None and condit[1]:
-            print "conditional stuff: "
-            print condit[0]
-            print condit[1]
             ant, cond = condit
             antecedents.extend(ant)
             conditionals.extend(cond)
@@ -138,9 +152,9 @@ def feat_vect(deps, pos, vect):
     for node in conditionals:
         update(name, node, vect)
 
-import sisters
-import json
 if __name__ == '__main__':
+    
+    import json
 
     to_open = range(7)
 
@@ -156,3 +170,4 @@ if __name__ == '__main__':
         feat_vect(deps, pos, vect)
         if len(vect) > 0:
             print vect
+            print
