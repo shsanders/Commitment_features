@@ -98,6 +98,18 @@ def update(name, node, vect):
                 vect[name+"LIWC: "+key] += 1
             else:
                 vect[name+"LIWC: "+key] = 1
+                
+    if node.deps != None:
+        for curr in node.deps:
+            dep_string = "%s(%s,%s)" % (curr.rel, node.lemma, curr.lemma)
+            dep_string = name + dep_string
+            if dep_string in vect:
+                vect[dep_string] += 1
+            else:
+                vect[dep_string] = 1
+    if node.mpqa != None:
+        pass
+        ##this needs to be filled with the appropriate mpqa feature stuff
     
 def feat_vect(deps, pos, vect):
     trees = listTree.build_ListTrees(deps, pos)
