@@ -311,10 +311,19 @@ class ListTree:
                     prev = curr
                     curr = curr.gov
             else:
+                found = []
                 while curr != None:
                     if curr.gov != None:
                         if "VB" in curr.pos and "VB" not in curr.gov.pos:
                             break
+                    if curr in found:
+                        print self
+                        node = self.start
+                        while (node != None):
+                            print node
+                            node = node.nxt
+                        break
+                    found.append(curr)
                     prev = curr
                     curr = curr.gov
             if curr == None:
