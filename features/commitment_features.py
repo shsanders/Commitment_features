@@ -17,10 +17,11 @@ from get_features import feat_vect
 class Commitment(object):
 
 
-    def __init__(self, topic='death penalty'):
+    def __init__(self, topic='death penalty', features=['unigram', 'LIWC', 'pos_dep']):
         self.topic = topic
         self.feature_vectors = []
         self.classification_feature = 'commitment'
+        self.features = features
 
     def generate_features(self):
         dataset = Dataset('convinceme',annotation_list=['topic','dependencies'])
@@ -29,14 +30,19 @@ class Commitment(object):
             if self.topic != discussion.annotations['topic']:
                 continue
             for post in discussion.get_posts():
+
                 feature_vector = dict()
                 
                 try:
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
                     pos, parsetree, dep, id = json.load(open(json_file, 'r'))
                     feat_vect(dep, pos, feature_vector)
-                    #text = TextObj(post.text.decode('utf-8', 'replace'))
-                    #get_features_by_type(feature_vector=feature_vector, features=['unigram', 'LIWC'], text_obj=text)
+
+                    text = TextObj(post.text.decode('utf-8', 'replace'))
+
+                    dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
+                    get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
+
                     feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
 
@@ -59,7 +65,8 @@ class Commitment(object):
         self.generate_arffs()
 
     def get_label(self, discussion, post):
-        return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
+        #return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
+        return post.side == discussion.annotations['side'][0][0]
 
 if  __name__ == '__main__':
     commitment = Commitment()
