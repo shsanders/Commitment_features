@@ -108,10 +108,15 @@ def feat_vect(deps, pos, vect):
             environs += 1
         question = tree.get_question()
         if question != None:
+            print "question: "
+            print question
             questions.extend(question)
             environs += 1
         condit = tree.get_cond()
         if condit[0] != None and condit[1]:
+            print "conditional stuff: "
+            print condit[0]
+            print condit[1]
             ant, cond = condit
             antecedents.extend(ant)
             conditionals.extend(cond)
@@ -137,19 +142,17 @@ import sisters
 import json
 if __name__ == '__main__':
 
-    to_open = range(200)
+    to_open = range(7)
 
 
     word_lists = load_words()
     ##This is all just a test load and parse
     for num in to_open:
         vect = {}
-        curr_file = "/home/random/workspace/sarcasm/instances/" + str(num) + ".json"
+        curr_file = "/home/random/workspace/Utilities/nlp/output_by_thread/1/790" + str(num) + ".json"
         j = json.load(open(curr_file))
-        text = j['response_text']
-        pos = j['response_pos']
-        deps = j['response_dep']
+        pos = j[0]
+        deps = j[2]
         feat_vect(deps, pos, vect)
         if len(vect) > 0:
-            print text
             print vect
