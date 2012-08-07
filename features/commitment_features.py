@@ -1,5 +1,8 @@
-import os
+#!/usr/bin/env python
+
 import json
+import os
+import operator
 
 from discussion import Dataset, data_root_dir
 from file_formatting import arff_writer
@@ -30,8 +33,9 @@ class Commitment(object):
                 
                     text = TextObj(post.text.decode('utf-8', 'replace'))
                     get_features_by_type(feature_vector=feature_vector, features=['unigram', 'LIWC'], text_obj=text)
-                    feature_vector[self.classification_feature] = True
+                    feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
+
                 except IOError, e:
                     # XXX TODO : we don't have all the parses saved apparently so this sometimes fails.
                     pass
@@ -50,7 +54,9 @@ class Commitment(object):
         self.generate_features()
         self.generate_arffs()
 
+    def get_label(self, discussion, post):
+        return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
 
-if __name__ == '__main__':
+if  __name__ == '__main__':
     commitment = Commitment()
     commitment.main()
