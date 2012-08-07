@@ -91,7 +91,7 @@ def update_feat_vect(tree, word_lists):
 ##The final data structure goes ( [ (commit word, [commit nodes]) ...], [ (oppose word, [oppose nodes]) ] )
 
 def update(name, node, vect):
-    vect[name+node.word.lower()] = True
+    vect[name+node.lemma] = True
     if node.liwc != None:
         for key in dict(node.liwc):
             if name+"LIWC: "+key in vect:
