@@ -6,7 +6,7 @@ Created on Jul 6, 2012
 
 from nlp import boundary
 import listTree
-import sys
+import sisters
 
 def load_words():
     ##Function that loads four sets of verbs to check the sisters of
@@ -120,7 +120,6 @@ def feat_vect(deps, pos, vect):
     conditionals = []
     
     for tree in trees:
-        print tree
         quote = tree.get_quotes()
         if quote != None:
             quotes.extend(quote)
