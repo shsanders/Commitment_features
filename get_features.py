@@ -90,38 +90,65 @@ def update_feat_vect(tree, word_lists):
     return (commit, oppose)
 ##The final data structure goes ( [ (commit word, [commit nodes]) ...], [ (oppose word, [oppose nodes]) ] )
 
+def update(name, node, vect):
+    vect[name+node.word.lower()] = True
+    
+def feat_vect(deps, pos, vect):
+    trees = listTree.build_ListTrees(deps, pos)
+    environs = 0
+    quotes = []
+    questions = []
+    antecedents = []
+    conditionals = []
+    
+    for tree in trees:
+        quote = tree.get_quotes()
+        if quote != None:
+            quotes.extend(quote)
+            environs += 1
+        question = tree.get_question()
+        if question != None:
+            questions.extend(question)
+            environs += 1
+        condit = tree.get_cond()
+        if condit[0] != None and condit[1]:
+            ant, cond = condit
+            antecedents.extend(ant)
+            conditionals.extend(cond)
+            environs += 1
+    
+    name = "quote: "
+    for node in quotes:
+        update(name, node, vect)
+        
+    name = "question: "
+    for node in questions:
+        update(name, node, vect)
+        
+    name = "antecedent: "
+    for node in antecedents:
+        update(name, node, vect)
+        
+    name = "conditional: "
+    for node in conditionals:
+        update(name, node, vect)
 
-import idioms_adverbs
-import inside
 import sisters
 import json
 
 to_open = range(200)
 
 
-commits = []
-opposes = []
-
 word_lists = load_words()
 ##This is all just a test load and parse
 for num in to_open:
+    vect = {}
     curr_file = "/home/random/workspace/sarcasm/instances/" + str(num) + ".json"
     j = json.load(open(curr_file))
     text = j['response_text']
     pos = j['response_pos']
     deps = j['response_dep']
-    trees = listTree.build_ListTrees(deps, pos)
-    for tree in trees:
-            
-        if tree != None:
-            ant, cond = tree.get_cond()
-            if ant != None and cond != None:
-                print text
-                print "Antecedent: "
-                for node in ant:
-                    print node.word
-                print
-                print "Conditional: "
-                for node in cond:
-                    print node.word
-                print
+    feat_vect(deps, pos, vect)
+    if len(vect) > 0:
+        print text
+        print vect

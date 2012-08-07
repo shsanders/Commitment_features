@@ -73,6 +73,7 @@ class Node:
         ##gov:
         ##deps:
         ##mpqa:
+        ##liwc
         ##prev:
         ##nxt:
         to_return = str(self.index) + ": " + self.word + ", " + self.pos + ", " + str(self.rel) + ", " 
@@ -86,6 +87,7 @@ class Node:
             for node in self.deps:
                 to_return += node.word + " "
         to_return += "\nmpqa: " + str(self.mpqa)
+        to_return += "\nliwc: " + str(self.liwc)
         to_return += "\nstart: "
         if self.start != None:
             to_return += str(self.start)
@@ -375,8 +377,9 @@ class ListTree:
     
     def get_question(self):
         to_return = None
-        if self.root.word == "?":
-            to_return = self.root.get_descendents(self.root.dist, False)
+        if self.root != None:
+            if self.root.word == "?":
+                to_return = self.root.get_descendents(self.root.dist, False)
         return to_return
     
     def get_nodes(self, word, strip=False):
@@ -456,7 +459,7 @@ def build_ListTrees(deps, poses):
         num += 1
     return listTree_list
 
-
+'''
 
 from nlp.stanford_nlp import get_parses
 
@@ -489,7 +492,7 @@ for tree in trees:
             print node
     print
 
-'''
+
     
     print "descendants:"
     
