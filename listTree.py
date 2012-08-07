@@ -258,7 +258,12 @@ class ListTree:
 
     def add_node_pos(self, pos, index):
         ##Creates two nodes out of the edge
-        nodeA = Node(pos['OriginalText'], index, pos['PartOfSpeech'], lemma = pos['Lemma'], 
+        text = ''
+        try:
+            text = pos['OriginalText']
+        except Exception, e:
+            text = pos['Text']
+        nodeA = Node(text, index, pos['PartOfSpeech'], lemma = pos['Lemma'], 
                      start = pos['CharacterOffsetBegin'], end = pos['CharacterOffsetEnd'])
 
         curr = self.start

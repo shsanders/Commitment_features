@@ -3,11 +3,15 @@
 import json
 import os
 import operator
+import sys
 
 from discussion import Dataset, data_root_dir
 from file_formatting import arff_writer
 from nlp.text_obj import TextObj
 from nlp.feature_extractor import get_features_by_type
+
+sys.path.append('..')
+from get_features import feat_vect
 
 
 class Commitment(object):
@@ -30,9 +34,9 @@ class Commitment(object):
                 try:
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
                     pos, parsetree, dep, id = json.load(open(json_file, 'r'))
-                
-                    text = TextObj(post.text.decode('utf-8', 'replace'))
-                    get_features_by_type(feature_vector=feature_vector, features=['unigram', 'LIWC'], text_obj=text)
+                    feat_vect(dep, pos, feature_vector)
+                    #text = TextObj(post.text.decode('utf-8', 'replace'))
+                    #get_features_by_type(feature_vector=feature_vector, features=['unigram', 'LIWC'], text_obj=text)
                     feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
 

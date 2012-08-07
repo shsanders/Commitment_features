@@ -135,20 +135,21 @@ def feat_vect(deps, pos, vect):
 
 import sisters
 import json
+if __name__ == '__main__':
 
-to_open = range(200)
+    to_open = range(200)
 
 
-word_lists = load_words()
-##This is all just a test load and parse
-for num in to_open:
-    vect = {}
-    curr_file = "/home/random/workspace/sarcasm/instances/" + str(num) + ".json"
-    j = json.load(open(curr_file))
-    text = j['response_text']
-    pos = j['response_pos']
-    deps = j['response_dep']
-    feat_vect(deps, pos, vect)
-    if len(vect) > 0:
-        print text
-        print vect
+    word_lists = load_words()
+    ##This is all just a test load and parse
+    for num in to_open:
+        vect = {}
+        curr_file = "/home/random/workspace/sarcasm/instances/" + str(num) + ".json"
+        j = json.load(open(curr_file))
+        text = j['response_text']
+        pos = j['response_pos']
+        deps = j['response_dep']
+        feat_vect(deps, pos, vect)
+        if len(vect) > 0:
+            print text
+            print vect
