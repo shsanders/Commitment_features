@@ -4,8 +4,11 @@ import json
 import os
 import operator
 import sys
+try:
+    from discussion import Dataset, data_root_dir
+except Exception, e:
+    from grab_data.discussion import Dataset, data_root_dir
 
-from discussion import Dataset, data_root_dir
 from file_formatting import arff_writer
 from nlp.text_obj import TextObj
 from nlp.feature_extractor import get_features_by_type
