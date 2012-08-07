@@ -119,9 +119,11 @@ class Node:
     
     def top_ends(self):
         curr = self.gov
+        found = []
         while (curr != None):
-            if curr == self:
+            if curr in found:
                 return False
+            found.append(curr)
             curr = curr.gov
         return True
     
@@ -317,11 +319,6 @@ class ListTree:
                         if "VB" in curr.pos and "VB" not in curr.gov.pos:
                             break
                     if curr in found:
-                        print self
-                        node = self.start
-                        while (node != None):
-                            print node
-                            node = node.nxt
                         break
                     found.append(curr)
                     prev = curr

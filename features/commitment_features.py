@@ -28,7 +28,7 @@ class Commitment(object):
 
     def generate_features(self):
         dataset = Dataset('convinceme',annotation_list=['topic','dependencies'])
-        directory = "{}/convinceme/output_by_thread".format(data_root_dir)
+        directory = "{}/convinceme/output_by_thread".format('/home/random/workspace/Persuasion/data')
         for discussion in dataset.get_discussions(annotation_label='topic'):
             if self.topic != discussion.annotations['topic']:
                 continue
@@ -40,8 +40,10 @@ class Commitment(object):
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
                     pos, parsetree, dep, id = json.load(open(json_file, 'r'))
                     feat_vect(dep, pos, feature_vector)
-
-                    text = TextObj(post.text.decode('utf-8', 'replace'))
+                    try:
+                        text = TextObj(post.text.decode('utf-8', 'replace'))
+                    except Exception, e:
+                        continue
 
                     dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                     get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
