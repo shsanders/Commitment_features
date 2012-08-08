@@ -4,6 +4,7 @@ import json
 import os
 import operator
 import sys
+from collections import defaultdict
 try:
     from discussion import Dataset, data_root_dir
 except Exception, e:
@@ -12,11 +13,30 @@ except Exception, e:
 from file_formatting import arff_writer
 from nlp.text_obj import TextObj
 from nlp.feature_extractor import get_features_by_type
+from nlp.boundary import Boundaries
 
 sys.path.append('..')
 from get_features import feat_vect
 
 DELETE_QUOTE = True
+
+class Bounds(object):
+    def __init__(self, output='bounds_dump'):
+        self._dict = defaultdict(lambda: defaultdict(list))
+        self._output = output
+        
+    def add(self, discussion_id, post_id, tuples):
+        boundaries = Boundaries()
+        boundaries.initializeFromTuples(tuples)
+        try:
+            boundaries.walk(0, max(tuples, key=operator.itemgetter(1)))
+            self._dict[discussion_id][post_id] = boundaries.partitions
+        except ValueError, e:
+            pass
+
+    def dump(self):
+        print 'Dumping Boundaries to {}.'.format(self._output)
+        json.dump(self._dict, open(self._output, 'wb'))
 
 class Commitment(object):
 
@@ -26,6 +46,7 @@ class Commitment(object):
         self.feature_vectors = []
         self.classification_feature = 'commitment'
         self.features = features
+        self.bounds = Bounds()
 
     def generate_features(self):
         dataset = Dataset('convinceme',annotation_list=['topic','dependencies'])
@@ -42,8 +63,7 @@ class Commitment(object):
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
                     pos, parsetree, dep, id = json.load(open(json_file, 'r'))
                     result = sorted(feat_vect(dep, pos, feature_vector), key=operator.itemgetter(0))
-                    print result
-                    # [('Question', 0, 1), . .. ('Cond', 3, 4)]
+                    self.bounds.add(discussion_id=discussion.id, post_id=post.id, tuples=result)
                     try:
                         text = TextObj(post.text.decode('utf-8', 'replace'))
                     except Exception, e:
@@ -65,6 +85,7 @@ class Commitment(object):
                 except IOError, e:
                     # XXX TODO : we don't have all the parses saved apparently so this sometimes fails.
                     pass
+        self.bounds.dump()
 
     def generate_arffs(self, output_dir='arffs_output'):
         if not self.feature_vectors:
