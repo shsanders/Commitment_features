@@ -151,7 +151,7 @@ def feat_vect(deps, pos, vect):
             sort_quote = sorted(list(set(quote)), key=lambda node: node.index)
             tuples.extend(build_ranges(sort_quote, 'quote'))
             for tup in build_ranges(sort_quote, "quote"):
-                print tup
+                pass
         question = tree.get_question()
         if question != None:
             questions.extend(question)
@@ -159,7 +159,7 @@ def feat_vect(deps, pos, vect):
             sort = sorted(list(set(question)), key=lambda node: node.index)
             tuples.extend(build_ranges(sort, 'question'))
             for tup in build_ranges(sort, "question"):
-                print tup
+                pass
         condit = tree.get_cond()
         if condit[0] != None and condit[1]:
             ant, cond = condit
@@ -167,12 +167,12 @@ def feat_vect(deps, pos, vect):
             sort = sorted(list(set(ant)), key=lambda node: node.index)
             tuples.extend(build_ranges(sort, 'antecedent'))
             for tup in build_ranges(sort, "antecedent"):
-                print tup
+                pass
             conditionals.extend(cond)
             sort = sorted(list(set(cond)), key=lambda node: node.index)
             tuples.extend(build_ranges(sort, 'conditional'))
             for tup in build_ranges(sort, "conditional"):
-                print tup
+                pass
             environs += 1
     
     name = "quote: "
@@ -211,4 +211,3 @@ if __name__ == '__main__':
         feat_vect(deps, pos, vect)
         if len(vect) > 0:
             print vect
-            print
