@@ -120,11 +120,8 @@ def build_ranges(nodes, name):
             start = node.start
         else:
             curr = prev
-            print curr
-            print node
             if curr.nxt != node:
                 while not curr.pos.isalpha():
-                    print curr
                     if curr.nxt != None:
                         curr = curr.nxt
                     else:
@@ -145,13 +142,14 @@ def feat_vect(deps, pos, vect):
     questions = []
     antecedents = []
     conditionals = []
-    
+    tuples = []
     for tree in trees:
         quote = tree.get_quotes()
         if quote != None:
             quotes.extend(quote)
             environs += 1
             sort_quote = sorted(list(set(quote)), key=lambda node: node.index)
+            tuples.extend(build_ranges(sort_quote, 'quote'))
             for tup in build_ranges(sort_quote, "quote"):
                 print tup
         question = tree.get_question()
@@ -159,6 +157,7 @@ def feat_vect(deps, pos, vect):
             questions.extend(question)
             environs += 1
             sort = sorted(list(set(question)), key=lambda node: node.index)
+            tuples.extend(build_ranges(sort, 'question'))
             for tup in build_ranges(sort, "question"):
                 print tup
         condit = tree.get_cond()
@@ -166,10 +165,12 @@ def feat_vect(deps, pos, vect):
             ant, cond = condit
             antecedents.extend(ant)
             sort = sorted(list(set(ant)), key=lambda node: node.index)
+            tuples.extend(build_ranges(sort, 'antecedent'))
             for tup in build_ranges(sort, "antecedent"):
                 print tup
             conditionals.extend(cond)
             sort = sorted(list(set(cond)), key=lambda node: node.index)
+            tuples.extend(build_ranges(sort, 'conditional'))
             for tup in build_ranges(sort, "conditional"):
                 print tup
             environs += 1
@@ -189,6 +190,8 @@ def feat_vect(deps, pos, vect):
     name = "conditional: "
     for node in conditionals:
         update(name, node, vect)
+
+    return tuples
 
 if __name__ == '__main__':
     

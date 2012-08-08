@@ -16,6 +16,7 @@ from nlp.feature_extractor import get_features_by_type
 sys.path.append('..')
 from get_features import feat_vect
 
+DELETE_QUOTE = True
 
 class Commitment(object):
 
@@ -28,7 +29,7 @@ class Commitment(object):
 
     def generate_features(self):
         dataset = Dataset('convinceme',annotation_list=['topic','dependencies'])
-        directory = "{}/convinceme/output_by_thread".format('/home/random/workspace/Persuasion/data')
+        directory = "{}/convinceme/output_by_thread".format(data_root_dir)
         for discussion in dataset.get_discussions(annotation_label='topic'):
             if self.topic != discussion.annotations['topic']:
                 continue
@@ -37,9 +38,12 @@ class Commitment(object):
                 feature_vector = dict()
                 
                 try:
+
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
                     pos, parsetree, dep, id = json.load(open(json_file, 'r'))
-                    feat_vect(dep, pos, feature_vector)
+                    result = sorted(feat_vect(dep, pos, feature_vector), key=operator.itemgetter(0))
+                    print result
+                    # [('Question', 0, 1), . .. ('Cond', 3, 4)]
                     try:
                         text = TextObj(post.text.decode('utf-8', 'replace'))
                     except Exception, e:
@@ -47,6 +51,13 @@ class Commitment(object):
 
                     dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                     get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
+
+                    if DELETE_QUOTE:
+                        unigrams = map(lambda x: x[8:], filter(lambda x: x.startswith('unigram:'), feature_vector.keys()))
+                        for unigram in unigrams:
+                            key = 'quote: {}'.format(unigram)
+                            if key in feature_vector:
+                                del feature_vector[key]
 
                     feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
