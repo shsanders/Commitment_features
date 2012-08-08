@@ -110,6 +110,33 @@ def update(name, node, vect):
     if node.mpqa != None:
         pass
         ##this needs to be filled with the appropriate mpqa feature stuff
+        
+def build_ranges(nodes, name):
+    to_return = []
+    start = None
+    prev = None
+    for node in nodes:
+        if start == None:
+            start = node.start
+        else:
+            curr = prev
+            print curr
+            print node
+            if curr.nxt != node:
+                while not curr.pos.isalpha():
+                    print curr
+                    if curr.nxt != None:
+                        curr = curr.nxt
+                    else:
+                        break
+                if curr != node:
+                    to_return.append((start, prev.end, name))
+                    start = None
+        prev = node
+    if start == None:
+        start = prev.start
+    to_return.append((start, prev.end, name))
+    return to_return
     
 def feat_vect(deps, pos, vect):
     trees = listTree.build_ListTrees(deps, pos)
@@ -124,15 +151,27 @@ def feat_vect(deps, pos, vect):
         if quote != None:
             quotes.extend(quote)
             environs += 1
+            sort_quote = sorted(list(set(quote)), key=lambda node: node.index)
+            for tup in build_ranges(sort_quote, "quote"):
+                print tup
         question = tree.get_question()
         if question != None:
             questions.extend(question)
             environs += 1
+            sort = sorted(list(set(question)), key=lambda node: node.index)
+            for tup in build_ranges(sort, "question"):
+                print tup
         condit = tree.get_cond()
         if condit[0] != None and condit[1]:
             ant, cond = condit
             antecedents.extend(ant)
+            sort = sorted(list(set(ant)), key=lambda node: node.index)
+            for tup in build_ranges(sort, "antecedent"):
+                print tup
             conditionals.extend(cond)
+            sort = sorted(list(set(cond)), key=lambda node: node.index)
+            for tup in build_ranges(sort, "conditional"):
+                print tup
             environs += 1
     
     name = "quote: "
