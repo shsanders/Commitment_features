@@ -4,6 +4,8 @@ import json
 import os
 import operator
 import sys
+import random
+
 from collections import defaultdict
 try:
     from discussion import Dataset, data_root_dir
@@ -17,20 +19,26 @@ from nlp.boundary import Boundaries
 
 sys.path.append('..')
 from get_features import feat_vect
+from annotate import annotate
 
 DELETE_QUOTE = True
+
+rand = []
 
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
         self._dict = defaultdict(lambda: defaultdict(list))
         self._output = output
         
-    def add(self, discussion_id, post_id, tuples):
+    def add(self, discussion_id, post_id, text, tuples):
         boundaries = Boundaries()
         boundaries.initializeFromTuples(tuples)
         try:
             boundaries.walk(0, max(tuples, key=operator.itemgetter(1)))
             self._dict[discussion_id][post_id] = boundaries.partitions
+            #if len(boundaries.partitions) == 0: return
+            #print annotate(text, boundaries.partitions[:-1])
+            rand.append([text, tuples])
         except ValueError, e:
             pass
 
@@ -63,11 +71,12 @@ class Commitment(object):
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
                     pos, parsetree, dep, id = json.load(open(json_file, 'r'))
                     result = sorted(feat_vect(dep, pos, feature_vector), key=operator.itemgetter(0))
-                    self.bounds.add(discussion_id=discussion.id, post_id=post.id, tuples=result)
                     try:
                         text = TextObj(post.text.decode('utf-8', 'replace'))
                     except Exception, e:
                         continue
+
+                    self.bounds.add(discussion_id=discussion.id, post_id=post.id, text=text.text, tuples=result)
 
                     dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                     get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
@@ -108,3 +117,10 @@ class Commitment(object):
 if  __name__ == '__main__':
     commitment = Commitment()
     commitment.main()
+    fd = open('dump_random', 'wb')
+    for line in random.sample(rand, 10):
+        text, annots = line
+        fd.write("TEXT:{}\n".format(text))
+        fd.write("ANNOTS:{}\n\n".format(annots))
+    fd.close()
+
