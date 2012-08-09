@@ -143,8 +143,6 @@ def feat_vect(deps, pos, vect):
     if len(trees) > 0:
         quotes = trees[0].get_quotes()
         if len(quotes) > 0:
-            for quote in quotes:
-                print quote.word
             sort = sorted(list(set(quotes)), key=lambda node: node.start)
             tuples.extend(build_ranges(sort, 'quote'))
     questions = []
