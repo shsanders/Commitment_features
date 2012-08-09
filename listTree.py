@@ -390,32 +390,26 @@ class ListTree:
         
     def get_quotes(self):
         quotes = ["'", "''", '"']
-        to_return = None
+        to_return = []
         curr = self.start
         while ( curr != None):
             if curr.lemma == "``":
                 curr = curr.nxt
                 while curr != None:
-                    if curr.lemma == "''" or curr.word in quotes:
+                    if curr.lemma == "''":
                         break
-                    if to_return == None:
-                        to_return = [curr]
-                    else:
-                        to_return.append(curr)
+                    to_return.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
                     else:
                         curr = curr.nxt
-            if curr.word in quotes:
+            elif curr.word in quotes:
                 quote = curr.word
                 curr = curr.nxt
                 while (curr != None):
                     if curr.word == quote:
                         break
-                    if to_return == None:
-                        to_return = [curr]
-                    else:
-                        to_return.append(curr)
+                    to_return.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
                     else:

@@ -137,21 +137,20 @@ def build_ranges(nodes, name):
     
 def feat_vect(deps, pos, vect):
     trees = listTree.build_ListTrees(deps, pos)
+    tuples = []
     environs = 0
     quotes = []
+    if len(trees) > 0:
+        quotes = trees[0].get_quotes()
+        if len(quotes) > 0:
+            for quote in quotes:
+                print quote.word
+            sort = sorted(list(set(quotes)), key=lambda node: node.start)
+            tuples.extend(build_ranges(sort, 'quote'))
     questions = []
     antecedents = []
     conditionals = []
-    tuples = []
     for tree in trees:
-        quote = tree.get_quotes()
-        if quote != None:
-            quotes.extend(quote)
-            environs += 1
-            sort_quote = sorted(list(set(quote)), key=lambda node: node.index)
-            tuples.extend(build_ranges(sort_quote, 'quote'))
-            for tup in build_ranges(sort_quote, "quote"):
-                pass
         question = tree.get_question()
         if question != None:
             questions.extend(question)
