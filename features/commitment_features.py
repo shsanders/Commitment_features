@@ -14,7 +14,7 @@ except Exception, e:
 
 from file_formatting import arff_writer
 from nlp.text_obj import TextObj
-from nlp.feature_extractor import get_features_by_type
+from nlp.feature_extractor import get_features_by_type, get_dependency_features
 from nlp.boundary import Boundaries
 
 sys.path.append('..')
@@ -80,6 +80,9 @@ class Commitment(object):
 
                     dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                     get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
+
+                    if None == dependency_list: continue
+                    get_dependency_features(feature_vector, dependency_list, generalization='opinion')  
 
                     if DELETE_QUOTE:
                         unigrams = map(lambda x: x[8:], filter(lambda x: x.startswith('unigram:'), feature_vector.keys()))

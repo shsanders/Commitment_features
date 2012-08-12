@@ -3,10 +3,10 @@ Created on Aug 8, 2012
 
 @author: random
 '''
-
+import operator
 import Queue
 
-def annotate(text, tuples):
+def _annotate(text, tuples):
     ends = []
     newText = "";
     curr = 0;
@@ -29,6 +29,31 @@ def annotate(text, tuples):
     
     return newText
 
+def annotate(text, tuples):
+    start = first = operator.itemgetter(0)
+    end  = second = operator.itemgetter(1)
+    tag = operator.itemgetter(2)
+    ordered = []
+    start_tuples = sorted(tuples, key=start)
+    for _tuple in start_tuples:
+        ordered.append( (start(_tuple), '[{}]'.format(tag(_tuple))) )
+    end_tuples = sorted(tuples, key=end)
+    for _tuple in end_tuples:
+        ordered.append( (end(_tuple), '[/{}]'.format(tag(_tuple))) )
+    ordered = sorted(ordered, key=start)
+    text2 = ''
+    ordered.reverse()
+    _abc = 0
+    last = 0
+    while len(ordered) > 0:
+        _pop = ordered.pop()
+        if last != first(_pop):
+            last = first(_pop)
+            text2 += text[_abc:last]
+            _abc = last
+        text2 += second(_pop)
+    return text2
+
 if __name__ == '__main__':
 
     test = "This is a test"
@@ -36,5 +61,3 @@ if __name__ == '__main__':
     
     ann = annotate(test, tuples)
     print ann
-        
-        
