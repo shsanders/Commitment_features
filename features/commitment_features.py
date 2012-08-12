@@ -64,7 +64,7 @@ class Commitment(object):
                 continue
             for post in discussion.get_posts():
 
-                feature_vector = dict()
+                feature_vector = defaultdict(int)
                 
                 try:
 

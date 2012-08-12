@@ -91,22 +91,16 @@ def update_feat_vect(tree, word_lists):
 ##The final data structure goes ( [ (commit word, [commit nodes]) ...], [ (oppose word, [oppose nodes]) ] )
 
 def update(name, node, vect):
-    vect[name+node.lemma] = True
+    vect[name+"unigram: "+node.lemma] += 1
     if node.liwc != None:
         for key in dict(node.liwc):
-            if name+"LIWC: "+key in vect:
-                vect[name+"LIWC: "+key] += 1
-            else:
-                vect[name+"LIWC: "+key] = 1
+            vect[name+"LIWC: "+key] += 1
                 
     if node.deps != None:
         for curr in node.deps:
-            dep_string = "%s(%s,%s)" % (curr.rel, node.lemma, curr.lemma)
+            dep_string = "dep: %s(%s,%s)" % (curr.rel, node.lemma, curr.lemma)
             dep_string = name + dep_string
-            if dep_string in vect:
-                vect[dep_string] += 1
-            else:
-                vect[dep_string] = 1
+            vect[dep_string] += 1
     if node.mpqa != None:
         pass
         ##this needs to be filled with the appropriate mpqa feature stuff
@@ -121,14 +115,19 @@ def build_ranges(nodes, name):
         else:
             curr = prev
             if curr.nxt != node:
-                while not curr.pos.isalpha():
-                    if curr.nxt != None:
-                        curr = curr.nxt
-                    else:
-                        break
-                if curr != node:
-                    to_return.append((start, prev.end, name))
-                    start = None
+                if curr.nxt != None:
+                    curr = curr.nxt
+                    while curr.gov == None and curr.deps == None:
+                        if curr.nxt != None:
+                            curr = curr.nxt
+                        else:
+                            if curr.next_tree != None:
+                                curr = curr.next_tree
+                            else:
+                                break
+                    if curr != node:
+                        to_return.append((start, prev.end, name))
+                        start = None
         prev = node
     if start == None:
         start = prev.start
@@ -153,7 +152,7 @@ def feat_vect(deps, pos, vect):
         if question != None:
             questions.extend(question)
             environs += 1
-            sort = sorted(list(set(question)), key=lambda node: node.index)
+            sort = sorted(list(set(question)), key=lambda node: node.start)
             tuples.extend(build_ranges(sort, 'question'))
             for tup in build_ranges(sort, "question"):
                 pass
@@ -161,12 +160,12 @@ def feat_vect(deps, pos, vect):
         if condit[0] != None and condit[1]:
             ant, cond = condit
             antecedents.extend(ant)
-            sort = sorted(list(set(ant)), key=lambda node: node.index)
+            sort = sorted(list(set(ant)), key=lambda node: node.start)
             tuples.extend(build_ranges(sort, 'antecedent'))
             for tup in build_ranges(sort, "antecedent"):
                 pass
             conditionals.extend(cond)
-            sort = sorted(list(set(cond)), key=lambda node: node.index)
+            sort = sorted(list(set(cond)), key=lambda node: node.start)
             tuples.extend(build_ranges(sort, 'conditional'))
             for tup in build_ranges(sort, "conditional"):
                 pass
@@ -192,19 +191,30 @@ def feat_vect(deps, pos, vect):
 
 if __name__ == '__main__':
     
+    
+
     import json
-
-    to_open = range(7)
-
-
-    word_lists = load_words()
-    ##This is all just a test load and parse
-    for num in to_open:
-        vect = {}
-        curr_file = "/home/random/workspace/Utilities/nlp/output_by_thread/1/790" + str(num) + ".json"
-        j = json.load(open(curr_file))
-        pos = j[0]
-        deps = j[2]
-        feat_vect(deps, pos, vect)
-        if len(vect) > 0:
-            print vect
+    
+    curr_file = "/home/random/workspace/Persuasion/data/convinceme/output_by_thread/1736/21585.json"
+    j = json.load(open(curr_file))
+    pos = j[0]
+    deps = j[2]
+    
+    trees = listTree.build_ListTrees(deps, pos)
+    
+    for tree in trees:
+        print tree
+        
+    quotes = trees[0].get_quotes()
+    print
+    print
+    print quotes
+    print 
+    print
+    vect = {}
+    tuples = feat_vect(deps, pos, vect)
+    if len(vect) > 0:
+        print vect
+        
+    for tup in tuples:
+        print tup
