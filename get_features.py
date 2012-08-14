@@ -140,7 +140,6 @@ def build_ranges(nodes, name):
         prev = node
     if start == None:
         start = prev.start
-        print "Start: ", start.word
     print "End: ", prev.word
     to_return.append((start, prev.end, name))
     return to_return
@@ -167,7 +166,6 @@ def feat_vect(deps, pos, vect):
             tuples.extend(build_ranges(sort, 'question'))
             for tup in build_ranges(sort, "question"):
                 pass
-
         condit = tree.get_cond()
         if condit[0] != None and condit[1]:
             ant, cond = condit
@@ -182,7 +180,6 @@ def feat_vect(deps, pos, vect):
             for tup in build_ranges(sort, "conditional"):
                 pass
             environs += 1
-
     name = "quote: "
     for node in quotes:
         update(name, node, vect)
@@ -190,7 +187,6 @@ def feat_vect(deps, pos, vect):
     name = "question: "
     for node in questions:
         update(name, node, vect)
-        
     name = "antecedent: "
     for node in antecedents:
         update(name, node, vect)
@@ -198,7 +194,6 @@ def feat_vect(deps, pos, vect):
     name = "conditional: "
     for node in conditionals:
         update(name, node, vect)
-
     return tuples
 
 if __name__ == '__main__':
