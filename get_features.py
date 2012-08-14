@@ -92,6 +92,7 @@ def update_feat_vect(tree, word_lists):
 
 def update(name, node, vect):
     vect[name+"unigram: "+node.lemma] += 1
+    '''
     if node.liwc != None:
         for key in dict(node.liwc):
             vect[name+"LIWC: "+key] += 1
@@ -104,20 +105,27 @@ def update(name, node, vect):
     if node.mpqa != None:
         pass
         ##this needs to be filled with the appropriate mpqa feature stuff
+    '''
         
 def build_ranges(nodes, name):
     to_return = []
     start = None
     prev = None
+    print "\n"
+    print name
     for node in nodes:
         if start == None:
+            print "start: "
+            print "node.word"
             start = node.start
         else:
             curr = prev
             if curr.nxt != node:
                 if curr.nxt != None:
+                    print curr.word
                     curr = curr.nxt
                     while curr.gov == None and curr.deps == None:
+                        print curr.word
                         if curr.nxt != None:
                             curr = curr.nxt
                         else:
@@ -126,11 +134,13 @@ def build_ranges(nodes, name):
                             else:
                                 break
                     if curr != node:
+                        print "End: ", prev.word
                         to_return.append((start, prev.end, name))
                         start = None
         prev = node
     if start == None:
         start = prev.start
+    print "End: ", prev.word
     to_return.append((start, prev.end, name))
     return to_return
     
@@ -170,7 +180,6 @@ def feat_vect(deps, pos, vect):
             for tup in build_ranges(sort, "conditional"):
                 pass
             environs += 1
-    
     name = "quote: "
     for node in quotes:
         update(name, node, vect)
@@ -178,7 +187,6 @@ def feat_vect(deps, pos, vect):
     name = "question: "
     for node in questions:
         update(name, node, vect)
-        
     name = "antecedent: "
     for node in antecedents:
         update(name, node, vect)
@@ -186,7 +194,6 @@ def feat_vect(deps, pos, vect):
     name = "conditional: "
     for node in conditionals:
         update(name, node, vect)
-
     return tuples
 
 if __name__ == '__main__':
