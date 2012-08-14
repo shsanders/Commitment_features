@@ -38,7 +38,7 @@ class Bounds(object):
             self._dict[discussion_id][post_id] = boundaries.partitions
             #if len(boundaries.partitions) == 0: return
             #print annotate(text, boundaries.partitions[:-1])
-            rand.append([text, tuples])
+            rand.append([annotate(text, boundaries.partitions[:-1]), tuples, boundaries.partitions[:-1]])
         except ValueError, e:
             pass
 
@@ -122,8 +122,9 @@ if  __name__ == '__main__':
     commitment.main()
     fd = open('dump_random', 'wb')
     for line in random.sample(rand, 10):
-        text, annots = line
+        text, raw, annots = line
         fd.write("TEXT:{}\n".format(text))
+        fd.write("RAW:{}\n\n".format(raw))
         fd.write("ANNOTS:{}\n\n".format(annots))
     fd.close()
 
