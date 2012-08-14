@@ -4,6 +4,7 @@ import json
 import os
 import operator
 import sys
+import re
 import random
 
 from collections import defaultdict
@@ -25,6 +26,9 @@ DELETE_QUOTE = True
 
 rand = []
 
+def merrrr(text, boundaries):
+        return ["{}:{}".format(bound[2].upper(), re.sub(r'\s+', ' ', text[bound[0]:bound[1]])) for bound in boundaries]
+
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
         self._dict = defaultdict(lambda: defaultdict(list))
@@ -38,7 +42,8 @@ class Bounds(object):
             self._dict[discussion_id][post_id] = boundaries.partitions
             #if len(boundaries.partitions) == 0: return
             #print annotate(text, boundaries.partitions[:-1])
-            rand.append([annotate(text, boundaries.partitions[:-1]), tuples, boundaries.partitions[:-1]])
+            #rand.append([annotate(text, boundaries.partitions[:-1]), tuples, boundaries.partitions[:-1]])
+            rand.append([text, merrrr(text, tuples), tuples])
         except ValueError, e:
             pass
 
@@ -122,9 +127,11 @@ if  __name__ == '__main__':
     commitment.main()
     fd = open('dump_random', 'wb')
     for line in random.sample(rand, 10):
-        text, raw, annots = line
+        text, annots, raw = line
         fd.write("TEXT:{}\n".format(text))
+        for annotation in annots:
+            fd.write("{}\n".format(annotation))
         fd.write("RAW:{}\n\n".format(raw))
-        fd.write("ANNOTS:{}\n\n".format(annots))
+        #fd.write("ANNOTS:{}\n\n".format(annots))
     fd.close()
 
