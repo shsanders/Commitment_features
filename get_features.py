@@ -147,7 +147,9 @@ def feat_vect(deps, pos, vect):
     questions = []
     antecedents = []
     consequents = []
+    nones = []
     for tree in trees:
+        nones.extend(tree.get_none())
         #print tree, "\n"
         question = tree.get_question()
         if question != None:
@@ -184,6 +186,9 @@ def feat_vect(deps, pos, vect):
             tuples.extend(build_ranges(quotes, 'quote'))
             #print [node.word for node in sorted(quotes, key=lambda node: node.start)]
     #print "\n\n"
+    name = "none: "
+    for node in nones:
+        update(name, node, vect)
     
     name = "quote: "
     for node in quotes:

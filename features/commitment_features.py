@@ -123,7 +123,7 @@ class Commitment(object):
         return post.side == discussion.annotations['side'][0][0]
 
 if  __name__ == '__main__':
-    commitment = Commitment()
+    commitment = Commitment(features=['unigram'])
     commitment.main()
     fd = open('dump_random', 'wb')
     for line in random.sample(rand, 10):
