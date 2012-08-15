@@ -490,6 +490,14 @@ class ListTree:
                 curr = curr.nxt        
                                         
         return (antecedent, resultant)
+    
+    def get_none(self):
+        to_return = []
+        curr = self.start
+        while curr != None:
+            if curr.commitment == False:
+                to_return.append(curr)
+        return to_return
         
 def build_ListTrees(deps, poses):
     ##Build a list of ListTrees from a list of deps
