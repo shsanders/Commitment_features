@@ -109,23 +109,19 @@ def update(name, node, vect):
         
 def build_ranges(nodes, name):
     to_return = []
+    found_nodes = []
     start = None
     prev = None
-    print "\n"
-    print name
     for node in nodes:
         if start == None:
-            print "start: "
-            print "node.word"
             start = node.start
         else:
             curr = prev
             if curr.nxt != node:
                 if curr.nxt != None:
-                    print curr.word
                     curr = curr.nxt
                     while curr.gov == None and curr.deps == None:
-                        print curr.word
+                        found_nodes.append(curr)
                         if curr.nxt != None:
                             curr = curr.nxt
                         else:
@@ -134,14 +130,13 @@ def build_ranges(nodes, name):
                             else:
                                 break
                     if curr != node:
-                        print "End: ", prev.word
                         to_return.append((start, prev.end, name))
                         start = None
         prev = node
     if start == None:
         start = prev.start
-    print "End: ", prev.word
     to_return.append((start, prev.end, name))
+    nodes.extend(found_nodes)
     return to_return
     
 def feat_vect(deps, pos, vect):
@@ -149,37 +144,47 @@ def feat_vect(deps, pos, vect):
     tuples = []
     environs = 0
     quotes = []
-    if len(trees) > 0:
-        quotes = trees[0].get_quotes()
-        if len(quotes) > 0:
-            sort = sorted(list(set(quotes)), key=lambda node: node.start)
-            tuples.extend(build_ranges(sort, 'quote'))
     questions = []
     antecedents = []
-    conditionals = []
+    consequents = []
     for tree in trees:
+        #print tree, "\n"
         question = tree.get_question()
         if question != None:
             questions.extend(question)
             environs += 1
-            sort = sorted(list(set(question)), key=lambda node: node.start)
-            tuples.extend(build_ranges(sort, 'question'))
-            for tup in build_ranges(sort, "question"):
+            question = sorted(list(set(question)), key=lambda node: node.start)
+            tuples.extend(build_ranges(question, 'question'))
+            #print [node.word for node in sorted(question, key=lambda node: node.start)], "\n"
+            for tup in build_ranges(question, "question"):
                 pass
+
         condit = tree.get_cond()
         if condit[0] != None and condit[1]:
-            ant, cond = condit
+            ant, cons = condit
             antecedents.extend(ant)
-            sort = sorted(list(set(ant)), key=lambda node: node.start)
-            tuples.extend(build_ranges(sort, 'antecedent'))
-            for tup in build_ranges(sort, "antecedent"):
+            ant = sorted(list(set(ant)), key=lambda node: node.start)
+            tuples.extend(build_ranges(ant, 'antecedent'))
+            #print [node.word for node in sorted(ant, key=lambda node: node.start)]
+            for tup in build_ranges(ant, "antecedent"):
                 pass
-            conditionals.extend(cond)
-            sort = sorted(list(set(cond)), key=lambda node: node.start)
-            tuples.extend(build_ranges(sort, 'conditional'))
-            for tup in build_ranges(sort, "conditional"):
+            consequents.extend(cons)
+            cons = sorted(list(set(cons)), key=lambda node: node.start)
+            tuples.extend(build_ranges(cons, 'consequent'))
+            #print [node.word for node in sorted(cons, key=lambda node: node.start)]
+            for tup in build_ranges(cons, "consequent"):
                 pass
             environs += 1
+
+            
+    if len(trees) > 0:
+        quotes = trees[0].get_quotes()
+        if len(quotes) > 0:
+            quotes= sorted(list(set(quotes)), key=lambda node: node.start)
+            tuples.extend(build_ranges(quotes, 'quote'))
+            #print [node.word for node in sorted(quotes, key=lambda node: node.start)]
+    #print "\n\n"
+    
     name = "quote: "
     for node in quotes:
         update(name, node, vect)
@@ -187,13 +192,15 @@ def feat_vect(deps, pos, vect):
     name = "question: "
     for node in questions:
         update(name, node, vect)
+    
     name = "antecedent: "
     for node in antecedents:
         update(name, node, vect)
         
-    name = "conditional: "
-    for node in conditionals:
+    name = "consequent: "
+    for node in consequents:
         update(name, node, vect)
+    
     return tuples
 
 if __name__ == '__main__':

@@ -86,13 +86,11 @@ class Node:
         if self.deps != None:
             for node in self.deps:
                 to_return += node.word + " "
-        to_return += "\nmpqa: " + str(self.mpqa)
-        to_return += "\nliwc: " + str(self.liwc)
-        to_return += "\nstart: "
-        if self.start != None:
-            to_return += str(self.start)
-        to_return += "\nend: "
+        to_return += "\nrange: "
         if self.end != None:
+            to_return += str(self.start)
+        to_return += ", "
+        if self.start != None:
             to_return += str(self.end)
         to_return += "\nprev: "
         if self.prev != None:
@@ -157,11 +155,13 @@ class ListTree:
         ##Prints each word/node in sequential order according to the
         ##node string function
         to_return = ""
+        trees = ""
         curr = self.start
         while (curr != None):
             to_return += str(curr.word) + " "
+            trees += "\n" + str(curr)
             curr = curr.nxt
-
+        ##to_return += trees
         return to_return
             
 
@@ -462,20 +462,33 @@ class ListTree:
 
     def get_cond(self):
         antecedent = None
-        conditional = None
-        if self.root != None:
-            if self.root.deps != None:
-                for dep in self.root.deps:
-                    if dep.deps != None:
-                        for node in dep.deps:
-                            if node.deps != None:
-                                for curr in node.deps:
-                                    if curr.word.lower() == "if":
-                                        antecedent = node.get_descendents(node.dist, False)
-                                        antecedent.append(node)
-                                        conditional = [x for x in dep.get_descendents(dep.dist, False) if x not in antecedent]
-                                        conditional.append(dep)
-        return (antecedent, conditional)
+        resultant = None
+        
+        if self.start != None:
+            curr = self.start
+            while curr != None:
+                if curr.word.lower() == 'if':
+                    '''
+                    print self
+                    print curr
+                    print "\n\n"
+                    now = self.start
+                    while now != None:
+                        print now
+                        now = now.nxt
+                    '''
+                    if curr.rel != "dep":
+                        if curr.gov != None and curr.gov.gov != None:
+                            if not (curr.gov.pos == "." or curr.gov.gov.pos == "." or curr.gov.rel == "parataxis" or curr.gov.gov.rel == "parataxis" or curr.gov.gov.pos == "DMY"):
+                                if not (len(curr.gov.deps) <= 1):
+                                    antecedent = curr.gov.get_descendents(curr.gov.dist, False)
+                                    antecedent.append(curr.gov)
+                                    resultant = [node for node in curr.gov.gov.get_descendents(curr.gov.gov.dist, False) if node not in antecedent]
+                                    resultant.append(curr.gov.gov)
+                                    break
+                curr = curr.nxt        
+                                        
+        return (antecedent, resultant)
         
 def build_ListTrees(deps, poses):
     ##Build a list of ListTrees from a list of deps
@@ -505,6 +518,27 @@ def build_ListTrees(deps, poses):
         num += 1
     return listTree_list
 
+
+if __name__ == '__main__':
+    import json
+    
+    curr_file = "/home/random/workspace/Persuasion/data/convinceme/output_by_thread/1736/21585.json"
+    j = json.load(open(curr_file))
+    pos = j[0]
+    deps = j[2]
+    
+    trees = build_ListTrees(deps, pos)
+    
+    for tree in trees:
+        print tree
+        
+    quotes = trees[0].get_quotes()
+    print
+    print
+    print quotes
+    print 
+    print
+    
 '''
 
 from nlp.stanford_nlp import get_parses
