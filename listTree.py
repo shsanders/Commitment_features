@@ -66,6 +66,7 @@ class Node:
         self.index = index
         self.rel = rel
         self.lemma = lemma
+        self.commitment = False
         
     def __repr__(self):
         ##Prints in the format 
