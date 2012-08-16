@@ -62,7 +62,7 @@ class Commitment(object):
         self.bounds = Bounds()
         self.dir = re.sub(r'\s+', '_', topic)
 
-    def generate_features(self):
+    def generate_features(self, no_commit = False):
         dataset = Dataset('convinceme',annotation_list=['topic','dependencies'])
         directory = "{}/convinceme/output_by_thread".format(data_root_dir)
         for discussion in dataset.get_discussions(annotation_label='topic'):
@@ -84,19 +84,24 @@ class Commitment(object):
 
                     self.bounds.add(discussion_id=discussion.id, post_id=post.id, text=text.text, tuples=result)
 
-                    dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
-                    get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
-
-                    if None == dependency_list: continue
-                    if 'dependencies' in self.features:
-                        get_dependency_features(feature_vector, dependency_list, generalization='opinion')  
-
-                    if DELETE_QUOTE:
-                        unigrams = map(lambda x: x[8:], filter(lambda x: x.startswith('unigram:'), feature_vector.keys()))
-                        for unigram in unigrams:
-                            key = 'quote: {}'.format(unigram)
-                            if key in feature_vector:
-                                del feature_vector[key]
+                    if not no_commit:
+                        dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
+                        get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
+    
+                        if None == dependency_list: continue
+                        if 'dependencies' in self.features:
+                            get_dependency_features(feature_vector, dependency_list, generalization='opinion')  
+    
+                        if DELETE_QUOTE:
+                            unigrams = map(lambda x: x[8:], filter(lambda x: x.startswith('unigram:'), feature_vector.keys()))
+                            for unigram in unigrams:
+                                key = 'quote: {}'.format(unigram)
+                                if key in feature_vector:
+                                    del feature_vector[key]
+                    
+                    else:
+                        dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
+                        get_features_by_type(feature_vector=feature_vector, text_obj=text, dependency_list=dependency_list)
 
                     feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
@@ -106,61 +111,72 @@ class Commitment(object):
                     pass
         self.bounds.dump()
 
-    def generate_arffs(self, output_dir='arffs_output'):
+    def generate_arffs(self, output_dir='arffs_output', no_commit = False):
         if not self.feature_vectors:
             return
         types = set()
         output_dir = "{}/{}".format(output_dir, self.dir)
         minimum_inst = max(2, int(0.01 * len(self.feature_vectors)))
-        arff_writer.write("{}/all.arff".format(output_dir), 
-                        self.feature_vectors, 
+        
+        if not no_commit:
+            arff_writer.write("{}/all.arff".format(output_dir), 
+                            self.feature_vectors, 
+                            classification_feature=self.classification_feature, 
+                            write_many=False, 
+                            minimum_instance_counts_for_features=minimum_inst)
+            regex = re.compile(r'(.*): unigram: (.*)$')
+            commitment = ['none', 'consequent']#'consequent']
+            non_commitment = ['antecedent', 'quote', 'question']
+            collapsed_dicts = []
+            for vector in self.feature_vectors:
+                _modified = dict()
+                for key, value in vector.iteritems():
+                    result = regex.match(key)
+                    if result:
+                        types.add(result.group(1))
+                        if result.group(1) in commitment:
+                            _modified['commitment: {}'.format(result.group(2))] = value
+                        elif result.group(1) in non_commitment:
+                            _modified['non_commitment: {}'.format(result.group(2))] = value
+                    _modified[key] = vector[key]
+                collapsed_dicts.append(_modified)
+    
+            arff_writer.write("{}/all_collapsed.arff".format(output_dir),
+                        collapsed_dicts, 
                         classification_feature=self.classification_feature, 
                         write_many=False, 
                         minimum_instance_counts_for_features=minimum_inst)
-        regex = re.compile(r'(.*): unigram: (.*)$')
-        commitment = ['none', ]#'consequent']
-        non_commitment = ['antecedent', 'quote', 'question', 'consequent']
-        collapsed_dicts = []
-        for vector in self.feature_vectors:
-            _modified = dict()
-            for key, value in vector.iteritems():
-                result = regex.match(key)
-                if result:
-                    types.add(result.group(1))
-                    if result.group(1) in commitment:
-                        _modified['commitment: {}'.format(result.group(2))] = value
-                    elif result.group(1) in non_commitment:
-                        _modified['non_commitment: {}'.format(result.group(2))] = value
-                _modified[key] = vector[key]
-            collapsed_dicts.append(_modified)
-
-        arff_writer.write("{}/all_collapsed.arff".format(output_dir),
-                    collapsed_dicts, 
-                    classification_feature=self.classification_feature, 
-                    write_many=False, 
-                    minimum_instance_counts_for_features=minimum_inst)
+            print types
             
-        print types
+        else:
+            arff_writer.write("{}/baseline.arff".format(output_dir), 
+                self.feature_vectors, 
+                classification_feature=self.classification_feature, 
+                write_many=False, 
+                minimum_instance_counts_for_features=minimum_inst)
 
 
-    def main(self):
-        self.generate_features()
-        self.generate_arffs()
+    def main(self, no_commit = False):
+        self.generate_features(no_commit=no_commit)
+        self.generate_arffs(no_commit=no_commit)
 
     def get_label(self, discussion, post):
         #return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
         return post.side == discussion.annotations['side'][0][0]
 
 if  __name__ == '__main__':
-    commitment = Commitment(topic='evolution', features=[])
-    commitment.main()
-    fd = open('dump_random', 'wb')
-    for line in random.sample(rand, 10):
-        text, annots, raw = line
-        fd.write("TEXT:{}\n".format(text))
-        for annotation in annots:
-            fd.write("{}\n".format(annotation))
-        fd.write("RAW:{}\n\n".format(raw))
-        #fd.write("ANNOTS:{}\n\n".format(annots))
-    fd.close()
+    for topic in ['gay marriage', 'evolution', 'existence of god']:
+        commitment = Commitment(topic=topic, features=[])
+        commitment.main()
+        commitment = Commitment(topic=topic, features=[])
+        commitment.main(no_commit = True)
+        fd = open('dump_random', 'wb')
+        for line in random.sample(rand, 10):
+            text, annots, raw = line
+            fd.write("TEXT:{}\n".format(text))
+            for annotation in annots:
+                fd.write("{}\n".format(annotation))
+            fd.write("RAW:{}\n\n".format(raw))
+            #fd.write("ANNOTS:{}\n\n".format(annots))
+        fd.close()
 
