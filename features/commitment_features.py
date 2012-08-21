@@ -17,6 +17,7 @@ from file_formatting import arff_writer
 from nlp.text_obj import TextObj
 from nlp.feature_extractor import get_features_by_type, get_dependency_features
 from nlp.boundary import Boundaries
+from convinceme_extras import add_info_to_posts
 
 sys.path.append('..')
 from get_features import feat_vect
@@ -27,7 +28,8 @@ DELETE_QUOTE = True
 rand = []
 
 def merrrr(text, boundaries):
-        return ["{}:{}".format(bound[2].upper(), re.sub(r'\s+', ' ', text[bound[0]:bound[1]])) for bound in boundaries]
+    
+        return ["{}:{}".format(bound[2].upper(), re.sub(r'\r', '', text)[bound[0]:bound[1]]) for bound in boundaries]
 
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
@@ -57,15 +59,18 @@ class Commitment(object):
     def __init__(self, topic='death penalty', features=['unigram', 'LIWC', 'pos_dep']):
         self.topic = topic
         self.feature_vectors = []
-        self.classification_feature = 'commitment'
+        self.classification_feature = 'side'
         self.features = features
         self.bounds = Bounds()
         self.dir = re.sub(r'\s+', '_', topic)
 
     def generate_features(self):
-        dataset = Dataset('convinceme',annotation_list=['topic','dependencies'])
+        print 'Generating features for topic: {}'.format(self.topic)
+        dataset = Dataset('convinceme',annotation_list=['side', 'topic','dependencies','used_in_wassa2011'])#'topic','dependencies'])
         directory = "{}/convinceme/output_by_thread".format(data_root_dir)
-        for discussion in dataset.get_discussions(annotation_label='topic'):
+        discussions = list(dataset.get_discussions(annotation_label='topic'))
+        add_info_to_posts(discussions)
+        for discussion in discussions:
             if self.topic != discussion.annotations['topic']:
                 continue
             for post in discussion.get_posts():
@@ -96,14 +101,31 @@ class Commitment(object):
                         for unigram in unigrams:
                             key = 'quote: {}'.format(unigram)
                             if key in feature_vector:
-                                del feature_vector[key]
+                                if key in feature_vector: 
+                                    del feature_vector[key]
 
-                    feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
+
+                    feature_vector[self.classification_feature] = post.topic_side#self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
 
                 except IOError, e:
                     # XXX TODO : we don't have all the parses saved apparently so this sometimes fails.
                     pass
+            #OCCURS LESS THAN 10 TIMES
+            """
+            freq = defaultdict(int)
+            for vector in self.feature_vectors:
+                for key in vector.keys():
+                    freq[key] += 1
+
+            for vector in self.feature_vectors:
+                for key, value in freq.iteritems():
+                    if float(value / float(len(self.feature_vectors))) < 0.02:
+                        if key in vector:
+                            del vector[key]
+            """     
+
+
         self.bounds.dump()
 
     def generate_arffs(self, output_dir='arffs_output'):
@@ -111,8 +133,8 @@ class Commitment(object):
             return
         types = set()
         output_dir = "{}/{}".format(output_dir, self.dir)
-        minimum_inst = max(2, int(0.01 * len(self.feature_vectors)))
-        arff_writer.write("{}/all.arff".format(output_dir), 
+        minimum_inst = int(0.02 * len(self.feature_vectors)) #max(2, int(0.01 * len(self.feature_vectors)))
+        arff_writer.write("{}/wassa.arff".format(output_dir), 
                         self.feature_vectors, 
                         classification_feature=self.classification_feature, 
                         write_many=False, 
@@ -131,15 +153,15 @@ class Commitment(object):
                         _modified['commitment: {}'.format(result.group(2))] = value
                     elif result.group(1) in non_commitment:
                         _modified['non_commitment: {}'.format(result.group(2))] = value
-                _modified[key] = vector[key]
+                if not key[:4] in map(lambda x: x[:4], commitment + non_commitment):
+                    _modified[key] = vector[key]
             collapsed_dicts.append(_modified)
 
-        arff_writer.write("{}/all_collapsed.arff".format(output_dir),
+        arff_writer.write("{}/wassa_collapsed.arff".format(output_dir),
                     collapsed_dicts, 
                     classification_feature=self.classification_feature, 
                     write_many=False, 
                     minimum_instance_counts_for_features=minimum_inst)
-            
         print types
 
 
@@ -149,18 +171,20 @@ class Commitment(object):
 
     def get_label(self, discussion, post):
         #return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
-        return post.side == discussion.annotations['side'][0][0]
+        return 'for' if post.side == discussion.annotations['side'][0][0] else 'against'
 
 if  __name__ == '__main__':
-    commitment = Commitment(topic='evolution', features=[])
-    commitment.main()
-    fd = open('dump_random', 'wb')
-    for line in random.sample(rand, 10):
-        text, annots, raw = line
-        fd.write("TEXT:{}\n".format(text))
-        for annotation in annots:
-            fd.write("{}\n".format(annotation))
-        fd.write("RAW:{}\n\n".format(raw))
-        #fd.write("ANNOTS:{}\n\n".format(annots))
-    fd.close()
+    for topic in ['evolution', 'existence of god', 'gay marriage']:
+        commitment = Commitment(topic=topic, features=['pos_dep', 'liwc_dep', 'gen', 'unigrams', 'liwc', 'opin'])
+        commitment.main()
+        fd = open('dump_random', 'wb')
+        for line in random.sample(rand, 10):
+            text, annots, raw = line
+            fd.write("TEXT:{}\n".format(text))
+            for annotation in annots:
+                fd.write("{}\n".format(annotation))
+            fd.write("RAW:{}\n\n".format(raw))
+            #fd.write("ANNOTS:{}\n\n".format(annots))
+        fd.close()
+
 
