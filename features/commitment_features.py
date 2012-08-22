@@ -27,7 +27,7 @@ DELETE_QUOTE = True
 rand = []
 
 def merrrr(text, boundaries):
-        return ["{}:{}".format(bound[2].upper(), re.sub(r'\s+', ' ', text)[bound[0]:bound[1]]) for bound in boundaries]
+        return ["{}:{}".format(bound[2].upper(), re.sub(r'\r', '', text)[bound[0]:bound[1]]) for bound in boundaries]
 
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
@@ -165,11 +165,11 @@ class Commitment(object):
         return post.side == discussion.annotations['side'][0][0]
 
 if  __name__ == '__main__':
-    for topic in ['gay marriage', 'evolution', 'existence of god']:
+    for topic in ['gay marriage']:
         commitment = Commitment(topic=topic, features=[])
         commitment.main()
-        commitment = Commitment(topic=topic, features=[])
-        commitment.main(no_commit = True)
+        #commitment = Commitment(topic=topic, features=[])
+        #commitment.main(no_commit = True)
         fd = open('dump_random', 'wb')
         for line in random.sample(rand, 10):
             text, annots, raw = line
