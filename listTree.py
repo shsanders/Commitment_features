@@ -308,6 +308,9 @@ class ListTree:
         ##ListTree must already have a start or this won't work
         if self.start.index != 0:
             curr = self.start
+            if self.start.gov == None:
+                while curr.gov == None:
+                    curr = curr.nxt
             prev = None
             if curr.top_ends():
                 while curr != None:
@@ -390,7 +393,6 @@ class ListTree:
         self.root.build_dist(0)
         
     def get_quotes(self):
-        quotes = ["'", "''", '"']
         to_return = []
         curr = self.start
         while ( curr != None):
@@ -404,17 +406,18 @@ class ListTree:
                         curr = curr.next_tree
                     else:
                         curr = curr.nxt
-            elif curr.word in quotes:
-                quote = curr.word
+            elif curr.lemma == "`":
                 curr = curr.nxt
-                while (curr != None):
-                    if curr.word == quote:
+                while curr != None:
+                    if curr.lemma == "'":
                         break
                     to_return.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
                     else:
                         curr = curr.nxt
+
+
             if curr != None:
                 if curr.nxt == None:
                     curr = curr.next_tree
@@ -497,6 +500,7 @@ class ListTree:
         while curr != None:
             if curr.commitment == False:
                 to_return.append(curr)
+            curr = curr.nxt
         return to_return
         
 def build_ListTrees(deps, poses):
