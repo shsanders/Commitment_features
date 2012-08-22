@@ -63,7 +63,7 @@ class Commitment(object):
         self.dir = re.sub(r'\s+', '_', topic)
 
     def generate_features(self, no_commit = False):
-        dataset = Dataset('convinceme',annotation_list=['topic','side','dependencies','used_in_wassa2011'])
+        dataset = Dataset('convinceme',annotation_list=['topic','dependencies','used_in_wassa2011'])
         directory = "{}/convinceme/output_by_thread".format(data_root_dir)
         for discussion in dataset.get_discussions(annotation_label='topic'):
             if self.topic != discussion.annotations['topic']:
