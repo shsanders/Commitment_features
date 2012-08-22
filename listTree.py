@@ -113,6 +113,7 @@ class Node:
                 if des != None:
                     for node in des:
                         if node not in deps:
+                            node.commitment = True
                             deps.append(node)
         return deps
     
@@ -385,6 +386,7 @@ class ListTree:
                 if deps != None:
                     for dep in deps:
                         if dep not in to_return:
+                            dep.commitment = True
                             to_return.append(dep)
             curr = curr.nxt
         return to_return
@@ -401,6 +403,7 @@ class ListTree:
                 while curr != None:
                     if curr.lemma == "''":
                         break
+                    curr.commitment = True
                     to_return.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
@@ -411,6 +414,7 @@ class ListTree:
                 while curr != None:
                     if curr.lemma == "'":
                         break
+                    curr.commitment = True
                     to_return.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
@@ -460,6 +464,7 @@ class ListTree:
             if curr.word.lower() == adv:
                 nodes = curr.gov.get_descendents(curr.gov.dist, False)
                 verb = curr.gov
+                curr.commitment = True
                 to_return.append((verb, nodes))
             curr = curr.nxt
         return to_return

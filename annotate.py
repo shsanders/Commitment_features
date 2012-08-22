@@ -4,7 +4,7 @@ Created on Aug 8, 2012
 @author: random
 '''
 import operator
-import Queue
+import re
 
 def _annotate(text, tuples):
     ends = []
@@ -45,6 +45,8 @@ def annotate(text, tuples):
     ordered.reverse()
     _abc = 0
     last = 0
+    regex = re.compile(r'\s+', re.MULTILINE)
+    text = regex.sub(' ', text)
     while len(ordered) > 0:
         _pop = ordered.pop()
         if last != first(_pop):
@@ -52,6 +54,8 @@ def annotate(text, tuples):
             text2 += text[_abc:last]
             _abc = last
         text2 += second(_pop)
+    if last < len(text):
+        text2 += text[last:]
     return text2
 
 if __name__ == '__main__':
