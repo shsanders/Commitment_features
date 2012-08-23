@@ -17,6 +17,7 @@ from file_formatting import arff_writer
 from nlp.text_obj import TextObj
 from nlp.feature_extractor import get_features_by_type, get_dependency_features
 from nlp.boundary import Boundaries
+from convinceme_extras import get_topic_side
 
 sys.path.append('..')
 from get_features import feat_vect
@@ -63,7 +64,7 @@ class Commitment(object):
         self.dir = re.sub(r'\s+', '_', topic)
 
     def generate_features(self, no_commit = False):
-        dataset = Dataset('convinceme',annotation_list=['topic','dependencies','used_in_wassa2011'])
+        dataset = Dataset('convinceme',annotation_list=['topic','dependencies','used_in_wassa2011', 'side'])
         directory = "{}/convinceme/output_by_thread".format(data_root_dir)
         for discussion in dataset.get_discussions(annotation_label='topic'):
             if self.topic != discussion.annotations['topic']:
@@ -71,7 +72,10 @@ class Commitment(object):
             for post in discussion.get_posts():
 
                 feature_vector = defaultdict(int)
-                
+                post.discussion_id = discussion.id
+                post.topic_side = get_topic_side(discussion, post.side)
+                post.key = str((discussion.id,post.id))
+                feature_vector[self.classification_feature] = post.topic_side
                 try:
 
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
@@ -103,7 +107,7 @@ class Commitment(object):
                         dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                         get_features_by_type(feature_vector=feature_vector, text_obj=text, dependency_list=dependency_list)
 
-                    feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
+                    #feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
 
                 except IOError, e:
@@ -159,10 +163,6 @@ class Commitment(object):
     def main(self, no_commit = False):
         self.generate_features(no_commit=no_commit)
         self.generate_arffs(no_commit=no_commit)
-
-    def get_label(self, discussion, post):
-        #return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
-        return post.side == discussion.annotations['side'][0][0]
 
 if  __name__ == '__main__':
     for topic in ['gay marriage']:
