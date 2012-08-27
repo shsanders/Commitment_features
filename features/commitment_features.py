@@ -8,6 +8,7 @@ import re
 import random
 
 from collections import defaultdict, Counter
+
 try:
     from discussion import Dataset, data_root_dir
 except Exception, e:
@@ -30,15 +31,20 @@ rand = []
 def merrrr(text, boundaries):
         return ["{}:{}".format(bound[2].upper(), re.sub(r'\r', '', text)[bound[0]:bound[1]]) for bound in boundaries]
 
-def get_ngrams(feature_vector, words, n=1, prefix='uni_'):
+def get_ngrams(feature_vector, words, n=1, prefix='uni_', type='binary'):
     unigrams = ['-nil-' for i in range(n-1)]+words+['-nil-' for i in range(n-1)]
     n_grams = list()
     for i in range(len(unigrams)-n+1):
         n_grams.append(' '.join(unigrams[i:i+n]))
     word_counts = Counter(n_grams)
-    total_words = len(n_grams)
+    total_words = sum(word_counts.values())#len(n_grams)
     for word, count in word_counts.items():
-        feature_vector[prefix+word]=True
+        if type == 'binary':
+            feature_vector[prefix + word] = True
+        elif type == 'float':
+            feature_vector[prefix + word] = count / float(total_words)
+        else:
+            feature_vector[prefix + word] = count
 
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
@@ -100,14 +106,12 @@ class Commitment(object):
 
                     if not no_commit:
                         dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
-                        sys.path.append('/Users/samwing/nldslab/old_persuasion/persuasion/old/code')
-                        
                         if 'unigram' in self.features:
                             from utils import flatten
                             from parser import tokenize
                             sentences = tokenize(text.text.lower(), break_into_sentences=True)
                             words_flat = flatten(sentences)
-                            get_ngrams(feature_vector=feature_vector, words=words_flat)
+                            get_ngrams(feature_vector=feature_vector, words=words_flat, type='float')
                         feats = set(self.features).difference(set(['unigram']))
                         get_features_by_type(feature_vector=feature_vector, features=feats, text_obj=text, dependency_list=dependency_list)
 
@@ -184,7 +188,7 @@ class Commitment(object):
         self.generate_arffs(no_commit=no_commit)
 
 if  __name__ == '__main__':
-    for topic in ['gay marriage']:
+    for topic in ['evolution',]:#'gay marriage']:
         commitment = Commitment(topic=topic, features=['unigram'])
         commitment.main()
         #commitment = Commitment(topic=topic, features=[])
