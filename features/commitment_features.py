@@ -7,7 +7,7 @@ import sys
 import re
 import random
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 try:
     from discussion import Dataset, data_root_dir
 except Exception, e:
