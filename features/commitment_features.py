@@ -30,6 +30,16 @@ rand = []
 def merrrr(text, boundaries):
         return ["{}:{}".format(bound[2].upper(), re.sub(r'\r', '', text)[bound[0]:bound[1]]) for bound in boundaries]
 
+def get_ngrams(feature_vector, words, n=1, prefix='uni_'):
+    unigrams = ['-nil-' for i in range(n-1)]+words+['-nil-' for i in range(n-1)]
+    n_grams = list()
+    for i in range(len(unigrams)-n+1):
+        n_grams.append(' '.join(unigrams[i:i+n]))
+    word_counts = Counter(n_grams)
+    total_words = len(n_grams)
+    for word, count in word_counts.items():
+        feature_vector[prefix+word]=True
+
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
         self._dict = defaultdict(lambda: defaultdict(list))
@@ -93,7 +103,6 @@ class Commitment(object):
                         sys.path.append('/Users/samwing/nldslab/old_persuasion/persuasion/old/code')
                         
                         if 'unigram' in self.features:
-                            from old_features import get_ngrams
                             from utils import flatten
                             from parser import tokenize
                             sentences = tokenize(text.text.lower(), break_into_sentences=True)
