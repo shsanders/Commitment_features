@@ -90,8 +90,19 @@ class Commitment(object):
 
                     if not no_commit:
                         dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
-                        get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
-    
+                        sys.path.append('/Users/samwing/nldslab/old_persuasion/persuasion/old/code')
+                        
+                        if 'unigram' in self.features:
+                            from old_features import get_ngrams
+                            from utils import flatten
+                            from parser import tokenize
+                            sentences = tokenize(text.text.lower(), break_into_sentences=True)
+                            words_flat = flatten(sentences)
+                            get_ngrams(feature_vector=feature_vector, words=words_flat)
+                        feats = set(self.features).difference(set(['unigram']))
+                        get_features_by_type(feature_vector=feature_vector, features=feats, text_obj=text, dependency_list=dependency_list)
+
+                        
                         if None == dependency_list: continue
                         if 'dependencies' in self.features:
                             get_dependency_features(feature_vector, dependency_list, generalization='opinion')  
@@ -107,7 +118,6 @@ class Commitment(object):
                         dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                         get_features_by_type(feature_vector=feature_vector, text_obj=text, dependency_list=dependency_list)
 
-                    #feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
 
                 except IOError, e:
@@ -166,7 +176,7 @@ class Commitment(object):
 
 if  __name__ == '__main__':
     for topic in ['gay marriage']:
-        commitment = Commitment(topic=topic, features=[])
+        commitment = Commitment(topic=topic, features=['unigram'])
         commitment.main()
         #commitment = Commitment(topic=topic, features=[])
         #commitment.main(no_commit = True)
