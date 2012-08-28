@@ -7,7 +7,8 @@ import sys
 import re
 import random
 
-from collections import defaultdict
+from collections import defaultdict, Counter
+
 try:
     from discussion import Dataset, data_root_dir
 except Exception, e:
@@ -17,6 +18,7 @@ from file_formatting import arff_writer
 from nlp.text_obj import TextObj
 from nlp.feature_extractor import get_features_by_type, get_dependency_features
 from nlp.boundary import Boundaries
+from convinceme_extras import get_topic_side
 
 sys.path.append('..')
 from get_features import feat_vect
@@ -28,6 +30,21 @@ rand = []
 
 def merrrr(text, boundaries):
         return ["{}:{}".format(bound[2].upper(), re.sub(r'\r', '', text)[bound[0]:bound[1]]) for bound in boundaries]
+
+def get_ngrams(feature_vector, words, n=1, prefix='uni_', type='binary'):
+    unigrams = ['-nil-' for i in range(n-1)]+words+['-nil-' for i in range(n-1)]
+    n_grams = list()
+    for i in range(len(unigrams)-n+1):
+        n_grams.append(' '.join(unigrams[i:i+n]))
+    word_counts = Counter(n_grams)
+    total_words = sum(word_counts.values())#len(n_grams)
+    for word, count in word_counts.items():
+        if type == 'binary':
+            feature_vector[prefix + word] = True
+        elif type == 'float':
+            feature_vector[prefix + word] = count / float(total_words)
+        else:
+            feature_vector[prefix + word] = count
 
 class Bounds(object):
     def __init__(self, output='bounds_dump'):
@@ -43,7 +60,7 @@ class Bounds(object):
             #if len(boundaries.partitions) == 0: return
             #print annotate(text, boundaries.partitions[:-1])
             #rand.append([annotate(text, boundaries.partitions[:-1]), tuples, boundaries.partitions[:-1]])
-            rand.append([text, merrrr(text, tuples), tuples, discussion_id, post_id])
+            rand.append([text, merrrr(text, tuples), tuples])
         except ValueError, e:
             pass
 
@@ -63,7 +80,7 @@ class Commitment(object):
         self.dir = re.sub(r'\s+', '_', topic)
 
     def generate_features(self, no_commit = False):
-        dataset = Dataset('convinceme',annotation_list=['topic','dependencies','used_in_wassa2011'])
+        dataset = Dataset('convinceme',annotation_list=['topic','dependencies','used_in_wassa2011', 'side'])
         directory = "{}/convinceme/output_by_thread".format(data_root_dir)
         for discussion in dataset.get_discussions(annotation_label='topic'):
             if self.topic != discussion.annotations['topic']:
@@ -71,7 +88,10 @@ class Commitment(object):
             for post in discussion.get_posts():
 
                 feature_vector = defaultdict(int)
-                
+                post.discussion_id = discussion.id
+                post.topic_side = get_topic_side(discussion, post.side)
+                post.key = str((discussion.id,post.id))
+                feature_vector[self.classification_feature] = post.topic_side
                 try:
 
                     json_file = "{}/{}/{}.json".format(directory, discussion.id, post.id)
@@ -86,8 +106,16 @@ class Commitment(object):
 
                     if not no_commit:
                         dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
-                        get_features_by_type(feature_vector=feature_vector, features=self.features, text_obj=text, dependency_list=dependency_list)
-    
+                        if 'unigram' in self.features:
+                            from utils import flatten
+                            from parser import tokenize
+                            sentences = tokenize(text.text.lower(), break_into_sentences=True)
+                            words_flat = flatten(sentences)
+                            get_ngrams(feature_vector=feature_vector, words=words_flat, type='float')
+                        feats = set(self.features).difference(set(['unigram']))
+                        get_features_by_type(feature_vector=feature_vector, features=feats, text_obj=text, dependency_list=dependency_list)
+
+                        
                         if None == dependency_list: continue
                         if 'dependencies' in self.features:
                             get_dependency_features(feature_vector, dependency_list, generalization='opinion')  
@@ -103,7 +131,6 @@ class Commitment(object):
                         dependency_list = None if 'dependencies' not in post.annotations else post.annotations['dependencies']
                         get_features_by_type(feature_vector=feature_vector, text_obj=text, dependency_list=dependency_list)
 
-                    feature_vector[self.classification_feature] = self.get_label(discussion=discussion, post=post)
                     self.feature_vectors.append(feature_vector)
 
                 except IOError, e:
@@ -160,20 +187,15 @@ class Commitment(object):
         self.generate_features(no_commit=no_commit)
         self.generate_arffs(no_commit=no_commit)
 
-    def get_label(self, discussion, post):
-        #return post.side == max(discussion.annotations['side'], key=operator.itemgetter(1))[0]
-        return post.side == discussion.annotations['side'][0][0]
-
 if  __name__ == '__main__':
-    for topic in ['death penalty']:
-        commitment = Commitment(topic=topic, features=[])
+    for topic in ['evolution',]:#'gay marriage']:
+        commitment = Commitment(topic=topic, features=['unigram'])
         commitment.main()
-        commitment = Commitment(topic=topic, features=[])
-        commitment.main(no_commit = True)
-        fd = open('dump_random_'+re.sub(' ', '_', topic), 'wb')
+        #commitment = Commitment(topic=topic, features=[])
+        #commitment.main(no_commit = True)
+        fd = open('dump_random', 'wb')
         for line in random.sample(rand, 10):
-            text, annots, raw, discussion, post = line
-            fd.write("Discussion:{}, Post:{}\n".format(discussion, post))
+            text, annots, raw = line
             fd.write("TEXT:{}\n".format(text))
             for annotation in annots:
                 fd.write("{}\n".format(annotation))
