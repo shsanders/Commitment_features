@@ -107,21 +107,36 @@ def update(name, node, vect):
         ##this needs to be filled with the appropriate mpqa feature stuff
     '''
         
-def build_ranges(nodes, name):
+def build_ranges(nodes, name, is_quote=False):
+    starts = [node for node in nodes]
+    quote_types = ["'", "''", "`", "``"]
     to_return = []
     found_nodes = []
     start = None
     prev = None
     for node in nodes:
         if start == None:
-            start = node.start
+            #if there's no node starting the range, use this one
+            start = node
+            print "start: ", start.word, "\nnodes:\n"
         else:
+            #if there is a start node, it's either prev or connected to prev
+            #via function words. take prev and see if it connects to node via
+            #a series of function words or directly
             curr = prev
             if curr.nxt != node:
                 if curr.nxt != None:
+                    print "looking for bridge, start:{}\nnodes:\n".format(curr.word)
                     curr = curr.nxt
+                    #make a list to add function words to
+                    to_extend = []
                     while curr.gov == None and curr.deps == None:
-                        found_nodes.append(curr)
+                        print curr.word
+                        if is_quote and (curr.lemma in quote_types):
+                            break
+                        #add the function word
+                        to_extend.append(curr)
+                        #go to the next word
                         if curr.nxt != None:
                             curr = curr.nxt
                         else:
@@ -130,62 +145,113 @@ def build_ranges(nodes, name):
                             else:
                                 break
                     if curr != node:
-                        to_return.append((start, prev.end, name))
-                        start = None
+                        #if it didn't find a connection between prev and node,
+                        #store the old range and start a new one
+                        print "no bridge found, range created: {}-{}".format(start.word, prev.word)
+                        to_return.append((start.start, prev.end, name))
+                        start = node
+                    else:
+                        print "bridge found, continuing after bridge: {}-{}".format(prev.word, node.word)
+                        #if it did find a range, extend nodes with the function words
+                        found_nodes.extend(to_extend)
+                else:
+                    to_return.append((start.start, curr.end, name))
+                    start = node
+        #change prev
         prev = node
-    if start == None:
-        start = prev.start
-    to_return.append((start, prev.end, name))
-    nodes.extend(found_nodes)
-    return to_return
+    if prev != None:
+        if start == None:
+            start = prev
+        print "prev not empty, making span {}-{}".format(start.word, prev.word)
+        to_return.append((start.start, prev.end, name))
+    starts.extend([node for node in found_nodes])
+    return (to_return, starts, found_nodes)
     
 def feat_vect(deps, pos, vect):
     trees = listTree.build_ListTrees(deps, pos)
+    nones = []
     tuples = []
-    environs = 0
     quotes = []
     questions = []
     antecedents = []
     consequents = []
-    nones = []
-    for tree in trees:
-        nones.extend(tree.get_none())
-        #print tree, "\n"
+    commit_starts = []
+    for num in range(len(trees)):
+        tree = trees[num]
+        curr = tree.start
+        print tree, "\n"
         question = tree.get_question()
         if question != None:
             questions.extend(question)
-            environs += 1
             question = sorted(list(set(question)), key=lambda node: node.start)
-            tuples.extend(build_ranges(question, 'question'))
-            #print [node.word for node in sorted(question, key=lambda node: node.start)], "\n"
-            for tup in build_ranges(question, "question"):
-                pass
+            ranged = build_ranges(question, 'question')
+            tuples.extend(ranged[0])
+            commit_starts.extend(ranged[1])
+            questions.extend(ranged[2])
+            for node in question:
+                node.commitment = True
 
         condit = tree.get_cond()
-        if condit[0] != None and condit[1]:
+        if condit[0] != None and condit[1] != None:            
             ant, cons = condit
             antecedents.extend(ant)
             ant = sorted(list(set(ant)), key=lambda node: node.start)
-            tuples.extend(build_ranges(ant, 'antecedent'))
-            #print [node.word for node in sorted(ant, key=lambda node: node.start)]
-            for tup in build_ranges(ant, "antecedent"):
-                pass
+            ranged = build_ranges(ant, 'antecedent')
+            tuples.extend(ranged[0])
+            commit_starts.extend(ranged[1])
+            antecedents.extend(ranged[2])
+            for node in ant:
+                node.commitment = True
+            
             consequents.extend(cons)
             cons = sorted(list(set(cons)), key=lambda node: node.start)
-            tuples.extend(build_ranges(cons, 'consequent'))
-            #print [node.word for node in sorted(cons, key=lambda node: node.start)]
-            for tup in build_ranges(cons, "consequent"):
-                pass
-            environs += 1
+            ranged = build_ranges(cons, 'consequent')
+            tuples.extend(ranged[0])
+            commit_starts.extend(ranged[1])
+            antecedents.extend(ranged[2])
+            for node in cons:
+                node.commitment = True
 
             
     if len(trees) > 0:
         quotes = trees[0].get_quotes()
         if len(quotes) > 0:
             quotes= sorted(list(set(quotes)), key=lambda node: node.start)
-            tuples.extend(build_ranges(quotes, 'quote'))
-            #print [node.word for node in sorted(quotes, key=lambda node: node.start)]
-    #print "\n\n"
+            ranged = build_ranges(quotes, 'quote', is_quote=True)
+            tuples.extend(ranged[0])
+            commit_starts.extend(ranged[1])
+            quotes.extend(ranged[2])
+            for node in quotes:
+                node.commitment = True
+                
+    for tree in trees:
+        curr = tree.start
+        while curr != None:
+            nones.append(curr)
+            curr = curr.nxt
+    commits = quotes + questions + antecedents + consequents
+    nones = [node for node in nones if node not in commits]
+     
+    for tree in trees:
+        print tree
+            
+    print "nones:"        
+    print [node.word for node in sorted(nones, key=lambda node: node.start)], "\n"
+    nones = sorted(list(set(nones)), key=lambda node: node.start)
+    ranged = build_ranges(nones, 'none')
+    tuples.extend(ranged[0])
+    nones.extend(ranged[2])
+    print [node.word for node in sorted(nones, key=lambda node: node.start)], "\n"
+    print "quotes:"
+    print [node.word for node in sorted(quotes, key=lambda node: node.start)], "\n"
+    print "antecedents:"
+    print [node.word for node in sorted(antecedents, key=lambda node: node.start)], "\n"
+    print "consequents:"
+    print [node.word for node in sorted(consequents, key=lambda node: node.start)], "\n"
+    print "questions:"
+    print [node.word for node in sorted(questions, key=lambda node: node.start)], "\n"
+    
+    print "\n\n"
     name = "none: "
     for node in nones:
         update(name, node, vect)

@@ -399,23 +399,29 @@ class ListTree:
         curr = self.start
         while ( curr != None):
             if curr.lemma == "``":
+                found = []
                 curr = curr.nxt
                 while curr != None:
                     if curr.lemma == "''":
+                        to_return.extend(found)
+                        found = []
                         break
                     curr.commitment = True
-                    to_return.append(curr)
+                    found.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
                     else:
                         curr = curr.nxt
             elif curr.lemma == "`":
+                found = []
                 curr = curr.nxt
                 while curr != None:
                     if curr.lemma == "'":
+                        to_return.extend(found)
+                        found = []
                         break
                     curr.commitment = True
-                    to_return.append(curr)
+                    found.append(curr)
                     if curr.nxt == None:
                         curr = curr.next_tree
                     else:
@@ -434,6 +440,10 @@ class ListTree:
         if self.root != None:
             if self.root.word == "?":
                 to_return = self.root.get_descendents(self.root.dist, False)
+                to_return.append(self.root)
+        if to_return != None:
+            for node in to_return:
+                node.commitment = True
         return to_return
     
     def get_nodes(self, word, strip=False):
@@ -494,8 +504,24 @@ class ListTree:
                                     antecedent.append(curr.gov)
                                     resultant = [node for node in curr.gov.gov.get_descendents(curr.gov.gov.dist, False) if node not in antecedent]
                                     resultant.append(curr.gov.gov)
+                                    for node in resultant:
+                                        node.commitment = True
+                                    for node in antecedent:
+                                        node.commitment = True
                                     break
-                curr = curr.nxt        
+                curr = curr.nxt
+        
+        if antecedent != None:
+            for node in antecedent:
+                if node.nxt != None:
+                    if node.nxt.pos == '.':
+                        antecedent.append(node.nxt)
+                    
+        if resultant != None:            
+            for node in resultant:
+                if node.nxt != None:
+                    if node.nxt.pos == '.':
+                        resultant.append(node.nxt)
                                         
         return (antecedent, resultant)
     
