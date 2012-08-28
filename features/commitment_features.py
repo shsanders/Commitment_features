@@ -60,7 +60,7 @@ class Bounds(object):
             #if len(boundaries.partitions) == 0: return
             #print annotate(text, boundaries.partitions[:-1])
             #rand.append([annotate(text, boundaries.partitions[:-1]), tuples, boundaries.partitions[:-1]])
-            rand.append([text, merrrr(text, tuples), tuples])
+            rand.append([text, merrrr(text, tuples), tuples, discussion_id, post_id])
         except ValueError, e:
             pass
 
@@ -193,9 +193,10 @@ if  __name__ == '__main__':
         commitment.main()
         #commitment = Commitment(topic=topic, features=[])
         #commitment.main(no_commit = True)
-        fd = open('dump_random', 'wb')
+        fd = open('dump_random_'+re.sub(' ', '_', topic), 'wb')
         for line in random.sample(rand, 10):
-            text, annots, raw = line
+            text, annots, raw, discussion, post = line
+            fd.write("Discussion:{}, Post:{}\n".format(discussion, post))
             fd.write("TEXT:{}\n".format(text))
             for annotation in annots:
                 fd.write("{}\n".format(annotation))
