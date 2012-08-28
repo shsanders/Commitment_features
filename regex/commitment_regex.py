@@ -16,6 +16,8 @@ from nlp.boundary import Boundaries
 from grab_data.convinceme_extras import get_topic_side
 from file_formatting import arff_writer
 from nlp.extract_contexts import _featlists
+from machine_learning import weka_interface
+from progress_reporter.progress_reporter import ProgressReporter
 
 
 RUN_FOURFORUMS = False
@@ -30,7 +32,18 @@ class CommitmentCounter(object):
         self.by_side = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
         self.stemmer = nltk.stem.PorterStemmer()
         self.feature_vectors_by_topic = defaultdict(lambda: list())
-    
+        self.collapsed_vectors = defaultdict(lambda: list())
+        self.commitment_vectors = defaultdict(lambda: list())
+        
+    def write(self, vectors, topic, featureset):
+        minimum_inst = max(2, int(0.01 * len(vectors)))
+        output_dir = 'arffs'
+        arff_writer.write("{directory}/{topic}/{featureset}.arff".format(directory=output_dir,topic=topic,featureset=featureset), 
+                            self.feature_vectors_by_topic[topic], 
+                            classification_feature=self.label, 
+                            write_many=False, 
+                            minimum_instance_counts_for_features=minimum_inst)
+
     def start(self):
         dataset = Dataset('convinceme',annotation_list=['side', 'topic','dependencies','used_in_wassa2011'])#'topic','dependencies'])
         for discussion in dataset.get_discussions(annotation_label='topic'):
@@ -42,19 +55,33 @@ class CommitmentCounter(object):
                 
                 result = self.extract(post, topic) 
                 if result:
-                    self.feature_vectors_by_topic[topic].append(result)
+                    self.feature_vectors_by_topic[topic].append(result['all'])
+                    self.collapsed_vectors[topic].append(result['collapsed'])
+                    self.commitment_vectors[topic].append(result['commitment'])
         
         for topic in self.feature_vectors_by_topic.keys():
             print '{topic} has {length} elements.'.format(**{'topic': topic, 'length': len(self.feature_vectors_by_topic[topic])})
-        
-        for topic in ['evolution']:
-            minimum_inst = max(2, int(0.01 * len(self.feature_vectors_by_topic[topic])))
-            output_dir = 'arffs'
-            arff_writer.write("{}/all.arff".format(output_dir), 
-                              self.feature_vectors_by_topic[topic], 
-                              classification_feature=self.label, 
-                              write_many=False, 
-                              minimum_instance_counts_for_features=minimum_inst)
+       
+        _feats = {'all': self.feature_vectors_by_topic,
+                  'commitment': self.commitment_vectors,
+                  'collapsed': self.collapsed_vectors,}
+
+        print 'Experimental Results:'
+        for topic in ['evolution','gay marriage', 'existence of god', 'abortion']:
+            for featureset, vectors in _feats.iteritems():
+                self.write(vectors=vectors, topic=topic, featureset=featureset)
+            classifiers = ['weka.classifiers.bayes.NaiveBayes']
+            arff_folder = 'arffs/{topic}/'.format(topic=topic) 
+            arffs = ['all.arff', 'collapsed.arff', 'commitment.arff']
+            print '**RESULTS: {topic}'.format(topic=topic)
+            for arff in arffs:
+                results = defaultdict(dict) #run->classifier->featureset->results
+                for classifier_name in classifiers:
+                    run_results = weka_interface.cross_validate(arff_folder, [arff], classifier_name=classifier_name, classification_feature=self.label, n=10)
+                    right = sum([1 for entry in run_results.values() if entry['right?']])
+                    run_accuracy = right / float(len(run_results))
+                    print '\t{arff}: accuracy - {accuracy}'.format(arff=arff, accuracy=run_accuracy)
+
     
     
     def extract(self, post, topic, features=[]):
@@ -106,25 +133,35 @@ class CommitmentCounter(object):
         if len(b.boundaries) == 0: return
         b.walk(1, max(tuples, key=operator.itemgetter(1)))
         #print 'boundaries:{boundary.boundaries}\nparititions:{boundary.partitions}'.format(boundary=b)
-        feature_vector = defaultdict(int)
+        fv_all = defaultdict(int)
+        fv_collapsed = defaultdict(int)
+        fv_commitment = defaultdict(int)
         tokens = 0
         for partition in b.partitions[:-1]:
             unigrams = map(lambda unigram: self.stemmer.stem(unigram.lower()), re.split(r'\W', post.text[partition[0]:partition[1]]))
             tokens += len(unigrams)
             for _label in set(partition[2].split()):
                 for unigram in unigrams:
-                    feature_vector['commitment_{}:{}'.format(_label, unigram)] += 1
+                    #fv_all['commitment_{}:{}'.format(_label, unigram)] += 1
+                    fv_commitment['{}:{}'.format(_label, unigram)] += 1
                     if _label == 'none':
-                        feature_vector['collapsed_commitment:{unigram}'.format(unigram=unigram)] += 1
+                        #fv_all['collapsed_commitment:{unigram}'.format(unigram=unigram)] += 1
+                        fv_collapsed['commitment:{unigram}'.format(unigram=unigram)] += 1
                     else:
-                        feature_vector['collapsed_non_commitment:{unigram}'.format(unigram=unigram)] += 1
+                        #fv_all['collapsed_non_commitment:{unigram}'.format(unigram=unigram)] += 1
+                        fv_collapsed['non_commitment:{unigram}'.format(unigram=unigram)] += 1
             for unigram in unigrams:
-                feature_vector['unigram_{unigram}'.format(unigram=unigram)] += 1
-        for key in feature_vector.keys():
-            feature_vector[key] /= float(tokens)
-        #print environments 
-        feature_vector[self.label] = post.topic_side
-        return feature_vector
+                fv_all['unigram_{unigram}'.format(unigram=unigram)] += 1
+        for key in fv_all.keys():
+            fv_all[key] /= float(tokens)
+        for key in fv_commitment.keys():
+            fv_commitment[key] /= float(tokens)
+        for key in fv_collapsed.keys():
+            fv_collapsed[key] /= float(tokens)
+        fv_all[self.label] = post.topic_side
+        fv_commitment[self.label] = post.topic_side
+        fv_collapsed[self.label] = post.topic_side
+        return {'all': fv_all, 'collapsed': fv_collapsed, 'commitment': fv_commitment} 
     
     def start_(self):
         dataset = Dataset('fourforums',annotation_list=['qr_dependencies', 'topic'])#'topic','dependencies'])
