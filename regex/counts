@@ -1,0 +1,36 @@
+***star wars vs lord of rings
+Counter({0: 61, 1: 31, 2: 7, 3: 2, 4: 1})
+***evolution
+Counter({1: 280, 0: 279, 2: 162, 3: 73, 4: 17, 5: 4, 6: 3})
+***israel vs palestine
+Counter({0: 23, 1: 23, 2: 15, 3: 3})
+***death penalty
+Counter({0: 132, 1: 104, 2: 50, 3: 34, 4: 7, 5: 3, 6: 1})
+***superman vs batman
+Counter({0: 85, 1: 46, 2: 13, 3: 1, 4: 1})
+***immigration
+Counter({0: 30, 2: 24, 1: 21, 3: 2, 4: 1})
+***gay marriage
+Counter({1: 198, 0: 189, 2: 108, 3: 46, 4: 10, 5: 8, 6: 1})
+***climate change
+Counter({1: 83, 0: 81, 2: 34, 3: 8, 4: 1})
+***gun control
+Counter({0: 50, 1: 50, 2: 24, 3: 6, 4: 4, 5: 1})
+***healthcare
+Counter({0: 48, 1: 36, 2: 21, 3: 6, 4: 1})
+***abortion
+Counter({0: 230, 1: 215, 2: 110, 3: 41, 4: 9, 5: 2})
+***existence of god
+Counter({0: 327, 1: 301, 2: 156, 3: 54, 4: 9, 5: 5})
+***communism vs capitalism
+Counter({0: 108, 1: 56, 2: 34, 3: 5, 4: 4})
+***mac vs pc
+Counter({0: 53, 1: 41, 2: 17, 3: 9, 4: 4, 5: 2})
+***marijuana legalization
+Counter({0: 106, 1: 77, 2: 40, 3: 8, 4: 5})
+***firefox vs ie
+Counter({0: 145, 1: 63, 2: 17, 3: 5, 4: 2, 6: 1})
+***cats vs dogs
+Counter({0: 90, 1: 53, 2: 16, 3: 3})
+***iphone vs blackberry
+Counter({1: 8, 2: 8, 0: 6, 3: 2, 5: 1})

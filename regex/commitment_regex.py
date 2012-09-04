@@ -2,7 +2,7 @@
 import re, sys
 from os.path import basename
 import json
-from collections import defaultdict
+from collections import defaultdict, Counter
 import operator
 import nltk.stem
 
@@ -20,7 +20,9 @@ from machine_learning import weka_interface
 from progress_reporter.progress_reporter import ProgressReporter
 
 
-RUN_FOURFORUMS = False
+RUN_FOURFORUMS = False 
+RUN_CONVINCEME = True
+
 POSTS_KEY = 'POSTS'
 class CommitmentCounter(object):
     
@@ -34,7 +36,9 @@ class CommitmentCounter(object):
         self.feature_vectors_by_topic = defaultdict(lambda: list())
         self.collapsed_vectors = defaultdict(lambda: list())
         self.commitment_vectors = defaultdict(lambda: list())
-        
+        self.feature_vectors = list()
+        self.environments_topic = defaultdict(lambda: Counter())
+
     def write(self, vectors, topic, featureset):
         minimum_inst = max(2, int(0.01 * len(vectors)))
         output_dir = 'arffs'
@@ -65,15 +69,17 @@ class CommitmentCounter(object):
         _feats = {'all': self.feature_vectors_by_topic,
                   'commitment': self.commitment_vectors,
                   'collapsed': self.collapsed_vectors,}
-
+        fd = open('results', 'w')
         print 'Experimental Results:'
+        fd.write('Experimental Results:\n')
         for topic in ['evolution','gay marriage', 'existence of god', 'abortion']:
             for featureset, vectors in _feats.iteritems():
                 self.write(vectors=vectors, topic=topic, featureset=featureset)
-            classifiers = ['weka.classifiers.bayes.NaiveBayes']
+            classifiers = ['weka.classifiers.functions.SMO']#'weka.classifiers.bayes.NaiveBayes']
             arff_folder = 'arffs/{topic}/'.format(topic=topic) 
             arffs = ['all.arff', 'collapsed.arff', 'commitment.arff']
             print '**RESULTS: {topic}'.format(topic=topic)
+            fd.write('**RESULTS: {topic}\n'.format(topic=topic))
             for arff in arffs:
                 results = defaultdict(dict) #run->classifier->featureset->results
                 for classifier_name in classifiers:
@@ -81,7 +87,8 @@ class CommitmentCounter(object):
                     right = sum([1 for entry in run_results.values() if entry['right?']])
                     run_accuracy = right / float(len(run_results))
                     print '\t{arff}: accuracy - {accuracy}'.format(arff=arff, accuracy=run_accuracy)
-
+                    fd.write('\t{arff}: accuracy - {accuracy}\n'.format(arff=arff, accuracy=run_accuracy))
+        fd.close()
     
     
     def extract(self, post, topic, features=[]):
@@ -121,9 +128,11 @@ class CommitmentCounter(object):
             self.by_topic[topic][span] += 1
             self.by_side[topic][post.topic_side][span] += 1
             environments.add(span[0]) #XXX TODO need to make sure that the environments we are checking for are in the top three as far as probabiltiy goes
+        self.environments_topic[topic].update([len(environments)])
         if len(environments) < 2:
-            #print 'throwing post away. discussion: {discussion} id: {id}'.format(**{'discussion': topic, 'id': post.id})
             return
+
+        #print 'throwing post away. discussion: {discussion} id: {id}'.format(**{'discussion': topic, 'id': post.id})
         tuples = []
         for span in spans:
             start, stop, name = span[1][0], span[1][1], '-'.join(span[1][2]['category'])
@@ -142,13 +151,10 @@ class CommitmentCounter(object):
             tokens += len(unigrams)
             for _label in set(partition[2].split()):
                 for unigram in unigrams:
-                    #fv_all['commitment_{}:{}'.format(_label, unigram)] += 1
                     fv_commitment['{}:{}'.format(_label, unigram)] += 1
                     if _label == 'none':
-                        #fv_all['collapsed_commitment:{unigram}'.format(unigram=unigram)] += 1
                         fv_collapsed['commitment:{unigram}'.format(unigram=unigram)] += 1
                     else:
-                        #fv_all['collapsed_non_commitment:{unigram}'.format(unigram=unigram)] += 1
                         fv_collapsed['non_commitment:{unigram}'.format(unigram=unigram)] += 1
             for unigram in unigrams:
                 fv_all['unigram_{unigram}'.format(unigram=unigram)] += 1
@@ -167,8 +173,8 @@ class CommitmentCounter(object):
         dataset = Dataset('fourforums',annotation_list=['qr_dependencies', 'topic'])#'topic','dependencies'])
         for discussion in dataset.get_discussions(annotation_label='mechanical_turk'):
             if 'qr_meta' not in discussion.annotations['mechanical_turk']: continue
+            topic = discussion.annotations['topic']
             for post in discussion.get_posts():
-                topic = discussion.annotations['topic']
                 result = self.extract_(post, topic) 
                 if result:
                     self.feature_vectors.append(result)
@@ -203,10 +209,10 @@ class CommitmentCounter(object):
                                     "environment_indicators":
                                     [ (m.group(0), -1) ] } ] ] )
                     occ_i += 1
-        self.by_topic[topic][POSTS_KEY] += 1
         for span in set([d[1][2]['category'] for d in spans]):
             self.freq[span] += 1
             self.by_topic[topic][span] += 1
+        if len(self.by_topic[topic].keys()) < 2: return
         #self.by_side[topic][post.topic_side][span] += 1
         
         tuples = []
@@ -216,6 +222,7 @@ class CommitmentCounter(object):
         b = Boundaries()
         b.initializeFromTuples(tuples)
         if len(b.boundaries) == 0: return
+        self.by_topic[topic][POSTS_KEY] += 1
         b.walk(1, max(tuples, key=operator.itemgetter(1)))
         feature_vector = defaultdict(int)
         for partition in b.partitions[:-1]:
@@ -261,47 +268,52 @@ if __name__ == '__main__':
                                    ]))
         doc.build([table])
         fd.close()
-    
-    ## CONVINCEME
-    doc = SimpleDocTemplate("simple_table.pdf", pagesize=letter)
-    
-    cc = CommitmentCounter()
-    cc.start()
-    items = list(cc.freq.iteritems())
-    for ((key), value) in sorted(items, key=operator.itemgetter(1), reverse=True):
-        print key, value 
-    OUTPUT = 'output.out'
-    fd = open(OUTPUT, 'w')
-    SIDE_OUTPUT = 'side_output.out'
-    fd_side = open(SIDE_OUTPUT, 'w')
-    data = []
-    for topic in cc.by_topic:
-        items = list(cc.by_topic[topic].iteritems())
-        total = cc.by_topic[topic][POSTS_KEY]
-        if total == 0: continue
-        fd.write('{} {}\n'.format(topic, total))
-        side_a, side_b = cc.by_side[topic].keys()
-        fd_side.write('{}({}):\n\t\t{}:\t{}:\n'.format(topic, total, side_a, side_b))
-        header = [topic, total, '', '']
-        sides = ['', '', side_a, side_b]
-        data.append(header)
-        data.append(sides)
+
+    if RUN_CONVINCEME: 
+        ## CONVINCEME
+        doc = SimpleDocTemplate("simple_table.pdf", pagesize=letter)
+        cc = CommitmentCounter()
+        cc.start()
+        items = list(cc.freq.iteritems())
         for ((key), value) in sorted(items, key=operator.itemgetter(1), reverse=True):
-            if key == POSTS_KEY: continue
-            fd.write('\t{}\t\t{}\t{}\n'.format(key, value, str(100 * value / float(total))[:4]))
-            side_a_score = 100 * cc.by_side[topic][side_a][key]/ float(total)
-            side_b_score = 100 * cc.by_side[topic][side_b][key]/ float(total)
-            difference = abs(side_a_score - side_b_score)
-            fd_side.write('\t{}:\t{}\t{}\t(diff:{})\n'.format(key, str(side_a_score)[:4], str(side_b_score)[:4], str(difference)[:4]))
-            if side_a_score > 1 and side_b_score > 1:
-                datum = ['', '.'.join(key)[:12], str(side_a_score)[:4], str(side_b_score)[:4]]
-                data.append(datum)
-        data.append(['', '', '', ''])
-    table = Table(data)
-    table.setStyle(TableStyle([
-                               ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                               ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                               ]))
-    doc.build([table])
-    fd.close()
-    fd_side.close()
+            print key, value 
+        OUTPUT = 'output.out'
+        fd = open(OUTPUT, 'w')
+        SIDE_OUTPUT = 'side_output.out'
+        fd_side = open(SIDE_OUTPUT, 'w')
+        data = []
+        for topic in cc.by_topic:
+            items = list(cc.by_topic[topic].iteritems())
+            total = cc.by_topic[topic][POSTS_KEY]
+            if total == 0: continue
+            fd.write('{} {}\n'.format(topic, total))
+            side_a, side_b = cc.by_side[topic].keys()
+            fd_side.write('{}({}):\n\t\t{}:\t{}:\n'.format(topic, total, side_a, side_b))
+            header = [topic, total, '', '']
+            sides = ['', '', side_a, side_b]
+            data.append(header)
+            data.append(sides)
+            for ((key), value) in sorted(items, key=operator.itemgetter(1), reverse=True):
+                if key == POSTS_KEY: continue
+                fd.write('\t{}\t\t{}\t{}\n'.format(key, value, str(100 * value / float(total))[:4]))
+                side_a_score = 100 * cc.by_side[topic][side_a][key]/ float(total)
+                side_b_score = 100 * cc.by_side[topic][side_b][key]/ float(total)
+                difference = abs(side_a_score - side_b_score)
+                fd_side.write('\t{}:\t{}\t{}\t(diff:{})\n'.format(key, str(side_a_score)[:4], str(side_b_score)[:4], str(difference)[:4]))
+                if side_a_score > 1 and side_b_score > 1:
+                    datum = ['', '.'.join(key)[:12], str(side_a_score)[:4], str(side_b_score)[:4]]
+                    data.append(datum)
+            data.append(['', '', '', ''])
+        table = Table(data)
+        table.setStyle(TableStyle([
+                                ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                                ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                ]))
+        doc.build([table])
+        fd.close()
+        fd_side.close()
+        del fd
+        fd = open('counts', 'w')
+        for topic in cc.environments_topic.keys():
+            fd.write("***{}\n{}\n".format(topic, cc.environments_topic[topic]))
+        fd.close()

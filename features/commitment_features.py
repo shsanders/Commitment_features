@@ -173,7 +173,7 @@ class Commitment(object):
                         classification_feature=self.classification_feature, 
                         write_many=False, 
                         minimum_instance_counts_for_features=minimum_inst)
-            print types
+            #print types
             
         else:
             arff_writer.write("{}/baseline.arff".format(output_dir), 

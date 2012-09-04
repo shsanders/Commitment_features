@@ -1,142 +1,287 @@
-TEXT:As to whether _______, each person has to decide for themselves. Hmm... As to whether I can turn myself inside out and survive, I decide that I can! But wait a minute! Just because I decide that it's true, that doesn't make it true!!
+TEXT:Why do I get the feeling that you skipped biology classes?
+QUESTION:Why do I get the feeling that you skipped biology classes
+RAW:[(0, 57, 'question')]
 
-So now, just because some religious folk look around and don't understand the natural world (like the cavemen didn't), and further because they don't even WANT to understand the natural world, there MUST be a god. Wow - I could claim anything this way. ("I don't understand how a computer works - God did it. I don't understand how an airplane works - God did it. I don't understand my homework - GOD!!")
+TEXT:All of the questions that allegedly plague non-God attempts to explain our origins--why are we here, where are we going, what is the point of it all, why is the universe here--still apply to the faux explanation of God. The suggestion that God created everything does not make it any clearer to us where it all came from, how he created it, why he created it, where it is all going. In fact, it raises even more difficult mysteries: how did God, operating outside the confines of space, time, and natural law "create" or "build" a universe that has physical laws? We have no precedent and maybe no hope of answering or understanding such a possibility. What does it mean to say that some disembodied, spiritual being who knows everything and has all power, "loves" us, or has thoughts, or goals, or plans? How could such a being have any sort of personal relationship with beings like us?
+QUESTION:fact, it raises even more difficult mysteries: how did God, operating outside the confines of space, time, and natural law "create" or "build" a universe that has physical laws
+QUOTE:create" or "build
+QUESTION:What does it mean to say that some disembodied, spiritual being who knows everything and has all power, "loves" us, or has thoughts, or goals, or plans
+QUOTE:loves
+QUESTION:How could such a being have any sort of personal relationship with beings like us
+RAW:[(386, 562, 'question'), (510, 527, 'quote'), (653, 804, 'question'), (758, 763, 'quote'), (806, 887, 'question')]
 
-So now a few billion years is a short time? Ok. So how many years would be about enough in your expert opinion? 
+TEXT:Are you KIDDING me? That post got a convince?
 
-If there were only one planet in the universe, then yeah, I'd agree with you - chances are pretty much nil that life like us would appear. But how many billions of planets are there out there? Quite a few. That increases the probability quite a bit.
+Oh wow. 
 
-Where's your soul by the way? If your arm gets amputated, does 1/6th of your soul go along with it? Or does your soul stay comfortably in your brain somewhere, in among the cells and atoms? What the heck is a soul anyhow? Please share.
-QUOTE:I don't understand how a computer works - God did it. I don't understand how an airplane works - God did it. I don't understand my homework - GOD!!
-QUESTION:So now a few billion years is a short time
-QUESTION:So how many years would be about enough in your expert opinion
-ANTECEDENT:If there were only one planet in the universe, then yeah
-CONSEQUENT:I'd agree with you - chances are pretty much nil that life like us would appear
-QUESTION:But how many billions of planets are there out there
-QUESTION:Where's your soul by the way
-QUESTION:If your arm gets amputated, does 1/6th of your soul go along with it
-ANTECEDENT:If your arm gets amputated
-CONSEQUENT:does 1/6th of your soul go along with it
-QUESTION:Or does your soul stay comfortably in your brain somewhere, in among the cells and atoms
-QUESTION:What the heck is a soul anyhow
-RAW:[(490, 637, 'quote'), (641, 683, 'question'), (689, 751, 'question'), (755, 811, 'antecedent'), (813, 892, 'consequent'), (894, 946, 'question'), (1006, 1034, 'question'), (1036, 1104, 'question'), (1036, 1062, 'antecedent'), (1064, 1104, 'consequent'), (1106, 1194, 'question'), (1196, 1226, 'question')]
+Simply reason is because the apes that exist today did evolve with mankind as did the fish. Man did not evolve from apes. Man and apes came from a common ancestor. Hence why that ancestor doesn't exist anymore. And fish have evolved as well.
 
-TEXT:I never got the whole "Video Blog" thing. It always seems to me like its a venue to be arrogant with shades of egotism (but thats just me).
+So you're a non-believer despite using products derived from evolution? I deny the science that brings me my breakfast!
 
-I do find it interesting that you are so readily willing to accept "The Big Bang produced both SPACE and TIME. There was NOTHING outside the big bang and there was NOTHING before it either." 
+Go figure.
+QUESTION:Are you KIDDING me
+QUESTION:That post got a convince
+QUESTION:So you're a non-believer despite using products derived from evolution
+RAW:[(0, 18, 'question'), (20, 44, 'question'), (300, 370, 'question')]
 
-This is interesting because accepting that quote from your "Vlog" (or whatever they call it nowadays) brings about the exact same philosophical consequences as creationism does. Its the same old tired rebuttal, "If God created the Universe, then what created God?". Well if you dont believe in God how is it that you can say there was NOTHING before the big bang? What created all of the things in your balloon? I personally accept the idea that there are things that have always been and always will be, things without a beginning and an end. I'm just confused because It seems to me that you are not against the notion of things "poofing" into existence, but you are against it when anyone suggests there may have been a "poofer" (one who does the poofing) which is totally contradictory to your quote.
-QUOTE:Video Blog
-QUOTE:Big Bang produced both SPACE and TIME. There was NOTHING outside the big bang and there was NOTHING before it either.
-QUOTE:If God created the Universe, then what created God?
-QUESTION:Well if you dont believe in God how is it that you can say there was NOTHING before the big bang
-CONSEQUENT:Well
-ANTECEDENT:if you dont believe in God how is it that you can say there was NOTHING before the big bang
-QUESTION:What created all of the things in your balloon
-QUOTE:poofer
-RAW:[(23, 33, 'quote'), (213, 330, 'quote'), (546, 597, 'quote'), (600, 696, 'question'), (600, 604, 'consequent'), (605, 696, 'antecedent'), (698, 744, 'question'), (1058, 1064, 'quote')]
+TEXT:To me, evolution is just logic. If you have good genes, then the probability of you surviving long enough to reproduce is higher than that of a person with bad genes. No one can argue that a weak organism has the same chance of surviving as a strong one. And because genes are passed down from parents to children, your children will have the same advantage/disagvantage that you had. Therefore, good genes tend to survive and bad genes tend to die.
 
-TEXT:Scientists change their best guess because the are not coming up with conclusions based on faith. They're looking for the best answer at all times.
+Also, what better option is there? Creation is possible, but what evidence is there? Above is all the evidence you need for evolution.
 
-Religion states what they want the answer to be and ignores evidence to the contrary.
+If anyone has evidence for creation, please post it. I would be interested to see it.
+ANTECEDENT:If you have good genes
+CONSEQUENT:then the probability of you surviving long enough to reproduce is higher than that of a person with bad genes
+QUESTION:Also, what better option is there
+QUESTION:Creation is possible, but what evidence is there
+ANTECEDENT:If anyone has evidence for creation
+CONSEQUENT:please post it
+RAW:[(32, 54, 'antecedent'), (56, 165, 'consequent'), (451, 484, 'question'), (486, 534, 'question'), (587, 622, 'antecedent'), (624, 638, 'consequent')]
 
-Remember, Gravity is only a theory as well, but we all trust in it right now. Maybe some day we'll find out there is some other force at work, but gravity theory makes sense and is scientific so we keep it. 
+TEXT:We cannot say that micro-evolution occurs but that macro-evolution does not. It is false to say that the changes that occur at the microscopic level in our bodies or in the bodies of any organism does not have a lasting effect at the macroscopic level. Take DNA. Good ol' Deoxyribosenucleic acid. Now, DNA is constantly going through mutations. 1 in every 10,000 base pairs in the DNA strand of a homo-sapian is mutated, whether that part of the strand is deleted, inserted, flipped, it happens. Okay, when we reproduce, chromosomes (build-ups/thick clumps of DNA and tertiary protein bonds) are mixed between the male and female. It's called Meiosis. So say, the mother's DNA codes for long hair, and the fathers DNA strand genetically codes for curly hair. When their chromosomes go through meiosis, and the alleles cross-over onto each others, the base pairs mix together. That's why if a mother with straight hair, and a father with curly have a kid, the kid has wavy hair. that is an example of how DNA changes at the microscopic level and have a macroscopic effect. This kid with wavy hair will then pass down his genetic material and mix it with someone else, and it will go on and on, and the pool of gentic codes will constantly be changed and over millions of years, that generation will have been completely changed. And isn't that the definition of evolution. a change over time.
+CONSEQUENT:why
+ANTECEDENT:if a mother with straight hair, and a father with curly have a kid
+CONSEQUENT:kid has wavy hair
+RAW:[(883, 886, 'consequent'), (887, 953, 'antecedent'), (959, 976, 'consequent')]
 
-Likewise evolution. If everything was created, and some species went extinct, that means they were either created imperfectly, or created without a purpose. Doesn't seem too likely from an all knowing creator. However, if species DO randomly mutate, and all the strong ones survive it makes sense. I challenge you to come up with an alternate explination for the origin of the species that is MORE observable, MORE reproducable, and MORE scientific than evolution.
-ANTECEDENT:If everything was created, and some species went extinct
-CONSEQUENT:that means they were either created imperfectly, or created without a purpose
-CONSEQUENT:However
-ANTECEDENT:if species DO randomly mutate, and all the strong ones survive
-CONSEQUENT:makes sense
-RAW:[(465, 521, 'antecedent'), (523, 600, 'consequent'), (655, 662, 'consequent'), (664, 726, 'antecedent'), (730, 741, 'consequent')]
+TEXT:Is Evolution True?
 
-TEXT:I have never read a high school biology text book with a chapter devoted entirely to slamming religion.The reason for this is that scientists justify their findings on their own merit. They have no need to slam other areas like creationism. Creationism does not provide evidence to support itself so it needs to slam science in order to justify itself. 
+For many years, I accepted naturalistic evolution as a given, a proven scientific fact. Even though I knew it was a theory, it seemed to make sense and explain the evidence. I participated in a field biology/ geology class in college during which a group of students spent over a month traveling around Colorado, learning the basics of scientific thought while stopping at road cut after road cut, digging fossils and seeing evolutionary evidence for ourselves.
 
-Evolution has not been cast out by scientists. Maybe it doesn't look the same as when Darwin proposed it, but that's because scientists are interested in progress and improving theories. Additionally, there is proof of evolution in the form of speciation (there is other assorted proof, but I'm not a biologist so I won't try to explain it). For instance, a new mosquito has developed that is specifically adapted to live in London metro tunnels. This insect did not previously exist (which makes sense as there were no metro tubes, before metro tubes were built). 
+Creationists, I thought, were the ones who lacked a commitment to truth and objectivity, who ignored evidence because of prejudice or a belief system they felt a need to defend. Whether I wanted to believe in God or not was irrelevant to what was true. My commitment has always been to truth, whether I like it or not. I accepted evolution because I was unaware of the sum total of evidence and because I didn't know the questions to ask. I don't think I ever completely believed that God was just a figment of men's imagination, but I didn't argue with those who did.
 
-Claiming that evolution should not be taught as it inflicts harm on and is unfair to religion is a weak argument. Evolution is not a belief system. Most developed nations are founded with freedom of religion in mind. In this vein, people are therefore guaranteed freedom to pursue no religion. Teaching creationism is akin to teaching religion. If it is taught in public schools, the children's right to freedom of religion is being violated. 
+Almost twenty years after college, I listened to some tapes by creationists and was surprised to discover that they made more sense than I had expected. I decided to do more investigation. I read Origin of Species and dozens of books and articles on evolution and creation (view reading list and annotations). I searched out the criticisms each side had of the other and read the responses to those criticisms. My goal was to maintain an open mind and to consider all arguments without prejudice. To my surprise, I became more and more convinced that, although both sides had strong and weak arguments, natural evolution as outlined by Darwin can not account for what exists. This does not, of course, mean that the Bible is true, but it leaves the question open. According to biochemist Michael Behe, author of Darwin's Black Box:
 
-Furthermore, Pope John Paul II himself is quoted as saying "In his encyclical Humani Generis (1950), my predecessor Pius XII has already affirmed that there is no conflict between evolution and the doctrine of the faith regarding man and his vocation, provided that we do not lose sight of certain fixed points....Today, more than a half-century after the appearance of that encyclical, some new findings lead us toward the recognition of evolution as more than a hypothesis. In fact it is remarkable that this theory has had progressively greater influence on the spirit of researchers, following a series of discoveries in different scholarly disciplines. The convergence in the results of these independent studies  which was neither planned nor sought  constitutes in itself a significant argument in favor of the theory."
+The conclusion that something was designed can be made quite independently of knowledge of the designer. As a matter of procedure, the design must first be apprehended before there can be any further question about the designer. The inference to design can be held with all the firmness that is possible in the world, without knowing anything about the designer.
 
-Finally, most Christian denominations do not enforce a literal interpretation of the Genesis story. Most allow it to be read as allegorical.
-ANTECEDENT:If it is taught in public schools
-CONSEQUENT:the children's right to freedom of religion is being violated
-QUOTE:In his encyclical Humani Generis (1950), my predecessor Pius XII has already affirmed that there is no conflict between evolution and the doctrine of the faith regarding man and his vocation, provided that we do not lose sight of certain fixed points....Today, more than a half-century after the appearance of that encyclical, some new findings lead us toward the recognition of evolution as more than a hypothesis. In fact it is remarkable that this theory has had progressively greater influence on the spirit of researchers, following a series of discoveries in different scholarly disciplines. The convergence in the results of these independent studies  which was neither planned nor sought  constitutes in itself a significant argument in favor of the theory.
-RAW:[(1267, 1300, 'antecedent'), (1302, 1363, 'consequent'), (1427, 2194, 'quote')]
+By the way, if any evolutionists read this and would like to open a dialogue, correct facts I may have gotten wrong, or present information that's become available since I did my study, I'd love to hear from you. I'm open to new information and committed to truth. In the course of my investigation, I tried to get my honest questions answered by evolutionists and was told not to get sidetracked by details. I should believe in evolution, I was told, because it is scientific. It reminded me of trying to get my questions about Christianity answered in high school. Then I was told I should believe the Bible because it is God's word. In both cases, no attempt was made to answer my questions. I was asked to accept prevailing thought based on authority alone.
 
-TEXT:Evolution has no solid evidence. Look it up.
-Most of the materials used in evolutionist textbooks have been proved false long ago.
+Details are important. In criminal investigations, a tiny detail that doesn't fit can lead to a whole new line of inquiry. A person committed to truth and objectivity cannot afford to ignore or brush over details that do not fit his preconceptions.
 
-National Geographic printed an article on our supposed evolution from birds, showcasing the fossil of a bird that was supposedly the intermediate stage between people and dinosaurs. 
+Many serious scientists have always doubted the sufficiency of Darwin's theory, or have accepted it mainly because they couldn't think of a naturalistic alternative. For some quotations by famous scientists concerning the origin of life, click here. The evidence to support evolution is not overwhelming, as is often stated. I was surprised to find in my research that the same examples that were cited 30 years ago when I was in high school are still the best evolutionists have to offer: the peppered moth, sickle-cell anemia, etc. I had expected that by now there would be many more clear examples and much more "proof."
 
-A few months later, it turned out that the "fossil" was simply bones from two dinosaurs glued together. Look it up.
+Below is a summary of what convinced me that natural evolution cannot be the answer to the question of origins.
 
-Evolution is a theory, just like creationism. Neither of these theories has enough proof to finalise them.
+Natural law. Scientists investigate the laws of nature. The very existence of law and order in the universe points to a source or lawgiver.
 
-IF ONE IS TO BE TAUGHT IN SCHOOLS, THEN SO SHOULD THE OTHER.
-QUOTE:fossil
-ANTECEDENT:IF ONE IS TO BE TAUGHT IN SCHOOLS, THEN
-CONSEQUENT:SO SHOULD THE OTHER
-RAW:[(360, 366, 'quote'), (541, 580, 'antecedent'), (581, 600, 'consequent')]
+Law of cause and effect. All current scientific evidence indicates that the universe had a beginning. Before this evidence was found, many scientists thought that the universe had existed eternally and had no beginning. According to the law of cause and effect, every effect must have a cause. Since we have an effect (the beginning of the universe and life), there must have been a cause. That cause would necessarily be outside the present realm of nature.
 
-TEXT:Hum...really?
+First law of thermodynamics. The first law of thermodynamics states that energy cannot be created or destroyed. In the current order of nature, energy is transformed from one form to another, for example from nuclear energy (sun), to light, to chemical energy (in plants), to heat (when the food is eaten and the calories are used to warm the body), to motion (walking) or sound (speaking). Electricity is an additional form of energy. Energy can never be created or destroyed. This is not a theory, it's a law. Matter is related to energy (e=mc2), so energy can sometimes be transformed into matter and vice versa, but the energy itself cannot be created or destroyed. Since we have matter and energy, and since the universe has not always been in existence, energy had to have been created at some time in the past. Today's natural laws must not have always been in operation.
 
-well, look at the neanderthals....our body, and head shape has changed. WE have found DNA and fossils to prove that. - even an actual body preserved!!!
+Second law of thermodynamics. The second law of thermodynamics describes the natural tendency of things to progress from order to disorder. This law states that order does not arise spontaneously from chaos. In other words, the universe is "running down." In the past, there was more usable energy in the universe than there is now. The same amount of energy exists because energy cannot be created or destroyed, but on the whole it is in ever less usable form.
 
-Next are the animals that did not exist 1000 years ago.....how do you propose that happened? There are so MANY N-E-W species of bacteria, plants, animals, insects and amphibians.....
+The theory of natural evolution proposes that over millions of years, the universe and life on earth naturally proceeded from chaos (disorder) to the amazing degree of order we observe today. Although scientists argue that the excess energy of the sun could have powered these improvements without violating the law, evolution would have required not one but hundreds of millions of small movements "uphill". Even a single incidence of this would be unusual! Note that the apparent uphill movement of a seed to a tree or a fertilized egg to an adult animal is not random. The seeds contain the design code and instructions for "building" the organism from available materials. The question is, can information come from nothing? Can information organize itself in an orderly way?
 
-Are you trying to say that all the species, and even the HUMAN race have not changed ever...??
+Law of biogenesis. People once believed that maggots were spontaneously generated from the flesh of dead animals. They thought life could come from non-life. Louis Pasteur proved beyond doubt that life cannot arise from non-life. This is not a scientific theory, but a law. Proponents of evolution contend that life did arise spontaneously from non-life at least once in the past, in other words, that this particular natural law was broken or nonexistent sometime in the past.
 
-small changes occur in 100 years so small it can barely be noticed....in 100,000 years you can see dramatic changes in animals, plant, insect species and human as well.
-QUESTION:Hum...really
-QUESTION:Next are the animals that did not exist 1000 years ago.....how do you propose that happened
-RAW:[(0, 12, 'question'), (168, 259, 'question')]
+Complexity of living cell. A single cell is far more complicated than any machine intelligent man has invented. A typical cell contains ten million million atoms (quadrillion). To reconstruct a model of a cell, atom by atom, one atom per second, would take about ten million years to finish. To get a cell by chance would require at least 100 functional proteins to appear simultaneously in one place. Even if that happened, would it be alive? A dead body (or a dead cell) has all of the proper proteins, enzymes, the cell wall, and the DNA design in one place, yet it is not alive.
 
-TEXT:"Third, teaching evolution in no way forces kids to believe it, merely understand it. "
+Complexity of DNA code. The capacity of DNA to store information vastly exceeds that of any known system created by intelligent man. If the information in an individual's DNA were in small type in books like the telephone book, it would take a stack of books 46 feet high to hold all the information. Yet there is a DNA molecule in every one of the ten trillion cells in a human body. The design information to specify every person who has ever lived and every species of animal and plant which has ever existed would fit into a cup, with room left over.
 
+Sexual reproduction. Evolutionists often point out that humans and chimpanzees share 99% of genetic material. Yet humans have 23 sets of chromosomes and chimps have 24. For two animals to mate, their chromosomes must match or "zip together." The proposed divergence of chimps and humans from a common ancestor is said to have occurred after sexual reproduction began. If the theory of evolution is true, an animal must have been born at some time in the past with a different number of chromosomes than its parents. Unless that animal was able to mate, it would have no adaptive advantage. Therefore, if evolution as proposed is true, two animals must have experienced the same change in the number of chromosomes in the same geographic location during the same generation. Although "coincidences" such as this have not been observed in nature, they must have happened thousands of times in the course of history if natural evolution is to account for what exists today.
 
+Interdependence of proteins and DNA. The proteins needed for life cannot be manufactured without the design specifications of DNA. DNA cannot replicate itself without enzymes (proteins). According to atheist Richard Dawkins, "DNA and protein are two pillars of a stable and elegant arch, which persists once all its parts simultaneously exist. It is hard to imagine it arising by any step-by-step process unless some earlier scaffolding has completely disappeared." Such scaffolding is completely speculative.
 
-It is obvious that you cannot make kids believe anything. BUT, In far too many classrooms, children are told that evolution is proven fact. So the motive is not for the child to "merely understand". It quietly requires them to believe it.
-QUOTE:Third, teaching evolution in no way forces kids to believe it, merely understand it.
-QUOTE:understand
-RAW:[(1, 85, 'quote'), (277, 287, 'quote')]
+Complexity of the brain. Microelectronics, created by intelligent man, can pack more than a million circuits within a cubic foot. The brain has been estimated to pack a million million circuits per cubic foot. The human brain contains about ten billion nerve cells, each of which can put out between 10,000 and 100,000 connectors. The number of possible associations, hence the number of potential thoughts a person can think, may exceed the number of atoms in the universe. The brain is by far the most complex thing known to man.
 
-TEXT:"I thought to myself, If evolution is so solid, why do
-they continue to publish false and disproven findings
-in our textbooks?"
+Probability. There are about 1070 atoms in the observable universe. There are only 1090 seconds in the 15 billion years generally said to be the age of the universe. The probability of spontaneously forming the smallest replicating protein molecule by chance is 1 in 10450. The probability of spontaneously forming proteins and DNA for the smallest self-replicating entity is 1 in 10167,626. The probability of a simple living cell reassembling itself under ideal natural conditions if all components were present but chemical bonds were broken is 1 in 10100,000,000,000. Mathematicians consider events in nature with a probability of less than 1 in 1050 to have a zero probability, i.e. to be impossible regardless of how much time is available.
 
-Evolutionary theory is not founded on Haeckel's observations or theories. Haeckel's work was discredited in the 19th century, and has not been relevant to biology since the rediscovery of Mendel's laws of genetics. That the biogenetic law is false has been the consensus of biologists for over 100 years, and developmental biologists have been working constructively to provide alternative explanations, which have so far all been evolutionary in nature.
+Mutations. Mutations are errors in DNA copying. They are very rare and 99.99% of them are harmful or fatal. DNA has a built-in "proofreading" system with such accuracy that a typist would each have to type 20 billion books with only one typographical error for it to be matched. The neo-Darwinian synthesis proposes that mutations are the primary source of improved genetic material.
 
-The similarities between vertebrate embryos are real. We must distinguish between observations of those similarities and hypotheses about their causes. The similarities are not in doubt; there are worthwhile studies of the degree and timing of the similarities, but none that question their overall existence. What Wells has described is one hypothesis about the cause, Haeckel's biogenetic law, which failed early and spectacularly. He has not addressed any modern hypotheses, nor has he provided a better alternative.
+Natural selection can select from an existing gene pool that which is "fittest" for a particular environment. It does not even attempt to explain the origin of the material in the gene pool from which selections are made. Where did the huge variety of genetic information come from in the first place? Information must come from somewhere. It does not arise spontaneously.
 
-Evidence for common descent lies in the unity of form and process. We do not use Haeckel's outmoded, invalid mechanism to argue for evolution. Instead, we look at the marvelous convergence of disparate organisms on common principles: all animals use the same genes to define regions of their bodies, all vertebrates build their faces by unlikely rearrangements of odd pharyngeal protrusions, and even tailless mammals like us have to start with tailed embryos. The best explanation for these phenomena is that they are a consequence of a common heritage.
+Adaptation or "fit" of organisms to their environment. In many cases, many interlocking parts would have to come about at once for any mutation to be functional enough to be naturally selected. An example is the bombardier beetle. When threatened by an enemy, it blasts boiling hot gases from two tail pipes into the face of an attacker. The explosive is made inside the beetle's body by mixing together two dangerous chemicals (hydroquinone and hydrogen peroxide). In addition to these two chemicals, the beetle manufactures another type of chemical known as an "inhibitor." The inhibitor prevents the chemicals from blowing up and enables the beetle to store the chemicals indefinitely. When the beetle is approached by a predator, he squirts the stored chemicals into the two combustion tubes and at precisely the right moment he adds another chemical (an anti-inhibitor). This knocks out the inhibitor and a violent explosion occurs right in the face of the attacker. How could such as system, utilizing such dangerous chemicals, have evolved randomly step by step? All parts are necessary for any of them to have an adaptive advantage. The probability of more than one advantageous mutation arising at once is incredibly slim.
 
-- PZ Myers
+Darwin himself wrote:
 
-Now, would you consider learning about evolution now, since you now know of this? Or are you going to remain with the baseless assertion of creationism, which holds a few of its hoaxes of its own?
-CONSEQUENT:I thought to myself
-QUOTE:I thought to myself, If evolution is so solid, why do
-they continue to publish false and disproven findings
-in our textbooks?
-ANTECEDENT:If evolution is so solid
-QUESTION:-
-QUESTION:Or are you going to remain with the baseless assertion of creationism, which holds a few of its hoaxes of its own
-RAW:[(1, 20, 'consequent'), (1, 126, 'quote'), (22, 46, 'antecedent'), (1662, 1663, 'question'), (1756, 1869, 'question')]
+If it could be demonstrated that any complex organ existed which could not possibly have been formed by numerous, successive, slight modifications, my theory would absolutely break down.
+Convergence. The eye is an example of an extremely complex organ. Yet it is said to have evolved independently numerous times. Vertebrate eyes are imperfect. They're wired backwards and have a blind spot. Evolutionists argue that God would certainly not have designed them that way. Yet these imperfect eyes work better than any camera man has invented. By pure random chance, a single appearance of an eye would be highly improbable, impossible according to mathematicians.
 
-TEXT:You obviously must have thought it was an argument, as you saw fit to challenge its credibility. The point is, this argument barely seems fit for debate, as in debates it is assumed that the debators are both rational persons.
+Darwin wrote:
 
-Evolution has become a 'rational' belief, complete with plenty of support, where as any theory that contradicts this has no supporting evidence or statements.
-QUOTE:belief, complete with plenty of support, where as any theory that contradicts this has no supporting evidence or statements.
-RAW:[(262, 386, 'quote')]
+To suppose that the eye with all its inimitable contrivances for adjusting the focus to different distances, for admitting different amounts of light, and for the correction of spherical and chromatic aberration, could have been formed by natural selection seems, I freely confess, absurd in the highest degree.
+The ability to fly supposedly evolved spontaneously by chance at least four times: for insects, birds, mammals (bats) and reptiles. Yet intelligent man did not figure out the principles of flight until the past century.
 
-TEXT:No, I don't think it does.
+Transitional species. Many of what Darwin considered to be transitional species have been discredited. Even Archaeopteryx, once thought to be transitional between reptiles and birds, is not. Modern birds have been found deeper in the fossil record. For the most part nature's divisions are not blurred and indistinct, currently or in the fossil record. The phyla appear in the fossil record almost instantaneously in what is known as the Cambrian explosion, with no apparent connections.
 
-How can an organism adapt to something that it can't sense?
+Transitional leaps. According to evolutionists, reptiles evolved into birds. Yet the lung of a reptile is very different from the lung of a bird. How could one design evolve into the other step by tiny step, with each step being an improvement over the previous one?
 
-Example; How can an organism develop a system to catch sound waves if it doesn't know they exist in the first place?
-QUESTION:How can an organism adapt to something that it can't sense
-QUESTION:Example; How can an organism develop a system to catch sound waves if it doesn't know they exist in the first place
-CONSEQUENT:to catch sound waves
-ANTECEDENT:if it doesn't know they exist in the first place
-RAW:[(28, 86, 'question'), (89, 204, 'question'), (135, 155, 'consequent'), (156, 204, 'antecedent')]
+Microevolution cannot be extrapolated to explain macroevolution. Microevolution (one species of bird to another closely related species) has been fairly well established. But no natural mechanism has been even been suggested to explain how macroevolution (from reptile to bird, for example) could possibly have happened.
+
+The Anthropic Principle. The more scientists learn, the more it appears that the universe is tailor-made for life. The more accurately and extensively astronomers measure the universe, the more finely tuned they find it to be. There are a minimum of 25 characteristics of the universe which must be "just so" for life of any kind to be possible. There are more than 40 characteristics which must be "just so" for life as we know it on earth to exist. Here are some examples:
+
+Distance from the moon to earth. If the moon were farther away, there would not be enough mixing of ocean waters by the tides. If it were closer, the tidal effects would be too great.
+Atmospheric electric discharge rate. If there were more lightning, there would be too much fire destruction. If less, not enough nitrogen would be fixed in the atmosphere.
+Rotational speed of the earth. If it were slower, there would be too much temperature difference between day and night. If it were faster, the wind velocities would be catastrophic.
+Surface gravity. If it were greater, the atmosphere would retain too much ammonia and methane. If it were less, the atmosphere would lose too much water vapor.
+Tilt of axis and distance from the sun. If it were different, the temperature variations would be too great to support a stable water cycle.
+Amount of water vapor. If it were greater, there would be a runaway greenhouse effect. If less, there would not be enough rainfall.
+Amount of carbon dioxide. If it were greater, there would be a runaway greenhouse effect. If less, plants would be unable to maintain efficient photosynthesis.
+If these things and many others were just slightly different, life as we know it would be impossible.
+
+C.S. Lewis wrote:
+
+In the science, Evolution is a theory about changes; in the Myth it is a fact about improvements. To those brought up on the Myth, nothing seems more normal, more natural, more plausible, than that chaos should turn into order, death into life, ignorance into knowledge.
+
+Science itself has proven that chaos does not naturally and normally turn into order. Life comes only from life (law of biogenesis). Things do not improve naturally as a matter of course (second law of thermodynamics). Things improve because of intelligent input. For example, the technology we enjoy in the present age is a result of human intelligence, not random chance. Science has given us a great deal, but not everything that exists can be explained scientifically.
+
+In the words of Phillip Johnson,
+
+What is presented to the public as scientific knowledge about evolutionary mechanisms is mostly philosophical speculation and is not even consistent with the evidence once the naturalistic spectacles are removed. If that leaves us without a known mechanism of biological creation, so be it: it is better to admit ignorance than to have confidence in an explanation that is not true.
+
+Of course, concluding that Darwinian evolution is not true does not necessarily lead to the conclusion that the Bible is true. That's a separate line of inquiry.
+QUESTION:Is Evolution True
+CONSEQUENT:the way
+ANTECEDENT:if any evolutionists read this and would like to open a dialogue, correct facts I may have gotten wrong, or present information that's become available since I did my study
+CONSEQUENT:'d love to hear from you
+QUOTE:proof.
+QUOTE:down.
+QUOTE:building
+QUESTION:The question is, can information come from nothing
+QUESTION:Can information organize itself in an orderly way
+QUESTION:Even if that happened, would it be alive
+ANTECEDENT:If the information in an individual's DNA were in small type in books like the telephone book
+CONSEQUENT:it would take a stack of books 46 feet high to hold all the information
+QUOTE:together.
+ANTECEDENT:If the theory of evolution is true
+CONSEQUENT:an animal must have been born at some time in the past with a different number of chromosomes than its parents
+CONSEQUENT:Therefore
+ANTECEDENT:if evolution as proposed is true
+CONSEQUENT:animals must have experienced the same change in the number of chromosomes in the same geographic location during the same generation
+CONSEQUENT:Although "coincidences" such as this have not been observed in nature, they must have happened thousands of times in the course of history
+ANTECEDENT:if natural evolution is to account for what exists today
+QUOTE:DNA and protein are two pillars of a stable and elegant arch, which persists once all its parts simultaneously exist. It is hard to imagine it arising by any step-by-step process unless some earlier scaffolding has completely disappeared.
+CONSEQUENT:reassembling itself under ideal natural conditions
+ANTECEDENT:if all components were present but chemical bonds were broken
+QUOTE:fittest
+QUESTION:Where did the huge variety of genetic information come from in the first place
+QUOTE:inhibitor.
+QUESTION:How could such as system, utilizing such dangerous chemicals, have evolved randomly step by step
+QUESTION:How could one design evolve into the other step by tiny step, with each step being an improvement over the previous one
+QUOTE:so
+QUOTE:so
+ANTECEDENT:If the moon were farther away
+CONSEQUENT:there would not be enough mixing of ocean waters by the tides
+ANTECEDENT:If it were closer
+CONSEQUENT:the tidal effects would be too great
+ANTECEDENT:If there were more lightning
+CONSEQUENT:there would be too much fire destruction
+ANTECEDENT:If it were slower
+CONSEQUENT:there would be too much temperature difference between day and night
+ANTECEDENT:If it were faster
+CONSEQUENT:the wind velocities would be catastrophic
+ANTECEDENT:If it were greater
+CONSEQUENT:the atmosphere would retain too much ammonia and methane
+ANTECEDENT:If it were less
+CONSEQUENT:the atmosphere would lose too much water vapor
+ANTECEDENT:If it were different
+CONSEQUENT:the temperature variations would be too great to support a stable water cycle
+ANTECEDENT:If it were greater
+CONSEQUENT:there would be a runaway greenhouse effect
+ANTECEDENT:If it were greater
+CONSEQUENT:there would be a runaway greenhouse effect
+ANTECEDENT:If these things and many others were just slightly different
+CONSEQUENT:life as we know it would be impossible
+ANTECEDENT:If that leaves us without a known mechanism of biological creation
+CONSEQUENT:so be it: it is better to admit ignorance than to have confidence in an explanation that is not true
+RAW:[(0, 17, 'question'), (2253, 2260, 'consequent'), (2262, 2434, 'antecedent'), (2437, 2461, 'consequent'), (3879, 3885, 'quote'), (5731, 5736, 'quote'), (6573, 6581, 'quote'), (6622, 6672, 'question'), (6674, 6723, 'question'), (7607, 7647, 'question'), (7922, 8015, 'antecedent'), (8017, 8088, 'consequent'), (8576, 8585, 'quote'), (8713, 8747, 'antecedent'), (8749, 8859, 'consequent'), (8935, 8944, 'consequent'), (8946, 8978, 'antecedent'), (8984, 9117, 'consequent'), (9119, 9257, 'consequent'), (9258, 9314, 'antecedent'), (9543, 9781, 'quote'), (10793, 10843, 'consequent'), (10844, 10905, 'antecedent'), (11565, 11572, 'quote'), (11716, 11794, 'question'), (12432, 12442, 'quote'), (12840, 12936, 'question'), (14970, 15089, 'question'), (15719, 15721, 'quote'), (15819, 15821, 'quote'), (15923, 15952, 'antecedent'), (15954, 16015, 'consequent'), (16017, 16034, 'antecedent'), (16036, 16072, 'consequent'), (16111, 16139, 'antecedent'), (16141, 16181, 'consequent'), (16277, 16294, 'antecedent'), (16296, 16364, 'consequent'), (16366, 16383, 'antecedent'), (16385, 16426, 'consequent'), (16445, 16463, 'antecedent'), (16465, 16521, 'consequent'), (16523, 16538, 'antecedent'), (16540, 16586, 'consequent'), (16628, 16648, 'antecedent'), (16650, 16727, 'consequent'), (16752, 16770, 'antecedent'), (16772, 16814, 'consequent'), (16887, 16905, 'antecedent'), (16907, 16949, 'consequent'), (17021, 17081, 'antecedent'), (17083, 17121, 'consequent'), (18136, 18202, 'antecedent'), (18204, 18304, 'consequent')]
+
+TEXT:So why don't we have talking monkeys?
+
+It seems to me that the monkeys would grow tired of their oppression.
+
+You said that with some species it can take eons
+So why can't we see at least one species in the process of evolving? Shouldn't we have some hybrid species? 
+
+Why hasn't there been a mass monkey revolution a la "Planet of the Apes" ? 
+
+With the threat of global warming looming, why do we still get skin cancer? Shouldn't we be developing some sort of "adaptable trait" which allows us not be harmed by the sun's rays? And why has pollution made our lungs worse and not better? 
+
+If there is any reason man is living longer it is because of technology and not because of an inherent trait. 
+
+Humankind is breaking down, not getting better
+QUESTION:So why don't we have talking monkeys
+QUESTION:You said that with some species it can take eons
+So why can't we see at least one species in the process of evolving
+QUESTION:Shouldn't we have some hybrid species
+QUESTION:Why hasn't there been a mass monkey revolution a la "Planet of the Apes
+QUOTE:Planet of the Apes
+QUESTION:the threat of global warming looming, why do we still get skin cancer
+QUESTION:Shouldn't we be developing some sort of "adaptable trait" which allows us not be harmed by the sun's rays
+QUOTE:trait
+QUESTION:And why has pollution made our lungs worse and not better
+ANTECEDENT:If there is any reason man is living longer
+CONSEQUENT:it is because of technology and not because of an inherent trait
+RAW:[(0, 36, 'question'), (110, 226, 'question'), (228, 265, 'question'), (269, 340, 'question'), (322, 340, 'quote'), (351, 420, 'question'), (422, 527, 'question'), (473, 478, 'quote'), (529, 586, 'question'), (590, 633, 'antecedent'), (634, 698, 'consequent')]
+
+TEXT:"Darwin thought that natural selection had to be slow and gradual," Losos said. "I think it is clear he was mistaken. In some cases change can be very rapid."
+
+The results of the experiment echo observations made in the 1980s of one species of Finch on one Galapagos island. Over a ten year period there were three major swings in the ecosystem of the island. At the start of the observation period, there were two morphs of the Finch, a large beaked morph and a small beaked morph. One change in the ecosystem favored the large beaked morph over the small beaked morph, with the latter nearly becoming extinct. A second change in the ecosystem favored the now nearly extinct small beaked morph, and within a short time it was the dominant morph, with the large beaked morph on its way to extinction. Finally, the ecosystem shifted again, and populations stabilized. Today, a third morph has appeared, with a beak intermediate between the large and small beaked morphs. Over a ten year period, three natural selection events occurred, suggesting that evolutionary change might be more rapid than ever before suspected.
+QUOTE:Darwin thought that natural selection had to be slow and gradual,
+QUOTE:think it is clear he was mistaken. In some cases change can be very rapid.
+RAW:[(1, 66, 'quote'), (83, 157, 'quote')]
+
+TEXT:----------------
+However, I don't think standard "polite" argument is going to convince any creationists that evolution is true. Creationists have been brainwashed by forces in their childhood. From birth, they have been indoctrinated with false truths. To reverse this, they need to be shocked out of their stupour. Of course, what they really need are sessions with a psychiatrist, perhaps with shock treatment.
+----------------
+
+That's a little silly in my opinion. Everyone comes with their own biases. To paraphrase a Christian saying, you might want to consider removing the beam in your own eye before trying to help Creationists remove the mote in their eyes.
+
+----------------
+I think we might need to redefine Creationism for the purposes of this debate. Shouldn't it be limited to the appearance of humans in the historical record? 
+
+Evolutionists: "Humans evolved over millions of years from earlier forms of life."
+
+Creationists: "Man was created by God in the Garden of Eden and Woman was created from one of Man's ribs."
+
+Or have creationists accepted all of the scientific evidence of evolution?
+----------------
+
+I disagree. Creationists believe that some Higher Power, a God, is responsible for creating the universe--including this planet and also man. 
+
+Evolutionists (as pitted against Creationists) believe that there is no God behind all that we know to exist.
+
+There may be some Creationists who believe that God literally created Adam in the Garden of Eden, but there are others who don't even believe in the Christian God--let alone Adam and Eve.
+
+I am a Christian and believe in the divinity of Jesus, but that doesn't mean I have to believe that the Bible is entirely correct or that it is literal. I embrace learning through the scientific method and have had no problems whatsoever accepting both my Christian beliefs and scientific learning at the same time. So far, I have seen no conflicts between the two.
+
+The conflicts come when people want to extrapolate from what we have actually learned through science and create "theories" for which we have no real proof. The science of evolution is interesting and educational. The theory that God doesn't exist because of what we learn from scientific observations is just that--a theory--no more provable than the idea that God does in fact exist.
+
+Unfortunately for evolution, the scientific principles and learnings are unnecessarily grouped so tightly with the theory that God doesn't exist that the two are effectively merged into one for most people. That is obvious in the classroom, in this thread, and anywhere the topic of "evolution" is brought up.
+
+I embrace the scientific principles and observations of evolution. I reject the theory that God doesn't exist, and have yet to see anyone offer a good argument in favor of that theory.
+QUOTE:polite
+QUESTION:Shouldn't it be limited to the appearance of humans in the historical record
+QUOTE:evolved over millions of years from earlier forms of life.
+QUOTE:was created by God in the Garden of Eden and Woman was created from one of Man's ribs.
+QUESTION:Or have creationists accepted all of the scientific evidence of evolution
+QUOTE:evolution
+RAW:[(50, 56, 'quote'), (765, 841, 'question'), (868, 926, 'quote'), (948, 1034, 'quote'), (1037, 1110, 'question'), (2612, 2621, 'quote')]
+
+TEXT:No. 
+
+This reasoning is not from a religious point of view as much as from a realistic point of view.
+School curriculum has to meet state/federal standards and in todays world should be geared toward preparing students for their inevitable high stakes test, "topic for another debate".
+
+Teachers have a hard enough time getting from the Colonial Period to the Civil Rights movement,
+from atoms to zoology,
+
+in a period when teachers are getting laid off, not hired, I find the notion comical of adding another topic to the course load.
+
+There are many things which would be great electives in High School. Classes on how the stock market functions, 21st c. U.S. history, Sociology, advanced physics, 
+or how about an elective where the kids do independent studies based on their projected college major?
+
+All awesome right?
+Fine,
+pay for it with your tax dollars then.
+
+Evolutionism can be taught at local churches and in college.
+Middle/High School kids already need to learn enough off topic specialization info pushed into the school by various private special interest groups.
+
+You know,
+you could just send your kid to a religious school....
+QUOTE:topic for another debate
+QUESTION:Classes on how the stock market functions, 21st c. U.S. history, Sociology, advanced physics, 
+or how about an elective where the kids do independent studies based on their projected college major
+QUESTION:All awesome right
+RAW:[(259, 283, 'quote'), (606, 802, 'question'), (805, 822, 'question')]
 

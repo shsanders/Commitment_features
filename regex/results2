@@ -1,0 +1,17 @@
+Experimental Results:
+**RESULTS: evolution
+	all.arff: accuracy - 0.521235521236
+	collapsed.arff: accuracy - 0.544401544402
+	commitment.arff: accuracy - 0.540540540541
+**RESULTS: gay marriage
+	all.arff: accuracy - 0.687861271676
+	collapsed.arff: accuracy - 0.653179190751
+	commitment.arff: accuracy - 0.682080924855
+**RESULTS: existence of god
+	all.arff: accuracy - 0.53125
+	collapsed.arff: accuracy - 0.558035714286
+	commitment.arff: accuracy - 0.544642857143
+**RESULTS: abortion
+	all.arff: accuracy - 0.493827160494
+	collapsed.arff: accuracy - 0.462962962963
+	commitment.arff: accuracy - 0.530864197531

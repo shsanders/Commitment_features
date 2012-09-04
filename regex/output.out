@@ -1,0 +1,226 @@
+star wars vs lord of rings 102
+	('question', 'question')		21	20.5
+	('quotation', 'quotation')		13	12.7
+	('doubt and certainty', 'commitment')		8	7.84
+	('modal', 'commitment')		3	2.94
+	('evaluation or judgment', 'commitment')		3	2.94
+	('conditional', 'conditional')		2	1.96
+	('imprecision', 'imprecision')		2	1.96
+	('actuality', 'commitment')		2	1.96
+	('viewpoint', 'viewpoint')		1	0.98
+evolution 818
+	('question', 'question')		362	44.2
+	('quotation', 'quotation')		276	33.7
+	('doubt and certainty', 'commitment')		120	14.6
+	('actuality', 'commitment')		56	6.84
+	('imprecision', 'imprecision')		43	5.25
+	('limitation', 'limitation')		27	3.30
+	('viewpoint', 'viewpoint')		9	1.10
+	('conditional', 'conditional')		8	0.97
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		7	0.85
+	('evaluation or judgment', 'commitment')		6	0.73
+	('modal', 'commitment')		5	0.61
+	('style', 'commitment')		5	0.61
+	('commitment & opposition', 'commitment regardless of subject & negation')		4	0.48
+	('evidential', 'evidential')		1	0.12
+	('modal', 'ignorance')		1	0.12
+	('doubt and certainty', 'ignorance')		1	0.12
+israel vs palestine 64
+	('question', 'question')		28	43.7
+	('quotation', 'quotation')		21	32.8
+	('actuality', 'commitment')		8	12.5
+	('doubt and certainty', 'commitment')		3	4.68
+	('imprecision', 'imprecision')		1	1.56
+	('conditional', 'conditional')		1	1.56
+death penalty 331
+	('question', 'question')		131	39.5
+	('quotation', 'quotation')		89	26.8
+	('doubt and certainty', 'commitment')		67	20.2
+	('limitation', 'limitation')		19	5.74
+	('imprecision', 'imprecision')		14	4.22
+	('actuality', 'commitment')		11	3.32
+	('viewpoint', 'viewpoint')		8	2.41
+	('conditional', 'conditional')		7	2.11
+	('modal', 'commitment')		3	0.90
+	('evaluation or judgment', 'commitment')		3	0.90
+	('style', 'commitment')		2	0.60
+	('doubt and certainty', 'ignorance')		1	0.30
+	('modal', 'ignorance')		1	0.30
+superman vs batman 146
+	('question', 'question')		36	24.6
+	('quotation', 'quotation')		20	13.6
+	('doubt and certainty', 'commitment')		9	6.16
+	('limitation', 'limitation')		5	3.42
+	('imprecision', 'imprecision')		4	2.73
+	('actuality', 'commitment')		2	1.36
+	('conditional', 'conditional')		1	0.68
+	('modal', 'commitment')		1	0.68
+	('style', 'commitment')		1	0.68
+immigration 78
+	('question', 'question')		33	42.3
+	('quotation', 'quotation')		17	21.7
+	('doubt and certainty', 'commitment')		12	15.3
+	('imprecision', 'imprecision')		5	6.41
+	('modal', 'ignorance')		3	3.84
+	('doubt and certainty', 'ignorance')		3	3.84
+	('actuality', 'commitment')		3	3.84
+	('conditional', 'conditional')		2	2.56
+	('viewpoint', 'viewpoint')		1	1.28
+	('limitation', 'limitation')		1	1.28
+gay marriage 560
+	('question', 'question')		238	42.5
+	('quotation', 'quotation')		191	34.1
+	('doubt and certainty', 'commitment')		85	15.1
+	('actuality', 'commitment')		31	5.53
+	('imprecision', 'imprecision')		24	4.28
+	('limitation', 'limitation')		24	4.28
+	('conditional', 'conditional')		15	2.67
+	('viewpoint', 'viewpoint')		11	1.96
+	('commitment & opposition', 'commitment regardless of subject & negation')		4	0.71
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		4	0.71
+	('style', 'commitment')		4	0.71
+	('evidential', 'evidential')		3	0.53
+	('modal', 'commitment')		3	0.53
+	('evaluation or judgment', 'commitment')		2	0.35
+	('doubt and certainty', 'ignorance')		1	0.17
+	('modal', 'ignorance')		1	0.17
+climate change 207
+	('question', 'question')		81	39.1
+	('quotation', 'quotation')		54	26.0
+	('doubt and certainty', 'commitment')		19	9.17
+	('actuality', 'commitment')		10	4.83
+	('imprecision', 'imprecision')		5	2.41
+	('conditional', 'conditional')		2	0.96
+	('limitation', 'limitation')		2	0.96
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		1	0.48
+	('doubt and certainty', 'ignorance')		1	0.48
+	('modal', 'ignorance')		1	0.48
+	('viewpoint', 'viewpoint')		1	0.48
+	('modal', 'commitment')		1	0.48
+	('evaluation or judgment', 'commitment')		1	0.48
+	('evidential', 'evidential')		1	0.48
+gun control 135
+	('question', 'question')		52	38.5
+	('quotation', 'quotation')		33	24.4
+	('doubt and certainty', 'commitment')		21	15.5
+	('conditional', 'conditional')		12	8.88
+	('actuality', 'commitment')		7	5.18
+	('imprecision', 'imprecision')		6	4.44
+	('limitation', 'limitation')		3	2.22
+	('viewpoint', 'viewpoint')		2	1.48
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		1	0.74
+healthcare 112
+	('question', 'question')		40	35.7
+	('quotation', 'quotation')		28	25.0
+	('doubt and certainty', 'commitment')		11	9.82
+	('imprecision', 'imprecision')		7	6.25
+	('doubt and certainty', 'ignorance')		4	3.57
+	('modal', 'ignorance')		4	3.57
+	('viewpoint', 'viewpoint')		2	1.78
+	('limitation', 'limitation')		2	1.78
+	('actuality', 'commitment')		2	1.78
+	('conditional', 'conditional')		1	0.89
+	('style', 'commitment')		1	0.89
+abortion 607
+	('question', 'question')		239	39.3
+	('quotation', 'quotation')		181	29.8
+	('doubt and certainty', 'commitment')		79	13.0
+	('limitation', 'limitation')		23	3.78
+	('actuality', 'commitment')		21	3.45
+	('imprecision', 'imprecision')		17	2.80
+	('conditional', 'conditional')		16	2.63
+	('viewpoint', 'viewpoint')		14	2.30
+	('evaluation or judgment', 'commitment')		5	0.82
+	('modal', 'commitment')		4	0.65
+	('commitment & opposition', 'commitment regardless of subject & negation')		2	0.32
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		2	0.32
+	('doubt and certainty', 'ignorance')		1	0.16
+	('modal', 'ignorance')		1	0.16
+	('evidential', 'evidential')		1	0.16
+existence of god 852
+	('question', 'question')		320	37.5
+	('quotation', 'quotation')		272	31.9
+	('doubt and certainty', 'commitment')		97	11.3
+	('actuality', 'commitment')		34	3.99
+	('imprecision', 'imprecision')		33	3.87
+	('conditional', 'conditional')		24	2.81
+	('limitation', 'limitation')		19	2.23
+	('viewpoint', 'viewpoint')		13	1.52
+	('doubt and certainty', 'ignorance')		6	0.70
+	('modal', 'ignorance')		6	0.70
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		5	0.58
+	('modal', 'commitment')		4	0.46
+	('evidential', 'evidential')		3	0.35
+	('commitment & opposition', 'commitment regardless of subject & negation')		2	0.23
+	('style', 'commitment')		2	0.23
+	('evaluation or judgment', 'commitment')		1	0.11
+communism vs capitalism 207
+	('question', 'question')		59	28.5
+	('quotation', 'quotation')		51	24.6
+	('doubt and certainty', 'commitment')		14	6.76
+	('imprecision', 'imprecision')		7	3.38
+	('conditional', 'conditional')		6	2.89
+	('limitation', 'limitation')		5	2.41
+	('actuality', 'commitment')		5	2.41
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		3	1.44
+	('viewpoint', 'viewpoint')		2	0.96
+	('doubt and certainty', 'ignorance')		1	0.48
+	('modal', 'ignorance')		1	0.48
+	('commitment & opposition', 'commitment regardless of subject & negation')		1	0.48
+	('evidential', 'evidential')		1	0.48
+mac vs pc 126
+	('question', 'question')		45	35.7
+	('quotation', 'quotation')		43	34.1
+	('doubt and certainty', 'commitment')		15	11.9
+	('actuality', 'commitment')		8	6.34
+	('viewpoint', 'viewpoint')		5	3.96
+	('limitation', 'limitation')		5	3.96
+	('imprecision', 'imprecision')		4	3.17
+	('conditional', 'conditional')		1	0.79
+	('modal', 'ignorance')		1	0.79
+	('modal', 'commitment')		1	0.79
+marijuana legalization 236
+	('question', 'question')		75	31.7
+	('quotation', 'quotation')		58	24.5
+	('doubt and certainty', 'commitment')		30	12.7
+	('actuality', 'commitment')		8	3.38
+	('conditional', 'conditional')		7	2.96
+	('evidential', 'evidential')		4	1.69
+	('viewpoint', 'viewpoint')		4	1.69
+	('modal', 'commitment')		4	1.69
+	('limitation', 'limitation')		4	1.69
+	('imprecision', 'imprecision')		3	1.27
+	('commitment & opposition', 'commitment regardless of subject & negation')		2	0.84
+	('doubt and certainty', 'ignorance')		1	0.42
+	('modal', 'ignorance')		1	0.42
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		1	0.42
+	('evaluation or judgment', 'commitment')		1	0.42
+firefox vs ie 233
+	('question', 'question')		55	23.6
+	('quotation', 'quotation')		28	12.0
+	('doubt and certainty', 'commitment')		17	7.29
+	('conditional', 'conditional')		5	2.14
+	('viewpoint', 'viewpoint')		5	2.14
+	('limitation', 'limitation')		5	2.14
+	('actuality', 'commitment')		5	2.14
+	('imprecision', 'imprecision')		4	1.71
+	('style', 'commitment')		1	0.42
+	('evaluation or judgment', 'commitment')		1	0.42
+cats vs dogs 162
+	('question', 'question')		52	32.0
+	('quotation', 'quotation')		23	14.1
+	('doubt and certainty', 'commitment')		9	5.55
+	('imprecision', 'imprecision')		3	1.85
+	('actuality', 'commitment')		3	1.85
+	('limitation', 'limitation')		2	1.23
+	('commitment & opposition', 'commitment with 1st person, opposition to 2nd')		1	0.61
+	('conditional', 'conditional')		1	0.61
+iphone vs blackberry 25
+	('question', 'question')		11	44.0
+	('quotation', 'quotation')		10	40.0
+	('doubt and certainty', 'commitment')		6	24.0
+	('actuality', 'commitment')		3	12.0
+	('limitation', 'limitation')		2	8.0
+	('viewpoint', 'viewpoint')		1	4.0
+	('style', 'commitment')		1	4.0
+	('conditional', 'conditional')		1	4.0

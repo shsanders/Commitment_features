@@ -1,0 +1,205 @@
+Discussion:386, Post:31073
+TEXT:Can you explain on that?
+QUESTION:Can you explain on that?
+RAW:[(0, 24, 'question')]
+
+Discussion:894, Post:12994
+TEXT:You are sort of correct, but your thinking is flawed.
+
+Single mutations do not create new specie they do however create one step towards something which isnt anything like its ancestors. 
+
+After 1 million of these little changes would the new creature look like its ancestors 1 million years ago? 
+No, so where is the new specie? 
+
+You dont notice a new specie if you only look at one generation. You need to look over a LONG period of time.
+
+Thats why creationists think there are no "missing link" fossils. They see the fossil and see fossils which come before and after and say, hey there not that different. Thats not a new specie.
+NONE:You are sort of correct, but your thinking is flawed.
+NONE:Single mutations do not create new specie they do however create one step towards something which isnt anything like its ancestors.
+NONE:After
+QUESTION:1 million of these little changes would the new creature look like its ancestors 1 million years ago?
+QUESTION:No, so where is the new specie?
+CONSEQUENT:You dont notice a new specie
+ANTECEDENT:if you only look at one generation.
+NONE:You need to look over a LONG period of time.
+NONE:Thats why creationists think there are no "
+QUOTE:missing link
+NONE:" fossils.
+NONE:They see the fossil and see fossils which come before and after and say, hey there not that different.
+NONE:Thats not a new specie.
+RAW:[(0, 53, 'none'), (55, 187, 'none'), (190, 195, 'none'), (196, 297, 'question'), (299, 330, 'question'), (333, 362, 'consequent'), (363, 398, 'antecedent'), (399, 443, 'none'), (445, 489, 'none'), (489, 501, 'quote'), (501, 511, 'none'), (512, 614, 'none'), (615, 639, 'none')]
+
+Discussion:249, Post:58460
+TEXT:"I thought to myself, If evolution is so solid, why do
+they continue to publish false and disproven findings
+in our textbooks?"
+
+Evolutionary theory is not founded on Haeckel's observations or theories. Haeckel's work was discredited in the 19th century, and has not been relevant to biology since the rediscovery of Mendel's laws of genetics. That the biogenetic law is false has been the consensus of biologists for over 100 years, and developmental biologists have been working constructively to provide alternative explanations, which have so far all been evolutionary in nature.
+
+The similarities between vertebrate embryos are real. We must distinguish between observations of those similarities and hypotheses about their causes. The similarities are not in doubt; there are worthwhile studies of the degree and timing of the similarities, but none that question their overall existence. What Wells has described is one hypothesis about the cause, Haeckel's biogenetic law, which failed early and spectacularly. He has not addressed any modern hypotheses, nor has he provided a better alternative.
+
+Evidence for common descent lies in the unity of form and process. We do not use Haeckel's outmoded, invalid mechanism to argue for evolution. Instead, we look at the marvelous convergence of disparate organisms on common principles: all animals use the same genes to define regions of their bodies, all vertebrates build their faces by unlikely rearrangements of odd pharyngeal protrusions, and even tailless mammals like us have to start with tailed embryos. The best explanation for these phenomena is that they are a consequence of a common heritage.
+
+- PZ Myers
+
+Now, would you consider learning about evolution now, since you now know of this? Or are you going to remain with the baseless assertion of creationism, which holds a few of its hoaxes of its own?
+NONE:"
+CONSEQUENT:I thought to myself
+QUOTE:I thought to myself, If evolution is so solid, why do
+they continue to publish false and disproven findings
+in our textbooks?
+ANTECEDENT:If evolution is so solid
+NONE:"
+NONE:Evolutionary theory is not founded on Haeckel's observations or theories.
+NONE:Haeckel's work was discredited in the 19th century, and has not been relevant to biology since the rediscovery of Mendel's laws of genetics.
+NONE:That the biogenetic law is false has been the consensus of biologists for over 100 years, and developmental biologists have been working constructively to provide alternative explanations, which have so far all been evolutionary in nature.
+NONE:The similarities between vertebrate embryos are real.
+NONE:We must distinguish between observations of those similarities and hypotheses about their causes.
+NONE:The similarities are not in doubt; there are worthwhile studies of the degree and timing of the similarities, but none that question their overall existence.
+NONE:What Wells has described is one hypothesis about the cause, Haeckel's biogenetic law, which failed early and spectacularly.
+NONE:He has not addressed any modern hypotheses, nor has he provided a better alternative.
+NONE:Evidence for common descent lies in the unity of form and process.
+NONE:We do not use Haeckel's outmoded, invalid mechanism to argue for evolution.
+NONE:Instead, we look at the marvelous convergence of disparate organisms on common principles: all animals use the same genes to define regions of their bodies, all vertebrates build their faces by unlikely rearrangements of odd pharyngeal protrusions, and even tailless mammals like us have to start with tailed embryos.
+NONE:The best explanation for these phenomena is that they are a consequence of a common heritage.
+NONE:-
+QUESTION:PZ Myers
+
+Now, would you consider learning about evolution now, since you now know of this?
+QUESTION:Or are you going to remain with the baseless assertion of creationism, which holds a few of its hoaxes of its own?
+RAW:[(0, 1, 'none'), (1, 20, 'consequent'), (1, 126, 'quote'), (22, 46, 'antecedent'), (126, 127, 'none'), (129, 202, 'none'), (203, 343, 'none'), (344, 583, 'none'), (585, 638, 'none'), (639, 736, 'none'), (737, 894, 'none'), (895, 1018, 'none'), (1019, 1104, 'none'), (1106, 1172, 'none'), (1173, 1248, 'none'), (1249, 1566, 'none'), (1567, 1660, 'none'), (1662, 1663, 'none'), (1664, 1755, 'question'), (1756, 1870, 'question')]
+
+Discussion:325, Post:790
+TEXT:How can that be? How were you brought up? Did you go to church? Sunday school? Pray before meals? Pray at school? Pray at night?
+
+I remember at the age of 7 when I started questioning the Lord's Prayer in school. And God. It didn't make sense. So I stopped assuming God was real, and stopped saying the Lord's Prayer (thankfully my public school system stopped that practice).
+
+So please tell me where I have been brainwashed.
+QUESTION:How can that be?
+QUESTION:How were you brought up?
+QUESTION:Did you go to church?
+QUESTION:Sunday school?
+QUESTION:Pray before meals?
+QUESTION:Pray at school?
+QUESTION:Pray at night?
+NONE:I remember at the age of 7 when I started questioning the Lord's Prayer in school.
+NONE:And God.
+NONE:It didn't make sense.
+NONE:So I stopped assuming God was real, and stopped saying the Lord's Prayer (thankfully my public school system stopped that practice).
+NONE:So please tell me where I have been brainwashed.
+RAW:[(0, 16, 'question'), (17, 41, 'question'), (42, 63, 'question'), (64, 78, 'question'), (79, 97, 'question'), (98, 113, 'question'), (114, 128, 'question'), (130, 212, 'none'), (213, 221, 'none'), (222, 243, 'none'), (244, 376, 'none'), (378, 426, 'none')]
+
+Discussion:249, Post:58470
+TEXT:Sad. 
+
+Did Haeckel fake his drawings? Yes. 
+Does evolution depend on them? No. 
+Was Haeckel's basic premise, that organisms that came from a common ancestor develop relatively similarly correct? Damn straight. 
+Was his greater notion of ontogeny recapitulates phylogeny wrong? Yes.
+Is that a part of evolution, and has it been for years? No. 
+
+You, as a dishonest and highly ignorant Creationist, fail to educate yourself as to why pictures that appear to be similar to Haeckel's work are presented in textbooks. You also fail to educate yourself to the fact that actual photos of embryos have replaced drawings. What's next, you're going to claim that the photos were faked? lol.
+
+http://www.talkorigins.org/faqs/wells/haeckel.html
+
+Do you want to reinforce that Creationist is a synonym for Ignorant?
+QUESTION:Did Haeckel fake his drawings?
+QUESTION:Does evolution depend on them?
+QUESTION:Was Haeckel's basic premise, that organisms that came from a common ancestor develop relatively similarly correct?
+NONE:Damn straight.
+QUESTION:Was his greater notion of ontogeny recapitulates phylogeny wrong?
+QUESTION:Is that a part of evolution, and has it been for years?
+NONE:You, as a dishonest and highly ignorant Creationist, fail to educate yourself as to why pictures that appear to be similar to Haeckel's work are presented in textbooks.
+NONE:You also fail to educate yourself to the fact that actual photos of embryos have replaced drawings.
+QUESTION:What's next, you're going to claim that the photos were faked?
+QUESTION:http://www.talkorigins.org/faqs/wells/haeckel.html
+
+Do you want to reinforce that Creationist is a synonym for Ignorant?
+RAW:[(7, 37, 'question'), (44, 74, 'question'), (80, 194, 'question'), (195, 209, 'none'), (211, 276, 'question'), (282, 337, 'question'), (344, 512, 'none'), (513, 612, 'none'), (613, 675, 'question'), (682, 802, 'question')]
+
+Discussion:1128, Post:55795
+TEXT:Thank you, thank you, thank you for this. 
+
+When I hear "It's just a theory, and there are millions of theories!" I start sputtering so hard that I can't be nearly as eloquent as this wonderfully helpful site.
+NONE:Thank you, thank you, thank you for this.
+NONE:When I hear "
+QUOTE:It's just a theory, and there are millions of theories!
+NONE:"
+NONE:I start sputtering so hard that I can't be nearly as eloquent as this wonderfully helpful site.
+RAW:[(0, 41, 'none'), (44, 57, 'none'), (57, 112, 'quote'), (112, 113, 'none'), (114, 209, 'none')]
+
+Discussion:1128, Post:55786
+TEXT:Now that is the kind of open minded thinking that is required in education. You want to protect the students from the other side at any cost. What is they want to do? Oh yeah protect the students from the other side at any cost. 
+We should just turf out any form of discussion and prevent students from coming to their own decisions about anything. What if he hears that trash about creationism on the street. Is that the new pornography. 
+We are talking about having a discussion.
+NONE:Now that is the kind of open minded thinking that is required in education.
+NONE:You want to protect the students from the other side at any cost.
+QUESTION:What is they want to do?
+NONE:Oh yeah protect the students from the other side at any cost.
+NONE:We should just turf out any form of discussion and prevent students from coming to their own decisions about anything.
+NONE:What if he hears that trash about creationism on the street.
+NONE:Is that the new pornography.
+NONE:We are talking about having a discussion.
+RAW:[(0, 75, 'none'), (76, 141, 'none'), (142, 166, 'question'), (167, 228, 'none'), (230, 348, 'none'), (349, 409, 'none'), (410, 438, 'none'), (440, 481, 'none')]
+
+Discussion:325, Post:791
+TEXT:Why don't monkeys talk? On its own, it's not a stupid question. It involves looking at a monkey's evolution, the evolution of their throats, etc. However, when you ask a question like that and try to use it to disprove evolution, it becomes a stupid question.
+
+Have squirrels been the same for 10000 years? How about a million years?
+
+Do you know anything at all about evolution? Have you heard of mutation? Selection? In the case of the insects I mentioned (the English peppered moth) we see selection at work. The moths were generally light-coloured and would blend in with the light-coloured lichen and trees. However, during the Industrial Revolution, the lichen died from pollution, and the trees were covered in dark soot. The light moths (which had alleles for dark wings in their genetic make-up) started being easily picked off by birds. This natural selection bumped up the percentage of dark-winged moths by a huge amount. Then as air quality improved the light-coloured moths increased in numbers.
+
+Please read a bit before contributing to a debate.
+QUESTION:Why don't monkeys talk?
+NONE:On its own, it's not a stupid question.
+NONE:It involves looking at a monkey's evolution, the evolution of their throats, etc.
+NONE:However, when you ask a question like that and try to use it to disprove evolution, it becomes a stupid question.
+QUESTION:Have squirrels been the same for 10000 years?
+QUESTION:How about a million years?
+QUESTION:Do you know anything at all about evolution?
+QUESTION:Have you heard of mutation?
+NONE:In the case of the insects I mentioned (the English peppered moth) we see selection at work.
+NONE:The moths were generally light-coloured and would blend in with the light-coloured lichen and trees.
+NONE:However, during the Industrial Revolution, the lichen died from pollution, and the trees were covered in dark soot.
+NONE:The light moths (which had alleles for dark wings in their genetic make-up) started being easily picked off by birds.
+NONE:This natural selection bumped up the percentage of dark-winged moths by a huge amount.
+NONE:Then as air quality improved the light-coloured moths increased in numbers.
+NONE:Please read a bit before contributing to a debate.
+RAW:[(0, 23, 'question'), (24, 63, 'none'), (64, 145, 'none'), (146, 259, 'none'), (261, 306, 'question'), (307, 333, 'question'), (335, 379, 'question'), (380, 407, 'question'), (419, 511, 'none'), (512, 612, 'none'), (613, 728, 'none'), (729, 846, 'none'), (847, 933, 'none'), (934, 1009, 'none'), (1011, 1061, 'none')]
+
+Discussion:249, Post:58552
+TEXT:The damage is done. Yes, many textbooks have corrected the problem. But when? A hundred years after the fact? Why did it take so long? The example I gave was I believe from a textbook from 2004. Science understood the fraud LONG before that. That's not science correcting itself. That is negligence at best.
+NONE:The damage is done.
+NONE:Yes, many textbooks have corrected the problem.
+QUESTION:But when?
+QUESTION:A hundred years after the fact?
+QUESTION:Why did it take so long?
+NONE:The example I gave was I believe from a textbook from 2004.
+NONE:Science understood the fraud LONG before that.
+NONE:That's not science correcting itself.
+NONE:That is negligence at best.
+RAW:[(0, 19, 'none'), (20, 67, 'none'), (68, 77, 'question'), (78, 109, 'question'), (110, 134, 'question'), (135, 194, 'none'), (195, 241, 'none'), (242, 279, 'none'), (280, 307, 'none')]
+
+Discussion:2231, Post:48536
+TEXT:I suspect that these two are the same person. 
+
+tokID
+
+tokEVOLUTION
+
+
+Look at the posting times. This was all pre-written and pasted.
+
+
+I could be wrong of course
+NONE:I suspect that these two are the same person.
+NONE:tokID
+
+tokEVOLUTION
+
+
+Look at the posting times.
+NONE:This was all pre-written and pasted.
+NONE:I could be wrong of course
+RAW:[(0, 45, 'none'), (48, 96, 'none'), (97, 133, 'none'), (136, 162, 'none')]
+
