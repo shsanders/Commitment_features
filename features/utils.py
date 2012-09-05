@@ -2,10 +2,32 @@ import re
 import os
 import itertools
 import csv
+from collections import Counter
+from parser import tokenize
 
 class Generic:
     pass
 simple_re = re.compile('.')
+
+def get_ngrams(feature_vector, words, n=1, prefix='uni_', style='binary'):
+    unigrams = ['-nil-' for i in range(n-1)]+words+['-nil-' for i in range(n-1)]
+    n_grams = list()
+    for i in range(len(unigrams)-n+1):
+        n_grams.append(' '.join(unigrams[i:i+n]))
+    word_counts = Counter(n_grams)
+    total_words = sum(word_counts.values())#len(n_grams)
+    for word, count in word_counts.items():
+        if type == 'binary':
+            feature_vector[prefix + word] = True
+        elif type == 'float':
+            feature_vector[prefix + word] = count / float(total_words)
+        else:
+            feature_vector[prefix + word] = count
+            
+def ngrams_from_text(text, feature_vector, prefix, n=1, style='float'):
+    sentences = tokenize(text, break_into_sentences=True)
+    words_flat = flatten(sentences)
+    get_ngrams(feature_vector=feature_vector, n=n, prefix=prefix, words=words_flat, style=style)
 
 def maybe_convert(old, func = int):
     if isinstance(old, list):

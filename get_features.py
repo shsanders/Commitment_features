@@ -91,8 +91,8 @@ def update_feat_vect(tree, word_lists):
 ##The final data structure goes ( [ (commit word, [commit nodes]) ...], [ (oppose word, [oppose nodes]) ] )
 
 def update(name, node, vect):
-    vect[name+"unigram: "+node.lemma] += 1
     '''
+    vect[name+"unigram: "+node.word.lower()] += 1
     if node.liwc != None:
         for key in dict(node.liwc):
             vect[name+"LIWC: "+key] += 1
@@ -118,7 +118,6 @@ def build_ranges(nodes, name, is_quote=False):
         if start == None:
             #if there's no node starting the range, use this one
             start = node
-            print "start: ", start.word, "\nnodes:\n"
         else:
             #if there is a start node, it's either prev or connected to prev
             #via function words. take prev and see if it connects to node via
@@ -126,12 +125,10 @@ def build_ranges(nodes, name, is_quote=False):
             curr = prev
             if curr.nxt != node:
                 if curr.nxt != None:
-                    print "looking for bridge, start:{}\nnodes:\n".format(curr.word)
                     curr = curr.nxt
                     #make a list to add function words to
                     to_extend = []
                     while curr.gov == None and curr.deps == None:
-                        print curr.word
                         if is_quote and (curr.lemma in quote_types):
                             break
                         #add the function word
@@ -147,11 +144,9 @@ def build_ranges(nodes, name, is_quote=False):
                     if curr != node:
                         #if it didn't find a connection between prev and node,
                         #store the old range and start a new one
-                        print "no bridge found, range created: {}-{}".format(start.word, prev.word)
                         to_return.append((start.start, prev.end, name))
                         start = node
                     else:
-                        print "bridge found, continuing after bridge: {}-{}".format(prev.word, node.word)
                         #if it did find a range, extend nodes with the function words
                         found_nodes.extend(to_extend)
                 else:
@@ -162,7 +157,6 @@ def build_ranges(nodes, name, is_quote=False):
     if prev != None:
         if start == None:
             start = prev
-        print "prev not empty, making span {}-{}".format(start.word, prev.word)
         to_return.append((start.start, prev.end, name))
     starts.extend([node for node in found_nodes])
     return (to_return, starts, found_nodes)
@@ -179,7 +173,6 @@ def feat_vect(deps, pos, vect):
     for num in range(len(trees)):
         tree = trees[num]
         curr = tree.start
-        print tree, "\n"
         question = tree.get_question()
         if question != None:
             questions.extend(question)
@@ -231,27 +224,12 @@ def feat_vect(deps, pos, vect):
             curr = curr.nxt
     commits = quotes + questions + antecedents + consequents
     nones = [node for node in nones if node not in commits]
-     
-    for tree in trees:
-        print tree
             
-    print "nones:"        
-    print [node.word for node in sorted(nones, key=lambda node: node.start)], "\n"
     nones = sorted(list(set(nones)), key=lambda node: node.start)
     ranged = build_ranges(nones, 'none')
     tuples.extend(ranged[0])
     nones.extend(ranged[2])
-    print [node.word for node in sorted(nones, key=lambda node: node.start)], "\n"
-    print "quotes:"
-    print [node.word for node in sorted(quotes, key=lambda node: node.start)], "\n"
-    print "antecedents:"
-    print [node.word for node in sorted(antecedents, key=lambda node: node.start)], "\n"
-    print "consequents:"
-    print [node.word for node in sorted(consequents, key=lambda node: node.start)], "\n"
-    print "questions:"
-    print [node.word for node in sorted(questions, key=lambda node: node.start)], "\n"
     
-    print "\n\n"
     name = "none: "
     for node in nones:
         update(name, node, vect)
