@@ -1,33 +1,9 @@
 '''
 Created on Jul 19, 2012
 
-ListTree class fully functional (for the time being). Build a new list of 
+ListTree class fully functional. Build a new list of 
 ListTrees by calling the function build_ListTrees on a list of semantic
-dependnecies. Each dependency graph will be turned into its own tree.
-    
-Two ways to parse it (I'm using LT to be a generic ListTree): 
-starting at the front using LT.start or by starting
-at the root by using LT.root. If you're trying to find a specific word, you
-would probably want something like this:
-
-curr = LT.start
-while (curr != None):
-    if curr.word == word:
-        break
-    curr = curr.nxt
-
-curr will end up being the right node, or it will be None
-
-The dependents of a node are node.deps, and they are a list. So, you would want
-to create a function that takes in lists if you were trying to figure out what the
-descendents of a node are. Something like
-
-def find_descend(deps):
-    descendents = deps
-    for dep in deps:
-        descendents.extend(find_descend(dep.deps))
-    return descendents
-    
+dependencies. Each dependency graph will be turned into its own tree.
 
 @author: random
 '''
@@ -66,7 +42,6 @@ class Node:
         self.index = index
         self.rel = rel
         self.lemma = lemma
-        self.commitment = False
         
     def __repr__(self):
         ##Prints in the format 
@@ -525,14 +500,17 @@ class ListTree:
                                         
         return (antecedent, resultant)
     
-    def get_none(self):
-        to_return = []
+    def get_neg(self):
+        verbs = []
+        all_none = []
         curr = self.start
         while curr != None:
-            if curr.commitment == False:
-                to_return.append(curr)
+            if curr.rel == 'neg':
+                if "VB" in curr.gov.pos:
+                    verbs.append(curr.gov)
+                    all_none.extend(curr.gov.get_descendents(curr.dist, notStart = False))
             curr = curr.nxt
-        return to_return
+        return (verbs, all_none)
         
 def build_ListTrees(deps, poses):
     ##Build a list of ListTrees from a list of deps
@@ -582,69 +560,3 @@ if __name__ == '__main__':
     print quotes
     print 
     print
-    
-'''
-
-from nlp.stanford_nlp import get_parses
-
-sent = "If you eat cookies, you will have fun."
-
-print sent
-parse = get_parses(sent)
-
-print parse[0]
-
-trees = build_ListTrees(parse[2], parse[0])
-
-for tree in trees:
-    print
-    print "root: "
-    print tree.root
-    print
-    print "Final tree: "
-    print tree
-    ant, cond = tree.get_cond()
-    print
-    print "Antecedent: "
-    if ant != None:
-        for node in ant:
-            print node
-    print
-    print "Conditional: "
-    if cond != None:
-        for node in cond:
-            print node
-    print
-
-
-    
-    print "descendants:"
-    
-    deps = tree.search_and_descend("admit")
-    for dep in deps:
-        print dep
-        
-    print
-        
-    print "quotes:"
-    deps = tree.get_quotes()
-    for dep in deps:
-        print dep
-        
-    print
-
-    print "question:"
-    deps = tree.get_question()
-    for dep in deps:
-        print dep
-        
-    print
-    
-    print "really:"
-    tups = tree.get_adv("really")
-    for tup in tups:
-        print tup[0]
-        for node in tup[1]:
-            print node
-            
-'''

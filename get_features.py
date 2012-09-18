@@ -96,12 +96,15 @@ def update(name, node, vect):
     if node.liwc != None:
         for key in dict(node.liwc):
             vect[name+"LIWC: "+key] += 1
+    '''        
                 
     if node.deps != None:
         for curr in node.deps:
-            dep_string = "dep: %s(%s,%s)" % (curr.rel, node.lemma, curr.lemma)
+            dep_string = "pos_genDep: %s(%s,%s)" % (curr.rel, node.pos, curr.lemma)
             dep_string = name + dep_string
             vect[dep_string] += 1
+    
+    '''
     if node.mpqa != None:
         pass
         ##this needs to be filled with the appropriate mpqa feature stuff
@@ -169,10 +172,28 @@ def feat_vect(deps, pos, vect):
     questions = []
     antecedents = []
     consequents = []
+    neg_verbs = []
+    neg_all = []
     commit_starts = []
     for num in range(len(trees)):
         tree = trees[num]
-        curr = tree.start
+        '''
+        verbs, all_neg = tree.get_neg()
+        if verbs:
+            neg_verbs.extend(verbs)
+            verbs = sorted(list(set(verbs)), key=lambda node: node.start)
+            ranged = build_ranges(verbs, 'neg_verbs')
+            tuples.extend(ranged[0])
+            commit_starts.extend(ranged[1])
+            neg_verbs.extend(ranged[2])
+        if all_neg:
+            neg_all.extend(all_neg)
+            all_neg = sorted(list(set(all_neg)), key=lambda node: node.start)
+            ranged = build_ranges(all_neg, 'neg_all')
+            tuples.extend(ranged[0])
+            commit_starts.extend(ranged[1])
+            neg_all.extend(ranged[2])
+        '''    
         question = tree.get_question()
         if question != None:
             questions.extend(question)
@@ -222,7 +243,7 @@ def feat_vect(deps, pos, vect):
         while curr != None:
             nones.append(curr)
             curr = curr.nxt
-    commits = quotes + questions + antecedents + consequents
+    commits = quotes + questions + antecedents + consequents + neg_all + neg_verbs
     nones = [node for node in nones if node not in commits]
             
     nones = sorted(list(set(nones)), key=lambda node: node.start)
@@ -230,26 +251,36 @@ def feat_vect(deps, pos, vect):
     tuples.extend(ranged[0])
     nones.extend(ranged[2])
     
-    name = "none: "
+
+    name = "NONE_"
     for node in nones:
         update(name, node, vect)
     
-    name = "quote: "
+    name = "QUOTE_"
     for node in quotes:
         update(name, node, vect)
         
-    name = "question: "
+    name = "QUESTION_"
     for node in questions:
         update(name, node, vect)
     
-    name = "antecedent: "
+    name = "ANTECEDENT_"
     for node in antecedents:
         update(name, node, vect)
         
-    name = "consequent: "
+    name = "CONSEQUENT_"
     for node in consequents:
         update(name, node, vect)
-    
+    '''    
+    name = "NEG_VERBS_"
+    for node in neg_verbs:
+        update(name, node, vect)
+        
+    name = "NEG_ALL_"
+    for node in neg_all:
+        update(name, node, vect)
+    '''    
+        
     return tuples
 
 if __name__ == '__main__':

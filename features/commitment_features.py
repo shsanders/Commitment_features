@@ -66,7 +66,7 @@ class Commitment(object):
         self.feature_vectors = []
         self.classification_feature = 'commitment'
         self.features = features
-        self.bounds = Bounds(output=topic+"_bounds_dump")
+        self.bounds = Bounds()
         self.dir = re.sub(r'\s+', '_', topic)
 
     def generate_features(self):
@@ -163,7 +163,7 @@ class Commitment(object):
         self.generate_arffs()
 
 if  __name__ == '__main__':
-    for topic in ['gay marriage', 'existence of god', 'evolution']:
+    for topic in ['death penalty', 'gay marriage', 'existence of god', 'evolution']:
         commitment = Commitment(topic=topic, features=['unigram'])
         commitment.main()
         fd = open('dump_random_'+re.sub(' ', '_', topic), 'wb')
